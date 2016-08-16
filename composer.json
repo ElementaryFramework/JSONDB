@@ -1,0 +1,14 @@
+{
+    "name": "na2axl/jsondb",
+    "description": "Manage local databases with JSON files.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Axel Nana",
+            "email": "ax.lnana@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
