@@ -38,7 +38,8 @@
 
     /**
      * Class QueryParser
-     * @package JSONDB
+     *
+     * @package     JSONDB
      * @subpackage  Utilities
      * @category    Parser
      * @author      Nana Axel
