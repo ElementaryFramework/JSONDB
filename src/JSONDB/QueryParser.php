@@ -73,7 +73,7 @@
          * A list of supported queries
          * @var array
          */
-        private static $supportedQueries = array('select', 'insert', 'delete', 'replace', 'truncate', 'update');
+        private static $supportedQueries = array('select', 'insert', 'delete', 'replace', 'truncate', 'update', 'count');
 
         /**
          * Registered query operators
@@ -114,7 +114,10 @@
             }
 
             // Checking query's parts validity
-            foreach (array_slice($queryParts, 1) as $part) {
+            foreach (array_slice($queryParts, 1) as $index => $part) {
+                if (NULL === $part || $part === '') {
+                    throw new Exception("JSONDB Query Parse Error: Unexpected \".\" after extension \"{$queryParts[$index]}\".");
+                }
                 if (FALSE === (bool)preg_match('#\w+\(.*\)#', $part)) {
                     throw new Exception("JSONDB Query Parse Error: There is an error at the extension \"{$part}\".");
                 }
@@ -170,6 +173,14 @@
 
                     case 'with':
                         $extensions['with'] = $this->_parseWithExtension($string);
+                        break;
+
+                    case 'as':
+                        $extensions['as'] = $this->_parseAsExtension($string);
+                        break;
+
+                    case 'group':
+                        $extensions['group'] = $this->_parseGroupExtension($string);
                         break;
                 }
             }
@@ -327,6 +338,43 @@
             }
 
             return (array)array_map(array(&$this, '_parseValue'), $parsedClause);
+        }
+
+        /**
+         * Parses a as() extension
+         * @param string $clause
+         * @return array
+         * @throws Exception
+         */
+        private function _parseAsExtension($clause)
+        {
+            $parsedClause = explode(',', $clause);
+            $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
+            if (count($parsedClause) === 0) {
+                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"as()\" extension.");
+            }
+
+            return $parsedClause;
+        }
+
+        /**
+         * Parses a group() extension
+         * @param string $clause
+         * @return array
+         * @throws Exception
+         */
+        private function _parseGroupExtension($clause)
+        {
+            $parsedClause = explode(',', $clause);
+            $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
+            if (count($parsedClause) === 0) {
+                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"as()\" extension.");
+            }
+            if (count($parsedClause) > 1) {
+                throw new Exception("JSONDB Query Parse Error: Too much parameters given to the \"group()\" extension, only one required.");
+            }
+
+            return $parsedClause;
         }
 
         /**
