@@ -1,23 +1,21 @@
 {
     "name": "na2axl/jsondb",
     "description": "Manage local databases with JSON files and JSON Query Language (JQL).",
-    "keywords": ["database", "file", "json", "nosql"],
+    "keywords": ["database", "file", "json", "nosql", "db"],
+    "homepage": "https://github.com/na2axl/jsondb-php",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Axel Nana",
             "email": "ax.lnana@outlook.com",
-            "homepage": "https://tutorialcenters.tk"
+            "homepage": "https://tutorialcenters.tk",
+            "role": "Developer"
         }
     ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=5.3.0"
-    },
     "autoload": {
-        "psr-0": {
-            "JSONDB": "src/JSONDB"
+        "psr-4": {
+            "JSONDB\\": "src/JSONDB/"
         }
     }
 }
