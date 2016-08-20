@@ -1,6 +1,6 @@
 {
     "name": "na2axl/jsondb",
-    "description": "Manage local databases with JSON files.",
+    "description": "Manage local databases with JSON files and JSON Query Language (JQL).",
     "keywords": ["database", "file", "json", "nosql"],
     "type": "library",
     "license": "MIT",
