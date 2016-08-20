@@ -37,7 +37,7 @@
     namespace JSONDB;
 
     /**
-     * Benchmark Class
+     * Class Benchmark
      *
      * @package		JSONDB
      * @subpackage  Utilities
