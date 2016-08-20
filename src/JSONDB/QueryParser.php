@@ -104,13 +104,20 @@
 
             $this->notParsedQuery = $query;
 
-            // Getting query parts
+            // Getting query's parts
             $queryParts = explode('.', $this->notParsedQuery);
 
             // Getting the table name
             $this->parsedQuery['table'] = $queryParts[0];
             if (empty($this->parsedQuery['table'])) {
                 throw new Exception('JSONDB Query Parse Error: No table detected in the query.');
+            }
+
+            // Checking query's parts validity
+            foreach (array_slice($queryParts, 1) as $part) {
+                if (FALSE === (bool)preg_match('#\w+\(.*\)#', $part)) {
+                    throw new Exception("JSONDB Query Parse Error: There is an error at the extension \"{$part}\".");
+                }
             }
 
             // Getting the query's main action
