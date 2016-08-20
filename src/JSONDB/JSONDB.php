@@ -677,6 +677,7 @@
          * @param $value
          * @param $properties
          * @return float|int|string
+         * @throws Exception
          */
         protected function _parseValue($value, $properties)
         {
@@ -697,7 +698,6 @@
                             }
                             break;
 
-                        default:
                         case 'string':
                             $value = (string)$value;
                             if (array_key_exists('max_length', $properties) && strlen($value) > 0) {
@@ -713,6 +713,13 @@
                         case 'boolean':
                             $value = (bool)$value;
                             break;
+
+                        case 'array':
+                            $value = (array)$value;
+                            break;
+
+                        default:
+                            throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
                     }
                 }
             }
