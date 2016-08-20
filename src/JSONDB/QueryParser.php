@@ -79,7 +79,7 @@
          * Registered query operators
          * @var array
          */
-        private static $operators = array('!=', '<>', '<=', '>=', '=', '<', '>');
+        private static $operators = array('%!', '%=', '!=', '<>', '<=', '>=', '=', '<', '>');
 
         /**
          * Quotes a value and escape reserved characters
