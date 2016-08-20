@@ -254,13 +254,13 @@
          */
         private function _parseAndExtension($clause)
         {
-            $parsedClause = (array)array_map(array(&$this, '_parseValue'), explode(',', $clause));
+            $parsedClause = explode(',', $clause);
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"and()\" extension.");
             }
 
-            return $parsedClause;
+            return (array)array_map(array(&$this, '_parseValue'), $parsedClause);
         }
 
         /**
@@ -271,7 +271,7 @@
          */
         private function _parseLimitExtension($clause)
         {
-            $parsedClause = (array)array_map(array(&$this, '_parseValue'), explode(',', $clause));
+            $parsedClause = explode(',', $clause);
             $parsedClause = (NULL !== $parsedClause[0] || (int)$parsedClause[0] === 0) ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"limit()\" extension.");
@@ -285,7 +285,7 @@
                 $parsedClause[0] = 0;
             }
 
-            return $parsedClause;
+            return (array)array_map(array(&$this, '_parseValue'), $parsedClause);
         }
 
         /**
@@ -313,13 +313,13 @@
          */
         private function _parseWithExtension($clause)
         {
-            $parsedClause = (array)array_map(array(&$this, '_parseValue'), explode(',', $clause));
+            $parsedClause = explode(',', $clause);
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"with()\" extension.");
             }
 
-            return $parsedClause;
+            return (array)array_map(array(&$this, '_parseValue'), $parsedClause);
         }
 
         /**
