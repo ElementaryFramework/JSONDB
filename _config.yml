@@ -1,0 +1,3 @@
+name: JSONDB: Manage databases with JSON files and JSONDB query language (JQL)
+markdown: kramdown
+permalink: /blog/posts/:title

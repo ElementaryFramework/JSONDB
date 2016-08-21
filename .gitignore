@@ -45,3 +45,7 @@ _book
 *.epub
 *.mobi
 *.pdf
+
+## Jekyll
+_site/
+static/
