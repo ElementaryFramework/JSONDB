@@ -435,9 +435,9 @@
                     throw new Exception("Can't use the \"auto_increment\" property on more than one fields.");
                 } elseif (!$ai_exist && $has_ai) {
                     $ai_exist = TRUE;
-                    $prototype[$field]['primary_key'] = TRUE;
+                    $prototype[$field]['unique_key'] = TRUE;
                     $prototype[$field]['not_null'] = TRUE;
-                    $properties['primary_keys'][] = $field;
+                    $properties['unique_keys'][] = $field;
                 }
                 if ($has_pk) {
                     $prototype[$field]['not_null'] = TRUE;
@@ -722,6 +722,8 @@
                             throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
                     }
                 }
+            } elseif (array_key_exists('default', $properties)) {
+                $value = $this->_parseValue($properties['default'], $properties);
             }
             return $value;
         }
