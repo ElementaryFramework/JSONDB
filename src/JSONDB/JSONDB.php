@@ -203,7 +203,7 @@
         public function setDatabase($database)
         {
             if (NULL === $this->server) {
-                throw new Exception("Can't use the database \"{$database}\", there is no connection established with a server.");
+                throw new Exception("JSONDB Error: Can't use the database \"{$database}\", there is no connection established with a server.");
             }
             $this->database = $database;
             return $this;
@@ -218,7 +218,7 @@
         public function setTable($table)
         {
             if (NULL === $this->database) {
-                throw new Exception("Can't use the table \"{$table}\", there is no database selected.");
+                throw new Exception("JSONDB Error: Can't use the table \"{$table}\", there is no database selected.");
             }
             $this->table = $table;
             return $this;
@@ -293,12 +293,12 @@
             if (isset($path, $username, $password)) {
                 if (file_exists($path) || is_dir($path)) {
                     $this->benchmark->mark('jsondb_(createServer)_end');
-                    throw new Exception("Can't create server \"{$path}\", the directory already exists.");
+                    throw new Exception("JSONDB Error: Can't create server \"{$path}\", the directory already exists.");
                 }
 
                 if (!@mkdir($path, 0777, TRUE) && !is_dir($path)) {
                     $this->benchmark->mark('jsondb_(createServer)_end');
-                    throw new Exception("Can't create the server \"{$path}\". Maybe you don't have write access.");
+                    throw new Exception("JSONDB Error: Can't create the server \"{$path}\". Maybe you don't have write access.");
                 }
 
                 chmod($path, 0777);
@@ -327,19 +327,19 @@
             $this->benchmark->mark('jsondb_(createDatabase)_start');
             if (NULL === $this->server) {
                 $this->benchmark->mark('jsondb_(createDatabase)_end');
-                throw new Exception("Can't create the database \"{$name}\", there is no connection established with a server.");
+                throw new Exception("JSONDB Error: Can't create the database \"{$name}\", there is no connection established with a server.");
             }
 
             $path = $this->_getDatabasePath($name);
 
             if (file_exists($path)) {
                 $this->benchmark->mark('jsondb_(createDatabase)_end');
-                throw new Exception("Can't create the database \"{$name}\" in the server \"{$this->server}\", the database already exist.");
+                throw new Exception("JSONDB Error: Can't create the database \"{$name}\" in the server \"{$this->server}\", the database already exist.");
             }
 
             if (!@mkdir($path, 0777, TRUE) && !is_dir($path)) {
                 $this->benchmark->mark('jsondb_(createDatabase)_end');
-                throw new Exception("Can't create the database \"{$name}\" in the server \"{$this->server}\".");
+                throw new Exception("JSONDB Error: Can't create the database \"{$name}\" in the server \"{$this->server}\".");
             } else {
                 chmod($path, 0777);
             }
@@ -368,12 +368,12 @@
 
             if (!array_key_exists($server, $config)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
-                throw new Exception("There is no registered server with the path \"{$server}\".");
+                throw new Exception("JSONDB Error: There is no registered server with the path \"{$server}\".");
             }
 
             if ($config[$server]['username'] !== sha1(md5($username)) || $config[$server]['password'] !== sha1(md5($password))) {
                 $this->benchmark->mark('jsondb_(connect)_end');
-                throw new Exception("User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
+                throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
 
             $this->config->addUser($server, $username, $password);
@@ -420,7 +420,7 @@
             $table_path = $this->_getTablePath($name);
             if (file_exists($table_path)) {
                 $this->benchmark->mark('jsondb_(createTable)_end');
-                throw new Exception("Can't create the table \"{$name}\" in the database \"{$this->database}\". The table already exist.");
+                throw new Exception("JSONDB Error: Can't create the table \"{$name}\" in the database \"{$this->database}\". The table already exist.");
             }
 
             $fields = array();
@@ -432,7 +432,7 @@
                 $has_uk = array_key_exists('unique_key', $prop);
                 if ($ai_exist && $has_ai) {
                     $this->benchmark->mark('jsondb_(createTable)_end');
-                    throw new Exception("Can't use the \"auto_increment\" property on more than one fields.");
+                    throw new Exception("JSONDB Error: Can't use the \"auto_increment\" property on more than one fields.");
                 } elseif (!$ai_exist && $has_ai) {
                     $ai_exist = TRUE;
                     $prototype[$field]['unique_key'] = TRUE;
@@ -458,7 +458,7 @@
             );
             if (touch($table_path) === FALSE) {
                 $this->benchmark->mark('jsondb_(createTable)_end');
-                throw new Exception("Can't create file \"{$table_path}\".");
+                throw new Exception("JSONDB Error: Can't create file \"{$table_path}\".");
             }
             chmod($table_path, 0777);
             file_put_contents($table_path, json_encode($data));
@@ -528,10 +528,10 @@
                     }
                     $this->queryString = str_replace($key, $value, $this->queryString);
                 } else {
-                    throw new Exception("Can't bind the value \"{$value}\" for the key \"{$key}\". The key isn't in the query.");
+                    throw new Exception("JSONDB Error: Can't bind the value \"{$value}\" for the key \"{$key}\". The key isn't in the query.");
                 }
             } else {
-                throw new Exception("Can't use JSONDB::bindValue() with non prepared queries. Send your query with JSONDB::prepare() first.");
+                throw new Exception("JSONDB Error: Can't use JSONDB::bindValue() with non prepared queries. Send your query with JSONDB::prepare() first.");
             }
         }
 
@@ -553,7 +553,7 @@
         public function execute()
         {
             if (NULL === $this->database || NULL === $this->parsedQuery) {
-                throw new Exception("Can't execute the query. No database/table selected or internal error.");
+                throw new Exception("JSONDB Error: Can't execute the query. No database/table selected or internal error.");
             }
 
             if ($this->queryIsPrepared()) {
@@ -564,7 +564,7 @@
             $this->setTable($this->parsedQuery['table']);
             $table_path = $this->_getTablePath();
             if (!file_exists($table_path) || !is_readable($table_path) || !is_writable($table_path)) {
-                throw new Exception("Can't execute the query. The table \"{$this->table}\" doesn't exists in database \"{$this->database}\" or file access denied.");
+                throw new Exception("JSONDB Error: Can't execute the query. The table \"{$this->table}\" doesn't exists in database \"{$this->database}\" or file access denied.");
             }
 
             $json_array = $this->cache->get($table_path);
@@ -815,7 +815,7 @@
                 $rows = $this->parsedQuery['extensions']['in'];
                 foreach ((array)$rows as $row) {
                     if (!in_array($row, $data['prototype'], FALSE)) {
-                        throw new Exception("Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
+                        throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
                     }
                 }
             }
@@ -823,7 +823,7 @@
             $values_nb = count($this->parsedQuery['parameters']);
             $rows_nb = count($rows);
             if ($values_nb !== $rows_nb) {
-                throw new Exception("Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
+                throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
             }
             $current_data = $data['data'];
             $ai_id = (int)$data['properties']['last_insert_id'];
@@ -836,7 +836,7 @@
                 foreach ((array)$this->parsedQuery['extensions']['and'] as $values) {
                     $values_nb = count($values);
                     if ($values_nb !== $rows_nb) {
-                        throw new Exception("Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
+                        throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
                     }
                     $to_add = array('#rowid' => $this->_getLastValidRowID(array_merge($current_data, $insert), FALSE) + 1);
                     foreach ((array)$values as $key => $value) {
@@ -880,7 +880,7 @@
                     if ($pk_error) {
                         $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
-                        throw new Exception("Can't insert value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
+                        throw new Exception("JSONDB Error: Can't insert value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
                     }
                 }
             }
@@ -893,7 +893,7 @@
                         $value = array_intersect_key($value, array($uk => $uk));
                         $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array_data));
                         if ($uk_error) {
-                            throw new Exception("Can't insert value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
+                            throw new Exception("JSONDB Error: Can't insert value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
                     }
                 }
@@ -932,7 +932,7 @@
                 $rows = $this->parsedQuery['extensions']['in'];
                 foreach ((array)$rows as $row) {
                     if (!in_array($row, $data['prototype'], FALSE)) {
-                        throw new Exception("Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
+                        throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
                     }
                 }
             }
@@ -940,7 +940,7 @@
             $values_nb = count($this->parsedQuery['parameters']);
             $rows_nb = count($rows);
             if ($values_nb !== $rows_nb) {
-                throw new Exception("Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
+                throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
             }
             $current_data = $data['data'];
             $insert = array();
@@ -978,7 +978,7 @@
                     if ($pk_error) {
                         $values = implode(', ', $item);
                         $keys = implode(', ', $data['properties']['primary_keys']);
-                        throw new Exception("Can't replace value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
+                        throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
                     }
                 }
             }
@@ -991,7 +991,7 @@
                         $item = array_intersect_key($item, array($uk => $uk));
                         $uk_error = $uk_error || (!empty($item[$uk]) && ($item === $array_data));
                         if ($uk_error) {
-                            throw new Exception("Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
+                            throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
                         }
                     }
                 }
@@ -1084,13 +1084,13 @@
             }
 
             if (!array_key_exists('with', $this->parsedQuery['extensions'])) {
-                throw new Exception("Can't execute the \"update()\" query without values.");
+                throw new Exception("JSONDB Error: Can't execute the \"update()\" query without values.");
             }
 
             $fields_nb = count($this->parsedQuery['parameters']);
             $values_nb = count($this->parsedQuery['extensions']['with']);
             if ($fields_nb !== $values_nb) {
-                throw new Exception("Can't execute the \"update()\" query. Invalid number of parameters (trying to update \"{$fields_nb}\" columns with \"{$values_nb}\" values).");
+                throw new Exception("JSONDB Error: Can't execute the \"update()\" query. Invalid number of parameters (trying to update \"{$fields_nb}\" columns with \"{$values_nb}\" values).");
             }
 
             $values = array_combine($this->parsedQuery['parameters'], $this->parsedQuery['extensions']['with']);
@@ -1103,7 +1103,7 @@
                 if ($pk_error) {
                     $v = implode(', ', $array_data);
                     $k = implode(', ', $data['properties']['primary_keys']);
-                    throw new Exception("Can't update value. Duplicate values \"{$v}\" for primary keys \"{$k}\".");
+                    throw new Exception("JSONDB Error: Can't update value. Duplicate values \"{$v}\" for primary keys \"{$k}\".");
                 }
             }
 
@@ -1114,7 +1114,7 @@
                     $array_data = array_intersect_key($array_data, array($uk => $uk));
                     $uk_error = $uk_error || (!empty($item[$uk]) && ($item === $array_data));
                     if ($uk_error) {
-                        throw new Exception("Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
+                        throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
                     }
                 }
             }
@@ -1247,7 +1247,7 @@
                 }
                 foreach ((array)$result as $line) {
                     if (!array_key_exists($filter['field'], $line)) {
-                        throw new Exception("The field \"{$filter['field']}\" doesn't exists in the table \"{$this->table}\".");
+                        throw new Exception("JSONDB Error: The field \"{$filter['field']}\" doesn't exists in the table \"{$this->table}\".");
                     }
                     switch ($filter['operator']) {
                         case '<':
@@ -1300,7 +1300,7 @@
                             break;
 
                         default:
-                            throw new Exception("The operator \"{$filter['operator']}\" is not supported. Try to use one of these operators: \"<\", \"<=\", \"=\", \">=\", \">\", \"<>\", \"!=\", \"%=\" or \"%!\".");
+                            throw new Exception("JSONDB Error: The operator \"{$filter['operator']}\" is not supported. Try to use one of these operators: \"<\", \"<=\", \"=\", \">=\", \">\", \"<>\", \"!=\", \"%=\" or \"%!\".");
                     }
                 }
                 $result = $temp;
