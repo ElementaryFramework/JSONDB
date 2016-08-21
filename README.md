@@ -128,9 +128,9 @@ forach ($results as $result) {
 ```php
 $query = $db->prepare($my_prepared_query);
 $query->bindValue(':key1', $val, \JSONDB\JSONDB::PARAM_INT);
-$query->bindValue(':key1', $val, \JSONDB\JSONDB::PARAM_STRING);
-$query->bindValue(':key1', $val, \JSONDB\JSONDB::PARAM_BOOL);
-$query->bindValue(':key1', $val, \JSONDB\JSONDB::PARAM_NULL);
+$query->bindValue(':key2', $val, \JSONDB\JSONDB::PARAM_STRING);
+$query->bindValue(':key3', $val, \JSONDB\JSONDB::PARAM_BOOL);
+$query->bindValue(':key4', $val, \JSONDB\JSONDB::PARAM_NULL);
 $results = $query->execute();
 
 //// Specially for select() queries
