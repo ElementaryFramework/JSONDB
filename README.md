@@ -236,7 +236,7 @@ $db->query("users.count(*).as(users_nb).group(activated)");
 ## Full example
 ```php
 try {
-    $jsondb = \JSONDB\JSONDB();
+    $jsondb = new \JSONDB\JSONDB();
 
     if (!file_exists('./test') {
         $jsondb->createServer('./test', 'root', '');
