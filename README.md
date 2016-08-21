@@ -107,7 +107,7 @@ JSONDB can send both direct and prepared queries.
 
 #### Direct queries
 ```php
-$rexults = $db->query($my_query_string);
+$results = $db->query($my_query_string);
 
 //// Specially for select() queries
 // You can change the fecth mode
