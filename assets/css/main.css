@@ -83,35 +83,42 @@ section#main section header {
     border-bottom: 2px solid;
 }
 
-section#main section.features header {
+section#main header {
     margin-bottom: 1em;
 }
 
-section#main section.features article.box {
+section#main article.box {
     background-color: #fff;
     color: #333;
     padding: 0;
     font-size: 0.75em;
-    text-align: center;
     margin: 0;
     overflow: hidden;
 }
 
-section#main section.features article.box header {
+section#main article.box.full {
+	width: 100%;
+}
+
+section#main article.box header {
     font-weight: bold;
     border-bottom: 1px dotted;
     margin: 1em;
     padding-top: 1em;
 }
 
-section#main section.features article.box header h3 {
+section#main article.box header h3 {
     color: rgba(95, 130, 185, 1) !important;
 }
 
-section#main section.features article.box div.content {
+section#main div.content {
     padding: 1em;
     line-height: 1.25em;
     font-size: 1.5em;
+}
+
+section#main section.features article.box {
+    text-align: center;
 }
 
 section#main section.features article.box:hover footer {
@@ -128,6 +135,42 @@ section#main section.features article.box footer {
     left: 0;
     width: 100%;
     transition: bottom 0.2s 0s linear;
+}
+
+section#main section.links article.box {
+	border-left: 5px solid rgba(95, 130, 185, 1);
+}
+
+section#main section.links article.box:hover footer {
+    top: 0;
+	right: 0;
+}
+
+section#main section.links article.box footer {
+    position: relative;
+    background-color: rgba(95, 130, 185, 1);
+    font-weight: bold;
+    margin: 0;
+    top: 32px;
+    right: 32px;
+    width: 48px;
+	height: 48px;
+    transition: top 0.2s 0s linear, right 0.2s 0s linear;
+}
+
+section#main section.links article.box footer a::before {
+	line-height: 48px;
+	margin: 0;
+	width: 48px;
+	height: 48px;
+	text-align: center;
+	font-size: 16px;
+}
+
+section#main section.links article.box footer a,
+section#main section.features article.box footer a {
+	border-bottom: none;
+	color: #fff;
 }
 
 footer#footer {
@@ -210,7 +253,6 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     margin-bottom: 0.5em;
     line-height: 1;
-    color: #fff;
 }
 
 h1 {
@@ -235,14 +277,31 @@ h5 {
 
 a {
     font-weight: bold;
-    color: #fff;
+    color: rgba(95, 130, 185, 1);
     text-decoration: none;
     border-bottom: 1px dotted #fff;
+}
+header#header a,
+footer#footer a {
+	color: #fff;
 }
 
 b, strong {
     font-weight: bold;
-    color: #252121;
+	color: #fff;
+}
+.box b,
+.box strong {
+	color: #333 !important;	
+}
+
+i, em {
+	font-style: italic;
+	color: #fff;
+}
+.box i,
+.box em {
+	color: #333 !important;	
 }
 
 @media screen and (max-width: 480px) {

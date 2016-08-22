@@ -18,9 +18,9 @@
                 </div>
                 <nav>
                     <ul class="hide(phone) hide(tablet)">
-                        <li class="current fa fa-home">Home</li>
-                        <li class="fa fa-code">API</li>
-                        <li class="fa fa-question-circle">Documentation</li>
+                        <li class="{% if page.menu == "home" %}current{% endif %} fa fa-home"><a href="{{ site.github.url }}/">Home</a></li>
+                        <li class="{% if page.menu == "manual" %}current{% endif %} fa fa-question-circle"><a href="{{ site.github.url }}/docs/manual">Manual</a></li>
+                        <li class="{% if page.menu == "api" %}current{% endif %} fa fa-code"><a href="{{ site.github.url }}/docs/api">API</a></li>
                     </ul>
                 </nav>
             </section>
