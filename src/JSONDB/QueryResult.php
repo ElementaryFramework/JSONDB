@@ -41,7 +41,7 @@
      *
      * @package		JSONDB
      * @subpackage  Utilities
-     * @category    Results
+     * @category    Query
      * @author		Nana Axel
      */
     class QueryResult implements \Iterator, \SeekableIterator, \Countable, \Serializable, \ArrayAccess
