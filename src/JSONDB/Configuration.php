@@ -54,7 +54,7 @@
          */
         public function addUser($server, $username, $password)
         {
-            $this->_writeConfig('users', array_merge($this->getConfig('users'), array($server => array('username' => sha1(md5($username)), 'password' => sha1(md5($password))))));
+            $this->_writeConfig('users', array_merge($this->getConfig('users'), array($server => array('username' => Util::crypt($username), 'password' => Util::crypt($password)))));
         }
 
         /**
