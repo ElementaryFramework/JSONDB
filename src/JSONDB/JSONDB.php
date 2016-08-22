@@ -145,13 +145,6 @@
         private $parsedQuery;
 
         /**
-         * An array of keys inserted in the
-         * query.
-         * @var array
-         */
-        private $preparedQueryKeys = array();
-
-        /**
          * Store the result of a query.
          *
          * @var array
@@ -303,6 +296,18 @@
 
                 chmod($path, 0777);
 
+                $htaccess = fopen($path . '/.htaccess', 'a+');
+                foreach(array('AuthType Basic', 'AuthName "JSONDB Server Access"', 'AuthUserFile "' . realpath(dirname(__DIR__) . '/config/.htpasswd') . '"', 'Require user ' . $username) as $line) {
+                    fwrite($htaccess, $line . "\n");
+                }
+                fclose($htaccess);
+
+                $htpasswd = fopen(realpath(dirname(__DIR__) . '/config/.htpasswd'), 'a+');
+                fwrite($htpasswd, $username . ':' . crypt($password) . "\n");
+                fclose($htpasswd);
+
+                $this->config->addUser($path, $username, $password);
+
                 if ($connect) {
                     $this->connect($path, $username, $password);
                 }
@@ -371,7 +376,7 @@
                 throw new Exception("JSONDB Error: There is no registered server with the path \"{$server}\".");
             }
 
-            if ($config[$server]['username'] !== sha1(md5($username)) || $config[$server]['password'] !== sha1(md5($password))) {
+            if ($config[$server]['username'] !== Util::crypt($username) || $config[$server]['password'] !== Util::crypt($password)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
                 throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
@@ -482,6 +487,8 @@
             }
 
             $this->queryString = $query;
+            $this->queryIsExecuted = FALSE;
+            $this->queryIsPrepared = FALSE;
 
             return $this->execute();
         }
@@ -489,50 +496,14 @@
         /**
          * Sends a prepared query.
          * @param string $query The query
-         * @return JSONDB
+         * @return PreparedQueryStatement
          */
         public function prepare($query)
         {
             $this->queryString = $query;
-            return $this->_prepareQuery();
-        }
+            $this->queryIsPrepared = TRUE;
 
-        /**
-         * Binds a value in a prepared query.
-         * @param string $key The parameter's key
-         * @param string|int|bool $value The parameter's value
-         * @param int $parse_method The parse method to use
-         * @throws Exception
-         */
-        public function bindValue($key, $value, $parse_method = JSONDB::PARAM_STRING)
-        {
-            if ($this->queryIsPrepared()) {
-                if (in_array($key, $this->preparedQueryKeys, TRUE)) {
-                    switch ($parse_method) {
-                        default:
-                        case self::PARAM_STRING:
-                            $value = self::quote((string)$value);
-                            break;
-
-                        case self::PARAM_INT:
-                            $value = (int)$value;
-                            break;
-
-                        case self::PARAM_BOOL:
-                            $value = ((string)((int)$value)) . ':JSONDB::TO_BOOL:';
-                            break;
-
-                        case self::PARAM_NULL:
-                            $value = (string)$value . ':JSONDB::TO_NULL:';
-                            break;
-                    }
-                    $this->queryString = str_replace($key, $value, $this->queryString);
-                } else {
-                    throw new Exception("JSONDB Error: Can't bind the value \"{$value}\" for the key \"{$key}\". The key isn't in the query.");
-                }
-            } else {
-                throw new Exception("JSONDB Error: Can't use JSONDB::bindValue() with non prepared queries. Send your query with JSONDB::prepare() first.");
-            }
+            return new PreparedQueryStatement($query, $this);
         }
 
         /**
@@ -550,31 +521,32 @@
          * @return mixed
          * @throws Exception
          */
-        public function execute()
+        private function execute()
         {
-            if (NULL === $this->database || NULL === $this->parsedQuery) {
-                throw new Exception("JSONDB Error: Can't execute the query. No database/table selected or internal error.");
+            if (!$this->queryIsExecuted()) {
+                if (NULL === $this->database || NULL === $this->parsedQuery) {
+                    throw new Exception("JSONDB Error: Can't execute the query. No database/table selected or internal error.");
+                }
+
+                $this->setTable($this->parsedQuery['table']);
+                $table_path = $this->_getTablePath();
+                if (!file_exists($table_path) || !is_readable($table_path) || !is_writable($table_path)) {
+                    throw new Exception("JSONDB Error: Can't execute the query. The table \"{$this->table}\" doesn't exists in database \"{$this->database}\" or file access denied.");
+                }
+
+                $json_array = $this->cache->get($table_path);
+                $method = "_{$this->parsedQuery['action']}";
+
+                $this->benchmark->mark('jsondb_(query)_start');
+                $return = $this->$method($json_array);
+                $this->benchmark->mark('jsondb_(query)_end');
+
+                $this->queryIsExecuted = TRUE;
+
+                return $return;
+            } else {
+                throw new Exception('JSONDB Error: There is no query to execute, or the query is already executed.');
             }
-
-            if ($this->queryIsPrepared()) {
-                $this->queryIsPrepared = FALSE;
-                return $this->query($this->queryString);
-            }
-
-            $this->setTable($this->parsedQuery['table']);
-            $table_path = $this->_getTablePath();
-            if (!file_exists($table_path) || !is_readable($table_path) || !is_writable($table_path)) {
-                throw new Exception("JSONDB Error: Can't execute the query. The table \"{$this->table}\" doesn't exists in database \"{$this->database}\" or file access denied.");
-            }
-
-            $json_array = $this->cache->get($table_path);
-            $method = "_{$this->parsedQuery['action']}";
-
-            $this->benchmark->mark('jsondb_(query)_start');
-            $return = $this->$method($json_array);
-            $this->benchmark->mark('jsondb_(query)_end');
-
-            return $return;
         }
 
         /**
@@ -603,19 +575,6 @@
         public function queryIsExecuted()
         {
             return $this->queryIsExecuted === TRUE;
-        }
-
-        /**
-         * Prepare a query.
-         * @return JSONDB
-         */
-        private function _prepareQuery()
-        {
-            $this->queryIsPrepared = TRUE;
-            $query = $this->queryString;
-            preg_match_all('#(:[\w]+)#', $query, $keys);
-            $this->preparedQueryKeys = $keys[0];
-            return static::getInstance();
         }
 
         /**
@@ -798,7 +757,7 @@
             $result = $temp;
 
             $this->queryResults = $result;
-            $this->queryIsExecuted = TRUE;
+
             return new QueryResult($this->queryResults, $this);
         }
 
