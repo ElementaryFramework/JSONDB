@@ -1,21 +1,15 @@
 ---
 layout: default
-title: "JSONDB: Manage databases with JSON files and JSONDB Query Language (JQL)"
+title: "JSONDB: Manage JSON files as databases with JSONDB Query Language (JQL)"
 menu: "home"
 ---
 <section id="main">
     <div class="grid flush">
         <div class="g12">
-            <section class="welcome">
+            <section class="welcome features">
                 <header>
-                    Manage databases with JSON files and JSONDB Query Language (JQL)
+                    Manage JSON files as databases with JSONDB Query Language (JQL)
                 </header>
-            </section>
-        </div>
-    </div>
-    <div class="grid flush">
-        <div class="g12">
-            <section class="features">
                 <div class="grid quarter">
                     <div class="g3">
                         <article class="box">
@@ -75,33 +69,70 @@ menu: "home"
     </div>
     <div class="grid double">
         <div class="g12">
+            <section class="demo">
+                <header>
+                    <h2>Do more with a <em>.json</em> file...</h2>
+                </header>
+                <article class="box full">
+                    <div class="content">
+                        <pre class="lang-php line-numbers"><code>&lt;?php
+    $jsondb = \JSONDB\JSONDB();
+    $database = $jsondb-&gt;connect('path/to/server', 'username', 'password', 'db_name');
+    $results = $database-&gt;query("table_name.select(*).where(foo = 'hello', bar = 'world')");
+    while ($result = $results-&gt;fetch()) {
+        echo $result['foo'] . ' ' . $result['bar'];
+    }
+    $jsondb->disconnect();
+?&gt;</code></pre>
+                    </div>
+                </article>
+            </section>
+        </div>
+    </div>
+    <div class="grid double">
+        <div class="g12">
             <section class="links">
+                <header>
+                    <h2>What next ?</h2>
+                </header>
                 <div class="grid quarter">
                     <div class="g12">
-						<article class="box full with-thumb">
+                        <article class="box full">
+                            <header>
+                                <h3>Install</h3>
+                            </header>
+                            <div class="content">
+                                <pre class="lang-bash"><code>$ composer require na2axl/jsondb</code></pre>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="grid quarter">
+                    <div class="g12">
+						<article class="box full">
 							<header>
-								<h3>Manual</h3>
+								<h3>Learn how to use</h3>
 							</header>
 							<div class="content">
-                                Interested? Learn how to use JSONDB now!
+                                Interested? Learn how to use JSONDB with the manual!
 							</div>
 							<footer>
-								<a href="" class="open fa fa-external-link"></a>
+								<a href="{{ site.github.url }}/docs/manual" class="open fa fa-external-link"></a>
 							</footer>
 						</article>
                     </div>
                 </div>
                 <div class="grid quarter">
                     <div class="g12">
-						<article class="box full with-thumb">
+						<article class="box full">
 							<header>
-								<h3>API Documentation</h3>
+								<h3>Go further with the API</h3>
 							</header>
 							<div class="content">
-								Classes, methods, properties, All information about JSONDB here!
+								Classes, methods, properties, all information about JSONDB here!
 							</div>
 							<footer>
-								<a href="" class="open fa fa-external-link"></a>
+								<a href="{{ site.github.url }}/docs/api" class="open fa fa-external-link"></a>
 							</footer>
 						</article>
                     </div>

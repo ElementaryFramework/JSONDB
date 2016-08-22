@@ -1,0 +1,75 @@
+---
+layout: default
+title: "JSONDB API Documentation"
+menu: manual
+---
+<section id="main">
+    <div class="grid flush">
+        <div class="g12">
+            <section class="manual">
+                <header>
+                    <h2>JSONDB Manual</h2>
+                </header>
+                <div class="grid flush">
+                    <div class="g8">
+                        <article class="box manual-content">
+                            <div class="content">
+                                <section id="install">
+                                    <header>
+                                        <h3>Installation</h3>
+                                    </header>
+                                    <div class="content">
+                                        <p>
+                                            JSONDB is installable through composer:
+                                        </p>
+                                        <pre class="lang-bash"><code>$ composer require na2axl/jsondb</code></pre>
+                                        <p>
+                                            You can also download JSONDB on github and install it yourself:
+                                            <a href="https://github.com/na2axl/jsondb-php" title="View the project on Github">JSONDB on Github</a>
+                                        </p>
+                                    </div>
+                                </section>
+                                <section id="instantiate">
+                                    <header>
+                                        <h3>Load JSONDB</h3>
+                                    </header>
+                                    <div class="content">
+                                        <p>
+                                            All JSONDB classes are accessible through the namespace <b>JSONDB</b>. So, you have to load JSONDB with:
+                                        </p>
+                                            <pre class="lang-php"><code>&lt;?php
+    try {
+        $jsondb = new \JSONDB\JSONDB();
+    } catch (\JSONDB\Exception $e) {
+        echo $e-&gt;getMessage();
+    }
+?&gt;</code></pre>
+                                    </div>
+                                </section>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="g4">
+                        <aside class="summary scrollspy">
+                            <nav>
+                                <ul>
+                                    <li data-scrollspy-for="#install" class="active"><a href="#install" data-scrollspy-for="#install" class="scrollTo">Installation</a></li>
+                                    <li data-scrollspy-for="#instantiate"><a href="#instantiate" data-scrollspy-for="#instantiate" class="scrollTo">Load JSONDB</a></li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                    <li>Header</li>
+                                </ul>
+                            </nav>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

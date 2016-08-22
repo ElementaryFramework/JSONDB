@@ -7,7 +7,7 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
-    color: #fff;
+    color: #333;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     direction: ltr;
     text-align: left;
@@ -36,16 +36,15 @@ pre[class*="language-"] {
 
 pre[class*="language-"],
 :not(pre) > code[class*="language-"] {
-    background: #333;
+    background: #fff;
 }
 
 /* Code blocks */
 pre[class*="language-"] {
-    padding: 1em;
-    margin-bottom: 2em;
+    padding: 0.5em;
     overflow: auto;
-    border: 0 none;
     border-radius: 0;
+    margin-bottom: 2em;
 }
 
 /* Inline code */
@@ -66,7 +65,7 @@ pre[class*="language-"] {
 .token.operator,
 .token.punctuation {
     opacity: .7;
-    color: #b0b0b0;
+    color: #555555;
 }
 
 .namespace {
@@ -97,7 +96,6 @@ pre[class*="language-"] {
 .style .token.string,
 .token.variable {
     color: #f33;
-    font-weight: bold;
 }
 
 .token.atrule,
@@ -179,6 +177,7 @@ pre[data-line] {
         top: auto;
         bottom: .4em;
     }
+
 pre.line-numbers {
     position: relative;
     padding-left: 4em;
@@ -214,38 +213,11 @@ pre.line-numbers > code {
 
         .line-numbers-rows > span:before {
             content: counter(linenumber);
-            color: #ccc;
+            color: #aaa;
             display: block;
             padding-right: 0.8em;
             text-align: right;
         }
 pre[class*='language-'] {
     position: relative;
-}
-pre[class*='language-'][data-language]::before {
-    content: attr(data-language);
-    color: #333;
-    background-color: #fff;
-    display: inline-block;
-    position: absolute;
-    bottom: auto;
-    left: auto;
-    top: 0;
-    right: 0;
-    width: auto;
-    height: auto;
-    font-size: 0.9em;
-    letter-spacing: 0.075em;
-    padding: 0 0.5em;
-    text-shadow: none;
-    font-weight: bold;
-    z-index: 1;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    -webkit-transform: none;
-    -moz-transform: none;
-    -ms-transform: none;
-    -o-transform: none;
-    transform: none;
 }
