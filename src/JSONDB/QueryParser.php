@@ -132,7 +132,9 @@
 
             // Getting the action's parameters
             $this->parsedQuery['parameters'] = explode(',', trim(str_replace($this->parsedQuery['action'], '', $queryParts[1]), ' ()'));
-            $this->parsedQuery['parameters'] = !empty($this->parsedQuery['parameters'][0]) ? $this->parsedQuery['parameters'] : array();
+            $this->parsedQuery['parameters'] = array_map(function($field) {
+                return trim($field, ' ');
+            }, (!empty($this->parsedQuery['parameters'][0]) ? $this->parsedQuery['parameters'] : array()));
 
             // Parsing values for some actions
             if (in_array(strtolower($this->parsedQuery['action']), array('insert', 'replace'), TRUE)) {
@@ -203,7 +205,9 @@
          */
         private function _parseOrderExtension($clause)
         {
-            $parsedClause = explode(',', $clause);
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"order()\" extension.");
@@ -315,7 +319,9 @@
          */
         private function _parseInExtension($clause)
         {
-            $parsedClause = explode(',', $clause);
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"in()\" extension.");
@@ -349,7 +355,9 @@
          */
         private function _parseAsExtension($clause)
         {
-            $parsedClause = explode(',', $clause);
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"as()\" extension.");
@@ -366,7 +374,9 @@
          */
         private function _parseGroupExtension($clause)
         {
-            $parsedClause = explode(',', $clause);
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"as()\" extension.");
