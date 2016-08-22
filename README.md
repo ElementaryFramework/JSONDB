@@ -238,37 +238,37 @@ $db->query("users.count(*).as(users_nb).group(activated)");
 try {
     $jsondb = new \JSONDB\JSONDB();
 
-    if (!file_exists('./test') {
+    if (!file_exists('./test')) {
         $jsondb->createServer('./test', 'root', '');
     }
 
     $db = $jsondb->connect('./test', 'root', '')
-                 ->createDatabase('test_database')
-                 ->setDatabase('test_database'); // Yes, is chainable ! ;-)
+        ->createDatabase('test_database')
+        ->setDatabase('test_database'); // Yes, is chainable ! ;-)
 
     $db->createTable('users', array('id' => array('type' => 'int', 'auto_increment' => TRUE),
-                                    'name' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
-                                    'surname' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
-                                    'pseudo' => array('type' => 'string', 'max_length' => 15, 'unique_key' => TRUE),
-                                    'mail' => array('type' => 'string', 'unique_key' => TRUE),
-                                    'password' => array('type' => 'string', 'not_null' => TRUE),
-                                    'website' => array('type' => 'string'),
-                                    'activated' => array('type' => 'bool', default => false),
-                                    'banished' => array('type' => 'bool', default => false)));
+                     'name' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+                     'surname' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+                     'pseudo' => array('type' => 'string', 'max_length' => 15, 'unique_key' => TRUE),
+                     'mail' => array('type' => 'string', 'unique_key' => TRUE),
+                     'password' => array('type' => 'string', 'not_null' => TRUE),
+                     'website' => array('type' => 'string'),
+                     'activated' => array('type' => 'bool', 'default' => false),
+                     'banished' => array('type' => 'bool', 'default' => false)));
     
     // A prepared query
-    $query = $db->prepare('users.insert(:name, :sname, :pseudo, :mail, :pass).in(name, surname, pseudo, mail, pass)');
+    $query = $db->prepare('users.insert(:name, :sname, :pseudo, :mail, :pass).in(name, surname, pseudo, mail, password)');
     $query->bindValue(':name', 'Nana', \JSONDB\JSONDB::PARAM_STRING);
     $query->bindValue(':sname', 'Axel', \JSONDB\JSONDB::PARAM_STRING);
     $query->bindValue(':pseudo', 'na2axl', \JSONDB\JSONDB::PARAM_STRING);
     $query->bindValue(':mail', 'ax.lnana@outlook.com', \JSONDB\JSONDB::PARAM_STRING);
     $query->bindValue(':pass', $password, \JSONDB\JSONDB::PARAM_STRING);
     $query->execute();
-    
+
     // After some insertions...
-    
+
     // Select all users
-    $results = $db->query("users.select(id, name, surname, pseudo)");
+    $results = $db->query('users.select(id, name, surname, pseudo)');
     // Fetch as object
     while ($result = $results->fetch(\JSONDB\JSONDB::FETCH_OBJECT)) {
         echo "The user with id: {$result->id} has the name: {$result->name} {$result->surname} and the pseudo: {$result->pseudo}.\n";
