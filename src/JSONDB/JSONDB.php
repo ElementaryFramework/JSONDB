@@ -370,6 +370,7 @@
         {
             $this->benchmark->mark('jsondb_(connect)_start');
             $config = $this->config->getConfig('users');
+            $server = realpath($server);
 
             if (!array_key_exists($server, $config)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
@@ -380,8 +381,6 @@
                 $this->benchmark->mark('jsondb_(connect)_end');
                 throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
-
-            $this->config->addUser($server, $username, $password);
 
             $this->server = $server;
             $this->database = $database;
@@ -435,6 +434,7 @@
                 $has_ai = array_key_exists('auto_increment', $prop);
                 $has_pk = array_key_exists('primary_key', $prop);
                 $has_uk = array_key_exists('unique_key', $prop);
+                $has_tp = array_key_exists('type', $prop);
                 if ($ai_exist && $has_ai) {
                     $this->benchmark->mark('jsondb_(createTable)_end');
                     throw new Exception("JSONDB Error: Can't use the \"auto_increment\" property on more than one fields.");
@@ -451,6 +451,14 @@
                 if ($has_uk) {
                     $prototype[$field]['not_null'] = TRUE;
                     $properties['unique_keys'][] = $field;
+                }
+                if ($has_tp) {
+                    if (preg_match('#link\((.+)\)#', $prop['type'], $link)) {
+                        print_r($link);
+                        exit;
+                    }
+                } else {
+                    $prototype[$field]['type'] = 'string';
                 }
                 $fields[] = $field;
             }
