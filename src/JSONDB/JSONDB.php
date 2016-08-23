@@ -671,6 +671,7 @@
                                 return $data['#rowid'];
                             }
                         }
+                        throw new Exception("JSONDB Error: There is no value \"{$value}\" in any rows of the table \"{$link_info[0]}\" at the column \"{$link_info[1]}\".");
                     } else {
                         switch ($properties['type']) {
                             case 'int':
