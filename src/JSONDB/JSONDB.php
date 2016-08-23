@@ -306,7 +306,7 @@
                 fwrite($htpasswd, $username . ':' . crypt($password) . "\n");
                 fclose($htpasswd);
 
-                $this->config->addUser($path, $username, $password);
+                $this->config->addUser(realpath($path), $username, $password);
 
                 if ($connect) {
                     $this->connect($path, $username, $password);
