@@ -19,9 +19,7 @@ menu: manual
                                         <h3>Installation</h3>
                                     </header>
                                     <div class="content">
-                                        <p>
-                                            JSONDB is installable through composer:
-                                        </p>
+                                        <p>JSONDB is installable through composer:</p>
                                         <pre class="lang-bash"><code>$ composer require na2axl/jsondb</code></pre>
                                         <p>
                                             You can also download JSONDB on github and install it yourself:
@@ -34,16 +32,51 @@ menu: manual
                                         <h3>Load JSONDB</h3>
                                     </header>
                                     <div class="content">
-                                        <p>
-                                            All JSONDB classes are accessible through the namespace <b>JSONDB</b>. So, you have to load JSONDB with:
-                                        </p>
-                                            <pre class="lang-php"><code>&lt;?php
+                                        <p>All JSONDB classes are accessible through the namespace <b>JSONDB</b>. So, you have to load JSONDB with:</p>
+                                            <pre class="lang-php line-numbers"><code>&lt;?php
     try {
         $jsondb = new \JSONDB\JSONDB();
     } catch (\JSONDB\Exception $e) {
         echo $e-&gt;getMessage();
     }
 ?&gt;</code></pre>
+                                    </div>
+                                </section>
+                                <section id="create-server">
+                                    <header>
+                                        <h3>Create a server</h3>
+                                    </header>
+                                    <div class="content">
+                                        <p>When JSONDB is instantiated, you can connect to a server. If you haven't created a server, you can create it using the <code class="lang-php">JSONDB::createServer()</code> method:</p>
+                                        <pre class="lang-php line-numbers"><code>if (!file_exists($server_path)) {
+    $jsondb-&gt;createServer('path/to/server', 'username', 'password');
+}</code></pre>
+                                        <p>It's useful to check if the destination folder doesn't exist before create a server to avoid errors.</p>
+                                    </div>
+                                </section>
+                                <section id="connect-server">
+                                    <header>
+                                        <h3>Connect to a server</h3>
+                                    </header>
+                                    <div class="content">
+                                        <p>Once instantiated, you have to connect to a server before send queries.</p>
+                                        <pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect('path/to/server', 'username', 'password', 'database_name');</code></pre>
+                                        <p>
+                                            <ul class="default">
+                                                <li>The <code class="lang-php">'path/to/server'</code> is the path to the folder which represents a server (a folder which contains databases)</li>
+                                                <li>The <code class="lang-php">'username'</code> and the $password are the information used to connect to the database. These information are the same used when creating the server</li>
+                                                <li>The <code class="lang-php">'database_name'</code> is the name of the database to use with current connection. This parameter is optional and can be set manually later.</li>
+                                            </ul>
+                                        </p>
+                                    </div>
+                                </section>
+                                <section id="create-database">
+                                    <header>
+                                        <h3>Create a database</h3>
+                                    </header>
+                                    <div class="content">
+                                        <p>After connected to server, you can create a database:</p>
+                                        <pre class="lang-php line-numbers"><code>$db->createDatabase('database_name');</code></pre>
                                     </div>
                                 </section>
                             </div>
@@ -55,9 +88,9 @@ menu: manual
                                 <ul>
                                     <li data-scrollspy-for="#install" class="active"><a href="#install" data-scrollspy-for="#install" class="scrollTo">Installation</a></li>
                                     <li data-scrollspy-for="#instantiate"><a href="#instantiate" data-scrollspy-for="#instantiate" class="scrollTo">Load JSONDB</a></li>
-                                    <li>Header</li>
-                                    <li>Header</li>
-                                    <li>Header</li>
+                                    <li data-scrollspy-for="#create-server"><a href="#create-server" data-scrollspy-for="#create-server" class="scrollTo">Create a server</a></li>
+                                    <li data-scrollspy-for="#connect-server"><a href="#connect-server" data-scrollspy-for="#connect-server" class="scrollTo">Connect to a server</a></li>
+                                    <li data-scrollspy-for="#create-database"><a href="#create-database" data-scrollspy-for="#create-database" class="scrollTo">Create a database</a></li>
                                     <li>Header</li>
                                     <li>Header</li>
                                     <li>Header</li>

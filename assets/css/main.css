@@ -185,10 +185,14 @@ section#main aside.summary {
     transition: top 0.2s 0s ease, right 0.2s 0s ease;
 }
 
-section#main aside.summary.affix {
+section#main aside.summary.affix,
+section#main aside.summary.affix-bottom {
     position: fixed;
-    top: 5em;
     right: 4em;
+}
+
+section#main aside.summary.affix {
+    top: 5em;
 }
 
 section#main aside.summary ul li {
@@ -363,6 +367,16 @@ i, em {
 
 p {
     margin-bottom: 2em;
+}
+
+ul {
+    margin-left: 1.5em;
+}
+ul > li {
+    padding: 0.25em 0;
+}
+ul > li ul {
+    margin-left: 1.5em;
 }
 
 @media screen and (max-width: 480px) {

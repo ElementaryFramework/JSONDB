@@ -34,10 +34,13 @@
             }
         }).affix('checkPosition');
 
+        setTimeout(function() {
+            $('.scrollspy').affix('checkPosition');
+        }, 100);
+
         $window.on('scroll.docs.nav', function() {
             var scrollHeight = $window[0].scrollHeight;
             var scrollTop    = $window.scrollTop();
-            var maxScroll    = scrollHeight - $window.height();
 
             $(".scrollspy a").each(function() {
                 var $a = $(this);

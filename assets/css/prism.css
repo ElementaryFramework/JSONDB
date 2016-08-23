@@ -50,7 +50,6 @@ pre[class*="language-"] {
 /* Inline code */
 :not(pre) > code[class*="language-"] {
     padding: .125em .25em;
-    font-size: 0.8em;
     vertical-align: middle;
 }
 
