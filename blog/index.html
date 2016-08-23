@@ -1,11 +1,34 @@
 ---
 layout: default
-title: Hank Quinlan's Blog
+title: "JSONDB - PHP Edition | Blog"
+menu: "blog"
 ---
-<h1>{{ page.title }}</h1>
-<ul class="posts">
-
-    {% for post in site.posts %}
-    <li><span>{{ post.date | date_to_string }}</span> » <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
+<section id="main">
+    <div class="grid flush">
+        <div class="g12">
+			<section class="links">
+				<header>
+					<h2>Last posts</h2>
+				</header>
+				{% for post in site.posts %}
+				<div class="grid quarter">
+					<div class="g12">
+						<article class="box full">
+							<header>
+								<h3>{{ post.title }}</h3>
+								<span class="meta">{{ post.date | date_to_string }}</span>
+							</header>
+							<div class="content">
+                                {{ post.excerpt }}
+							</div>
+							<footer>
+								<a href="{{ site.github.url }}{{ post.url }}" class="open fa fa-external-link" title="Read the post"></a>
+							</footer>
+						</article>
+					</div>
+				</div>
+				{% endfor %}
+			</section>
+		</div>
+	</div>
+</section>

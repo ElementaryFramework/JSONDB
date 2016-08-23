@@ -34,10 +34,6 @@
             }
         }).affix('checkPosition');
 
-        setTimeout(function() {
-            $('.scrollspy').affix('checkPosition');
-        }, 100);
-
         $window.on('scroll.docs.nav', function() {
             var scrollHeight = $window[0].scrollHeight;
             var scrollTop    = $window.scrollTop();
@@ -45,9 +41,9 @@
             $(".scrollspy a").each(function() {
                 var $a = $(this);
                 var id = $a.attr('href');
-                var offset = $(id).offset().top;
+                var offset = $(id).offset().top - $("header#header").height();
                 var $li = $a.closest('li[data-scrollspy-for="'+$a.attr('data-scrollspy-for')+'"]');
-                if (scrollTop >= offset-1) {
+                if (scrollTop >= offset) {
                     $('.scrollspy a').removeClass('current');
                     $('.scrollspy li').removeClass('active');
                     $li.addClass('active');

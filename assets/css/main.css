@@ -182,7 +182,6 @@ section#main section.features article.box footer a {
 
 section#main aside.summary {
     text-align: right;
-    transition: top 0.2s 0s ease, right 0.2s 0s ease;
 }
 
 section#main aside.summary.affix,
@@ -207,10 +206,9 @@ section#main aside.summary ul li a {
     font-size: 0.75em;
     font-style: italic;
     color: #fff;
-    transition: font-size 0.2s 0s ease, color 0.2s 0s ease, opacity 0.2s 0s ease;
 }
 
-section#main aside.summary ul li.active a {
+section#main aside.summary ul li a.current {
     font-size: 1.25em;
     font-style: normal;
     opacity: 1;

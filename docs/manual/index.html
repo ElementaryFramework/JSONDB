@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "JSONDB API Documentation"
+title: "Getting Started with JSONDB"
 menu: manual
 ---
 <section id="main">
@@ -11,7 +11,7 @@ menu: manual
                     <h2>JSONDB Manual</h2>
                 </header>
                 <div class="grid flush">
-                    <div class="g8">
+                    <div class="g9">
                         <article class="box manual-content">
                             <div class="content">
                                 <section id="install">
@@ -33,13 +33,11 @@ menu: manual
                                     </header>
                                     <div class="content">
                                         <p>All JSONDB classes are accessible through the namespace <b>JSONDB</b>. So, you have to load JSONDB with:</p>
-                                            <pre class="lang-php line-numbers"><code>&lt;?php
-    try {
+                                            <pre class="lang-php line-numbers"><code>try {
         $jsondb = new \JSONDB\JSONDB();
     } catch (\JSONDB\Exception $e) {
         echo $e-&gt;getMessage();
-    }
-?&gt;</code></pre>
+    }</code></pre>
                                     </div>
                                 </section>
                                 <section id="create-server">
@@ -47,11 +45,16 @@ menu: manual
                                         <h3>Create a server</h3>
                                     </header>
                                     <div class="content">
-                                        <p>When JSONDB is instantiated, you can connect to a server. If you haven't created a server, you can create it using the <code class="lang-php">JSONDB::createServer()</code> method:</p>
-                                        <pre class="lang-php line-numbers"><code>if (!file_exists($server_path)) {
+                                        <p>When JSONDB is instantiated, you can connect to a server. If you haven't created a server, you can create it using the method <code class="lang-php">JSONDB::createServer()</code></p>
+                                        <pre class="lang-php line-numbers"><code>if (!file_exists('path/to/server')) {
     $jsondb-&gt;createServer('path/to/server', 'username', 'password');
 }</code></pre>
                                         <p>It's useful to check if the destination folder doesn't exist before create a server to avoid errors.</p>
+										<p><b><u>Example:</u></b></p>
+                                        <pre class="lang-php line-numbers"><code>$server_path = 'private/servers/test_server';
+if (!file_exists($server_path)) {
+    $jsondb-&gt;createServer($server_path, 'root', '');
+}</code></pre>
                                     </div>
                                 </section>
                                 <section id="connect-server">
@@ -68,6 +71,8 @@ menu: manual
                                                 <li>The <code class="lang-php">'database_name'</code> is the name of the database to use with current connection. This parameter is optional and can be set manually later.</li>
                                             </ul>
                                         </p>
+										<p><b><u>Example:</u></b></p>
+										<pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect($server_path, 'root', '');</code></pre>
                                     </div>
                                 </section>
                                 <section id="create-database">
@@ -76,13 +81,229 @@ menu: manual
                                     </header>
                                     <div class="content">
                                         <p>After connected to server, you can create a database:</p>
-                                        <pre class="lang-php line-numbers"><code>$db->createDatabase('database_name');</code></pre>
+                                        <pre class="lang-php line-numbers"><code>$db-&gt;createDatabase('database_name');</code></pre>
+										<p>Your new database will be a folder in your server in which each table will be a <i>.json</i> file.</p>
+										<p><b><u>Example:</u></b></p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;createDatabase('test_database');</code></pre>
                                     </div>
                                 </section>
-                            </div>
+								<section id="use-database">
+									<header>
+										<h3>Use a database</h3>
+									</header>
+									<div class="content">
+										<p>To use a database, you can specify his name when connecting to a server, or use the method <code class="lang-php">JSONDB::setDatabase()</code> after a connection:</p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;setDatabase('database_name')</code></pre>
+										<p><b><u>Exemple:</u></b></p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;setDatabase('test_database');</code></pre>
+									</div>
+								</section>
+								<section id="create-table">
+									<header>
+										<h3>Create a table</h3>
+									</header>
+									<div class="content">
+										<p>Once JSONDB is connected to a server and use a database, you can create a new table with the method <code class="lang-php">JSONDB::createTable()</code>:</p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;createTable('table_name', $prototype);</code></pre>
+										<p>The <code class="lang-php">$prototype</code> is an array of <code class="lang-php">'column_name'</code> => <code class="lang-php">$column_properties</code> pairs. Each <code class="lang-php">$column_properties</code> are also an array which contains a list of <code class="lang-php">'property_name'</code> => <code class="lang-php">'property_value'</code> pairs.</p>
+										<p>
+											There is a list of currently supported column propeties:
+											<ul class="default">
+												<li>
+													<code class="lang-php">'type'</code>: Defines the type of values that the column accepts. Supported types are:
+													<ul class="circle">
+														<li><code class="lang-php">'int'</code>, <code class="lang-php">'integer'</code>, <code class="lang-php">'number'</code></li>
+														<li><code class="lang-php">'decimal'</code>, <code class="lang-php">'float'</code></li>
+														<li><code class="lang-php">'string'</code></li>
+														<li><code class="lang-php">'char'</code></li>
+														<li><code class="lang-php">'bool'</code>, <code class="lang-php">'boolean'</code></li>
+														<li><code class="lang-php">'array'</code></li>
+													</ul>
+												</li>
+												<li><code class="lang-php">'default'</code>: Sets the default value of column. The default value must be match the <code class="lang-php">'type'</code> of the column.</li>
+												<li>
+													<code class="lang-php">'max_length'</code>: Used by some type:
+													<ul class="circle">
+														<li>When used with <code class="lang-php">'float'</code>, the number of decimals is reduced to his value</li>
+														<li>When used with <code class="lang-php">'string'</code>, the number of characters is reduced to his value (starting with the first character)</li>
+													</ul>
+												</li>
+												<li><code class="lang-php">'not_null'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column have to be set to null when there is no value in the row</li>
+												<li><code class="lang-php">'auto_increment'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column will be an auto incremented column. When used, the column is automatically set to UNIQUE KEY</li>
+												<li><code class="lang-php">'primary_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is a PRIMARY KEY</li>
+												<li><code class="lang-php">'unique_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is an UNIQUE KEY</li>
+											</ul>
+										</p>
+										<p><b><u>Example:</u></b></p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;createTable('users',
+				 array('id' => array('type' => 'int', 'auto_increment' => TRUE),
+                       'name' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+                       'surname' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+                       'pseudo' => array('type' => 'string', 'max_length' => 15, 'unique_key' => TRUE),
+                       'mail' => array('type' => 'string', 'unique_key' => TRUE),
+                       'password' => array('type' => 'string', 'not_null' => TRUE),
+                       'website' => array('type' => 'string'),
+                       'activated' => array('type' => 'bool', 'default' => FALSE),
+                       'banished' => array('type' => 'bool', 'default' => FALSE)));</code></pre>
+									</div>
+								</section>
+								<section id="send-query">
+									<header>
+										<h3>Send a query</h3>
+									</header>
+									<div class="content">
+										<p>JSONDB can send both direct and prepared queries.</p>
+										<p><h4>Direct queries</h4></p>
+										<pre class="lang-php line-numbers"><code>$results = $db-&gt;query($my_query_string);
+
+//// Specially for select() queries
+// You can change the fecth mode
+$results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_ARRAY);
+// or...
+$results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_OBJECT);
+// Explore results using a while loop
+while ($result = $results-&gt;fetch()) {
+    // Do stuff...
+}
+// Explore results using a foreach loop
+forach ($results as $result) {
+    // Do stuff...
+}</code></pre>
+									<p><h4>Prepared queries</h4></p>
+									<pre class="lang-php line-numbers"><code>$query = $db-&gt;prepare($my_prepared_query);
+$query-&gt;bindValue(':key1', $val1, \JSONDB\JSONDB::PARAM_INT);
+$query-&gt;bindValue(':key2', $val2, \JSONDB\JSONDB::PARAM_STRING);
+$query-&gt;bindValue(':key3', $val3, \JSONDB\JSONDB::PARAM_BOOL);
+$query-&gt;bindValue(':key4', $val4, \JSONDB\JSONDB::PARAM_NULL);
+$results = $query-&gt;execute();
+
+//// Specially for select() queries
+// You can change the fecth mode
+$results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_ARRAY);
+// or...
+$results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_OBJECT);
+// Explore results using a while loop
+while ($result = $results-&gt;fetch()) {
+    // Do stuff...
+}
+// Explore results using a foreach loop
+forach ($results as $result) {
+    // Do stuff...
+}</code></pre>
+									<p>JSONDB support a lot of common database queries, and use JQL, a custom query language...</p>
+									</div>
+								</section>
+								<section id="learn-jql">
+									<header>
+										<h3>JQL (JSONDB Query Language)</h3>
+									</header>
+									<div class="content">
+										<p><b>JQL</b> is the query language used by JSONDB to send queries. It's a very easy language based on <i>extensions</i>. A JQL query is in this form:</p>
+										<pre class="lang-php line-numbers"><code>$db-&gt;query('table_name.query(parameters, ...).extensions(parameters, ...)...');</code></pre>
+										<p><b><u>Query example with <i>select()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Select all from table `users` where `pseudo` = $id and `password` = $pass or where `mail` = $id and `password` = $pass
+$id = \JSONDB\JSONDB::quote($form_id);
+$pass = \JSONDB\JSONDB::quote($form_password);
+$db-&gt;query("users.select(*).where(pseudo={$id},password={$pass}).where(mail={$id},password={$pass})");
+
+// Select `pseudo` and `mail` from table `users` where `activated` = true, order the results by `pseudo` with `desc`endant method, limit the results to the 10 users after the 5th.
+$db-&gt;query("users.select(pseudo, mail).where(activated = true).order(pseudo, desc).limit(5, 10)");</code></pre>
+										<p><b><u>Query example with <i>insert()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Insert a new user in table `users`
+$pseudo = \JSONDB\JSONDB::quote($form_pseudo);
+$pass = \JSONDB\JSONDB::quote($form_password);
+$mail = \JSONDB\JSONDB::quote($form_mail);
+$db-&gt;query("users.insert({$pseudo},{$pass},{$mail}).in(pseudo,password,mail)");
+
+// Multiple insertion...
+$db-&gt;query("users.insert({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail)");</code></pre>
+										<p><b><u>Query example with <i>replace()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Replace information of the first user
+$db-&gt;query("users.replace({$pseudo},{$pass},{$mail}).in(pseudo,password,mail)");
+
+// Multiple replacement...
+$db-&gt;query("users.replace({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail)");</code></pre>
+										<p><b><u>Query example with <i>delete()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Delete all users
+$db-&gt;query("users.delete()");
+
+// Delete all banished users
+$db-&gt;query("users.delete().where(banished = true)");
+
+// Delete a specific user
+$db-&gt;query("users.delete().where(pseudo = {$pseudo}, mail = {$mail})");</code></pre>
+										<p><b><u>Query example with <i>update()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Activate all users
+$db-&gt;query("users.update(activated).with(true)");
+
+// Update my information ;-)
+$db-&gt;query("users.update(mail, password, activated, banished).with({$mail}, {$pseudo}, true, false).where(pseudo = 'na2axl')");</code></pre>
+										<p><b><u>Query example with <i>count()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Count all `banished` users
+$db-&gt;query("users.count(*).as(banished_nb).where(banished = true)");
+
+// Count all users and group by `activated`
+$db-&gt;query("users.count(*).as(users_nb).group(activated)");</code></pre>
+										<p><b><u>Query example with <i>truncate()</i>:</u></b></p>
+										<pre class="lang-php line-numbers"><code>// Reset the table `users`
+$db-&gt;query("users.truncate()");</code></pre>
+									</div>
+								</section>
+								<section id="full-example">
+									<header>
+										<h3>Full example</h3>
+									</header>
+									<div class="content">
+										<pre class="lang-php line-numbers"><code>try {
+    $jsondb = new \JSONDB\JSONDB();
+
+	$server_path = 'private/servers/test_server';
+	if (!file_exists($server_path)) {
+		$jsondb-&gt;createServer($server_path, 'root', '');
+    }
+
+    $db = $jsondb-&gt;connect($server_path, 'root', '')
+				 -&gt;createDatabase('test_database')
+				 -&gt;setDatabase('test_database'); // Yes, is chainable ! ;-)
+
+    $db-&gt;createTable('users',
+					 array('id' => array('type' => 'int', 'auto_increment' => TRUE),
+					       'name' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+						   'surname' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
+						   'pseudo' => array('type' => 'string', 'max_length' => 15, 'unique_key' => TRUE),
+						   'mail' => array('type' => 'string', 'unique_key' => TRUE),
+						   'password' => array('type' => 'string', 'not_null' => TRUE),
+						   'website' => array('type' => 'string'),
+						   'activated' => array('type' => 'bool', 'default' => FALSE),
+						   'banished' => array('type' => 'bool', 'default' => FALSE)));
+
+    // A prepared query
+    $query = $db->prepare('users.insert(:name, :sname, :pseudo, :mail, :pass).in(name, surname, pseudo, mail, password)');
+    $query-&gt;bindValue(':name', 'Nana', \JSONDB\JSONDB::PARAM_STRING);
+    $query-&gt;bindValue(':sname', 'Axel', \JSONDB\JSONDB::PARAM_STRING);
+    $query-&gt;bindValue(':pseudo', 'na2axl', \JSONDB\JSONDB::PARAM_STRING);
+    $query-&gt;bindValue(':mail', 'ax.lnana@outlook.com', \JSONDB\JSONDB::PARAM_STRING);
+    $query-&gt;bindValue(':pass', $password, \JSONDB\JSONDB::PARAM_STRING);
+    $query-&gt;execute();
+
+    // After some insertions...
+
+    // Select all users
+    $results = $db-&gt;query('users.select(id, name, surname, pseudo)');
+    // Fetch as object
+    while ($result = $results-&gt;fetch(\JSONDB\JSONDB::FETCH_OBJECT)) {
+        echo "The user with id: {$result-&gt;id} has the name: {$result-&gt;name} {$result-&gt;surname} and the pseudo: {$result-&gt;pseudo}.\n";
+    }
+}
+catch (\JSONDB\Exception $e) {
+    echo $e-&gt;getMessage();
+}</code></pre>
+									</div>
+								</section>
+							</div>
                         </article>
                     </div>
-                    <div class="g4">
+                    <div class="g3">
                         <aside class="summary scrollspy">
                             <nav>
                                 <ul>
@@ -91,12 +312,11 @@ menu: manual
                                     <li data-scrollspy-for="#create-server"><a href="#create-server" data-scrollspy-for="#create-server" class="scrollTo">Create a server</a></li>
                                     <li data-scrollspy-for="#connect-server"><a href="#connect-server" data-scrollspy-for="#connect-server" class="scrollTo">Connect to a server</a></li>
                                     <li data-scrollspy-for="#create-database"><a href="#create-database" data-scrollspy-for="#create-database" class="scrollTo">Create a database</a></li>
-                                    <li>Header</li>
-                                    <li>Header</li>
-                                    <li>Header</li>
-                                    <li>Header</li>
-                                    <li>Header</li>
-                                    <li>Header</li>
+                                    <li data-scrollspy-for="#use-database"><a href="#use-database" data-scrollspy-for="#use-database" class="scrollTo">Use a database</a></li>
+                                    <li data-scrollspy-for="#create-table"><a href="#create-table" data-scrollspy-for="#create-table" class="scrollTo">Create a table</a></li>
+                                    <li data-scrollspy-for="#send-query"><a href="#send-query" data-scrollspy-for="#send-query" class="scrollTo">Send a query</a></li>
+                                    <li data-scrollspy-for="#learn-jql"><a href="#learn-jql" data-scrollspy-for="#learn-jql" class="scrollTo">JQL</a></li>
+                                    <li data-scrollspy-for="#full-example"><a href="#full-example" data-scrollspy-for="#full-example" class="scrollTo">Full example</a></li>
                                 </ul>
                             </nav>
                         </aside>
