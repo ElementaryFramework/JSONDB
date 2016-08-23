@@ -370,6 +370,7 @@
         {
             $this->benchmark->mark('jsondb_(connect)_start');
             $config = $this->config->getConfig('users');
+            $server = realpath($server);
 
             if (!array_key_exists($server, $config)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
@@ -380,8 +381,6 @@
                 $this->benchmark->mark('jsondb_(connect)_end');
                 throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
-
-            $this->config->addUser($server, $username, $password);
 
             $this->server = $server;
             $this->database = $database;
