@@ -1,3 +1,3 @@
-name: "JSONDB: Manage databases with JSON files and JSONDB query language (JQL)"
+name: "JSONDB: Manage JSON files as databases with JSONDB Query Language (JQL)"
 markdown: kramdown
 permalink: /blog/posts/:title

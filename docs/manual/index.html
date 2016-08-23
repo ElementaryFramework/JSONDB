@@ -64,13 +64,11 @@ if (!file_exists($server_path)) {
                                     <div class="content">
                                         <p>Once instantiated, you have to connect to a server before send queries.</p>
                                         <pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect('path/to/server', 'username', 'password', 'database_name');</code></pre>
-                                        <p>
-                                            <ul class="default">
-                                                <li>The <code class="lang-php">'path/to/server'</code> is the path to the folder which represents a server (a folder which contains databases)</li>
-                                                <li>The <code class="lang-php">'username'</code> and the $password are the information used to connect to the database. These information are the same used when creating the server</li>
-                                                <li>The <code class="lang-php">'database_name'</code> is the name of the database to use with current connection. This parameter is optional and can be set manually later.</li>
-                                            </ul>
-                                        </p>
+                                        <ul class="default">
+                                            <li>The <code class="lang-php">'path/to/server'</code> is the path to the folder which represents a server (a folder which contains databases)</li>
+                                            <li>The <code class="lang-php">'username'</code> and the $password are the information used to connect to the database. These information are the same used when creating the server</li>
+                                            <li>The <code class="lang-php">'database_name'</code> is the name of the database to use with current connection. This parameter is optional and can be set manually later.</li>
+                                        </ul>
 										<p><b><u>Example:</u></b></p>
 										<pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect($server_path, 'root', '');</code></pre>
                                     </div>
@@ -94,7 +92,7 @@ if (!file_exists($server_path)) {
 									<div class="content">
 										<p>To use a database, you can specify his name when connecting to a server, or use the method <code class="lang-php">JSONDB::setDatabase()</code> after a connection:</p>
 										<pre class="lang-php line-numbers"><code>$db-&gt;setDatabase('database_name')</code></pre>
-										<p><b><u>Exemple:</u></b></p>
+										<p><b><u>Example:</u></b></p>
 										<pre class="lang-php line-numbers"><code>$db-&gt;setDatabase('test_database');</code></pre>
 									</div>
 								</section>
@@ -107,33 +105,33 @@ if (!file_exists($server_path)) {
 										<pre class="lang-php line-numbers"><code>$db-&gt;createTable('table_name', $prototype);</code></pre>
 										<p>The <code class="lang-php">$prototype</code> is an array of <code class="lang-php">'column_name'</code> => <code class="lang-php">$column_properties</code> pairs. Each <code class="lang-php">$column_properties</code> are also an array which contains a list of <code class="lang-php">'property_name'</code> => <code class="lang-php">'property_value'</code> pairs.</p>
 										<p>
-											There is a list of currently supported column propeties:
-											<ul class="default">
-												<li>
-													<code class="lang-php">'type'</code>: Defines the type of values that the column accepts. Supported types are:
-													<ul class="circle">
-														<li><code class="lang-php">'int'</code>, <code class="lang-php">'integer'</code>, <code class="lang-php">'number'</code></li>
-														<li><code class="lang-php">'decimal'</code>, <code class="lang-php">'float'</code></li>
-														<li><code class="lang-php">'string'</code></li>
-														<li><code class="lang-php">'char'</code></li>
-														<li><code class="lang-php">'bool'</code>, <code class="lang-php">'boolean'</code></li>
-														<li><code class="lang-php">'array'</code></li>
-													</ul>
-												</li>
-												<li><code class="lang-php">'default'</code>: Sets the default value of column. The default value must be match the <code class="lang-php">'type'</code> of the column.</li>
-												<li>
-													<code class="lang-php">'max_length'</code>: Used by some type:
-													<ul class="circle">
-														<li>When used with <code class="lang-php">'float'</code>, the number of decimals is reduced to his value</li>
-														<li>When used with <code class="lang-php">'string'</code>, the number of characters is reduced to his value (starting with the first character)</li>
-													</ul>
-												</li>
-												<li><code class="lang-php">'not_null'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column have to be set to null when there is no value in the row</li>
-												<li><code class="lang-php">'auto_increment'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column will be an auto incremented column. When used, the column is automatically set to UNIQUE KEY</li>
-												<li><code class="lang-php">'primary_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is a PRIMARY KEY</li>
-												<li><code class="lang-php">'unique_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is an UNIQUE KEY</li>
-											</ul>
+											There is a list of currently supported column properties:
 										</p>
+                                        <ul class="default">
+                                            <li>
+                                                <code class="lang-php">'type'</code>: Defines the type of values that the column accepts. Supported types are:
+                                                <ul class="circle">
+                                                    <li><code class="lang-php">'int'</code>, <code class="lang-php">'integer'</code>, <code class="lang-php">'number'</code></li>
+                                                    <li><code class="lang-php">'decimal'</code>, <code class="lang-php">'float'</code></li>
+                                                    <li><code class="lang-php">'string'</code></li>
+                                                    <li><code class="lang-php">'char'</code></li>
+                                                    <li><code class="lang-php">'bool'</code>, <code class="lang-php">'boolean'</code></li>
+                                                    <li><code class="lang-php">'array'</code></li>
+                                                </ul>
+                                            </li>
+                                            <li><code class="lang-php">'default'</code>: Sets the default value of column. The default value must be match the <code class="lang-php">'type'</code> of the column.</li>
+                                            <li>
+                                                <code class="lang-php">'max_length'</code>: Used by some type:
+                                                <ul class="circle">
+                                                    <li>When used with <code class="lang-php">'float'</code>, the number of decimals is reduced to his value</li>
+                                                    <li>When used with <code class="lang-php">'string'</code>, the number of characters is reduced to his value (starting with the first character)</li>
+                                                </ul>
+                                            </li>
+                                            <li><code class="lang-php">'not_null'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column have to be set to null when there is no value in the row</li>
+                                            <li><code class="lang-php">'auto_increment'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column will be an auto incremented column. When used, the column is automatically set to UNIQUE KEY</li>
+                                            <li><code class="lang-php">'primary_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is a PRIMARY KEY</li>
+                                            <li><code class="lang-php">'unique_key'</code>: Can take values <code class="lang-php">TRUE</code> or <code class="lang-php">FALSE</code>. Defines if a column is an UNIQUE KEY</li>
+                                        </ul>
 										<p><b><u>Example:</u></b></p>
 										<pre class="lang-php line-numbers"><code>$db-&gt;createTable('users',
 				 array('id' => array('type' => 'int', 'auto_increment' => TRUE),
@@ -153,11 +151,11 @@ if (!file_exists($server_path)) {
 									</header>
 									<div class="content">
 										<p>JSONDB can send both direct and prepared queries.</p>
-										<p><h4>Direct queries</h4></p>
+										<h4>Direct queries</h4>
 										<pre class="lang-php line-numbers"><code>$results = $db-&gt;query($my_query_string);
 
 //// Specially for select() queries
-// You can change the fecth mode
+// You can change the fetch mode
 $results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_ARRAY);
 // or...
 $results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_OBJECT);
@@ -166,10 +164,10 @@ while ($result = $results-&gt;fetch()) {
     // Do stuff...
 }
 // Explore results using a foreach loop
-forach ($results as $result) {
+foreach ($results as $result) {
     // Do stuff...
 }</code></pre>
-									<p><h4>Prepared queries</h4></p>
+									<h4>Prepared queries</h4>
 									<pre class="lang-php line-numbers"><code>$query = $db-&gt;prepare($my_prepared_query);
 $query-&gt;bindValue(':key1', $val1, \JSONDB\JSONDB::PARAM_INT);
 $query-&gt;bindValue(':key2', $val2, \JSONDB\JSONDB::PARAM_STRING);
@@ -178,7 +176,7 @@ $query-&gt;bindValue(':key4', $val4, \JSONDB\JSONDB::PARAM_NULL);
 $results = $query-&gt;execute();
 
 //// Specially for select() queries
-// You can change the fecth mode
+// You can change the fetch mode
 $results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_ARRAY);
 // or...
 $results-&gt;setFetchMode(\JSONDB\JSONDB::FETCH_OBJECT);
@@ -187,7 +185,7 @@ while ($result = $results-&gt;fetch()) {
     // Do stuff...
 }
 // Explore results using a foreach loop
-forach ($results as $result) {
+foreach ($results as $result) {
     // Do stuff...
 }</code></pre>
 									<p>JSONDB support a lot of common database queries, and use JQL, a custom query language...</p>

@@ -20,7 +20,7 @@ header#header {
     height: 4em;
     background-color: rgba(95, 130, 185, 1);
     color: #fff;
-    z-index: 99999;
+    z-index: 99997;
 }
 
 header#header section.nav {
@@ -369,12 +369,15 @@ p {
 
 ul {
     margin-left: 1.5em;
+    margin-bottom: 2em;
 }
 ul > li {
     padding: 0.25em 0;
 }
 ul > li ul {
     margin-left: 1.5em;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 @media screen and (max-width: 480px) {
