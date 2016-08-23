@@ -454,8 +454,19 @@
                 }
                 if ($has_tp) {
                     if (preg_match('#link\((.+)\)#', $prop['type'], $link)) {
-                        print_r($link);
-                        exit;
+                        $link_info = explode('.', $link[1]);
+                        $link_table_path = $this->_getTablePath($link_info[0]);
+                        if (!file_exists($link_table_path)) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the table \"{$link_info[0]}\" doesn't exist in the database \"{$this->database}\".");
+                        }
+
+                        $link_table_data = $this->getTableData($link_table_path);
+                        if (!in_array($link_info[1], $link_table_data['prototype'], TRUE)) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the column \"{$link_info[1]}\" doesn't exist in the table \"{$link_info[0]}\".");
+                        }
+                        if ((array_key_exists('primary_keys', $link_table_data['properties']) && !in_array($link_info[1], $link_table_data['properties']['primary_keys'], TRUE)) || (array_key_exists('unique_keys', $link_table_data['properties']) && !in_array($link_info[1], $link_table_data['properties']['unique_keys'], TRUE))) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the column \"{$link_info[1]}\" is not a PRIMARY KEY or an UNIQUE KEY of the table \"{$link_info[0]}\".");
+                        }
                     }
                 } else {
                     $prototype[$field]['type'] = 'string';
@@ -558,13 +569,13 @@
         }
 
         /**
-         * Returns a data with his row id
+         * Returns a table's data
          * @param string|null $path The path to the table
          * @return array
          */
         public function getTableData($path = NULL)
         {
-            return json_decode(file_get_contents($path), TRUE);
+            return json_decode(file_get_contents(NULL !== $path ? $path : $this->_getTablePath()), TRUE);
         }
 
         /**
@@ -650,43 +661,55 @@
         {
             if (NULL !== $value || (array_key_exists('not_null', $properties) && TRUE === $properties['not_null'])) {
                 if (array_key_exists('type', $properties)) {
-                    switch ($properties['type']) {
-                        case 'int':
-                        case 'integer':
-                        case 'number':
-                            $value = (int)$value;
-                            break;
-
-                        case 'decimal':
-                        case 'float':
-                            $value = (float)$value;
-                            if (array_key_exists('max_length', $properties)) {
-                                $value = number_format($value, $properties['max_length']);
+                    if (preg_match('#link\((.+)\)#', $properties['type'], $link)) {
+                        $link_info = explode('.', $link[1]);
+                        $link_table_path = $this->_getTablePath($link_info[0]);
+                        $link_table_data = $this->getTableData($link_table_path);
+                        $value = $this->_parseValue($value, $link_table_data['properties'][$link_info[1]]);
+                        foreach ((array)$link_table_data['data'] as $data) {
+                            if ($data[$link_info[1]] === $value) {
+                                return $data['#rowid'];
                             }
-                            break;
+                        }
+                    } else {
+                        switch ($properties['type']) {
+                            case 'int':
+                            case 'integer':
+                            case 'number':
+                                $value = (int)$value;
+                                break;
 
-                        case 'string':
-                            $value = (string)$value;
-                            if (array_key_exists('max_length', $properties) && strlen($value) > 0) {
-                                $value = substr($value, 0, $properties['max_length']);
-                            }
-                            break;
+                            case 'decimal':
+                            case 'float':
+                                $value = (float)$value;
+                                if (array_key_exists('max_length', $properties)) {
+                                    $value = number_format($value, $properties['max_length']);
+                                }
+                                break;
 
-                        case 'char':
-                            $value = (string)$value[0];
-                            break;
+                            case 'string':
+                                $value = (string)$value;
+                                if (array_key_exists('max_length', $properties) && strlen($value) > 0) {
+                                    $value = substr($value, 0, $properties['max_length']);
+                                }
+                                break;
 
-                        case 'bool':
-                        case 'boolean':
-                            $value = (bool)$value;
-                            break;
+                            case 'char':
+                                $value = (string)$value[0];
+                                break;
 
-                        case 'array':
-                            $value = (array)$value;
-                            break;
+                            case 'bool':
+                            case 'boolean':
+                                $value = (bool)$value;
+                                break;
 
-                        default:
-                            throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
+                            case 'array':
+                                $value = (array)$value;
+                                break;
+
+                            default:
+                                throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
+                        }
                     }
                 }
             } elseif (array_key_exists('default', $properties)) {
