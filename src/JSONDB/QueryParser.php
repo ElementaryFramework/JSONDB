@@ -205,7 +205,7 @@
 
             $this->parsedQuery['benchmark'] = array(
                 'elapsed_time' => $benchmark->elapsed_time('jsondb_query_parse_start', 'jsondb_query_parse_end'),
-                'memory_usage' => $benchmark->memory_usage()
+                'memory_usage' => $benchmark->memory_usage('jsondb_query_parse_start', 'jsondb_query_parse_end')
             );
 
             return $this->parsedQuery;
@@ -411,8 +411,11 @@
             if (count($parsedClause) === 0) {
                 throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"on()\" extension.");
             }
+            if (count($parsedClause) > 1) {
+                throw new Exception("JSONDB Query Parse Error: Too much parameters given to the \"on()\" extension, only one required.");
+            }
 
-            return $parsedClause;
+            return $parsedClause[0];
         }
 
         private function _parseLinkExtension($clause)
