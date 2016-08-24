@@ -21,6 +21,3 @@ excerpt: "The first version of JSONDB is released! Features and known bugs, lear
 
 ### Known bugs
 * Servers are not registered when they are created
-
-### In the next version...
-* Add an .htaccess file in each folders
