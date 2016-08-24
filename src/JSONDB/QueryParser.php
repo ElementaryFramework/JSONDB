@@ -185,6 +185,20 @@
                     case 'group':
                         $extensions['group'] = $this->_parseGroupExtension($string);
                         break;
+
+                    case 'on':
+                        if (!array_key_exists('on', $extensions)) {
+                            $extensions['on'] = array();
+                        }
+                        $extensions['on'][] = $this->_parseOnExtension($string);
+                        break;
+
+                    case 'link':
+                        if (!array_key_exists('link', $extensions)) {
+                            $extensions['link'] = array();
+                        }
+                        $extensions['link'][] = $this->_parseLinkExtension($string);
+                        break;
                 }
             }
             $this->parsedQuery['extensions'] = $extensions;
@@ -379,10 +393,36 @@
             }, explode(',', $clause));
             $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
             if (count($parsedClause) === 0) {
-                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"as()\" extension.");
+                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"group()\" extension.");
             }
             if (count($parsedClause) > 1) {
                 throw new Exception("JSONDB Query Parse Error: Too much parameters given to the \"group()\" extension, only one required.");
+            }
+
+            return $parsedClause;
+        }
+
+        private function _parseOnExtension($clause)
+        {
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
+            $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
+            if (count($parsedClause) === 0) {
+                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"on()\" extension.");
+            }
+
+            return $parsedClause;
+        }
+
+        private function _parseLinkExtension($clause)
+        {
+            $parsedClause = array_map(function($field) {
+                return trim($field, self::TRIM_CHAR);
+            }, explode(',', $clause));
+            $parsedClause = NULL !== $parsedClause[0] ? $parsedClause : array();
+            if (count($parsedClause) === 0) {
+                throw new Exception("JSONDB Query Parse Error: At least one parameter expected for the \"link()\" extension.");
             }
 
             return $parsedClause;
