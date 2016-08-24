@@ -2,7 +2,25 @@
 layout: post
 title: "First version released"
 date: 2016-08-20
-excerpt: "The first version of JSONDB is released! Learn more about this version here..."
+excerpt: "The first version of JSONDB is released! Features and known bugs, learn more about this version here..."
 ---
 
-Well. Finally got around to putting this old website together. Neat thing about it - powered by [Jekyll](http://jekyllrb.com) and I can use Markdown to author my posts. It actually is a lot easier than I thought it was going to be.
+### Features
+* Database management with servers, databases and tables
+* Secure connections to servers with username and password
+* Easy custom query language (JQL)
+* Object oriented, with a PDO-like syntax
+* Supported JQL queries:
+    * select()
+    * insert()
+    * replace()
+    * delete()
+    * update()
+    * truncate()
+    * count()
+
+### Known bugs
+* Servers are not registered when they are created
+
+### In the next version...
+* Add an .htaccess file in each folders
