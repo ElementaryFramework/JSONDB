@@ -59,7 +59,8 @@
          * @return void
          */
         public function mark( $name ) {
-            self::$marker[$name] = microtime( ) ;
+            self::$marker[$name]['e'] = microtime( ) ;
+            self::$marker[$name]['m'] = memory_get_usage( ) ;
         }
 
         /**
@@ -73,24 +74,41 @@
             if ( $point1 === '' ) {
                 return '{elapsed_time}' ;
             }
-            if ( !array_key_exists( $point1, self::$marker )) {
+            if ( !array_key_exists( $point1, self::$marker ) ) {
                 return '' ;
             }
-            if ( !array_key_exists( $point2, self::$marker )) {
-                self::$marker[$point2] = microtime( ) ;
+            if ( !array_key_exists( $point2, self::$marker ) ) {
+                self::$marker[$point2]['e'] = microtime( ) ;
+                self::$marker[$point2]['m'] = memory_get_usage( ) ;
             }
-            list( $sm, $ss ) = explode( ' ', self::$marker[$point1] ) ;
-            list( $em, $es ) = explode( ' ', self::$marker[$point2] ) ;
+            list( $sm, $ss ) = explode( ' ', self::$marker[$point1]['e'] ) ;
+            list( $em, $es ) = explode( ' ', self::$marker[$point2]['e'] ) ;
 
             return number_format( ( $em + $es ) - ( $sm + $ss ), $decimals ) ;
         }
 
         /**
          * Calculate the memory usage of a benchmark point
-         * @return int
+         * @param  string  $point1    The name of the first benchmark point
+         * @param  string  $point2    The name of the second benchmark point
+         * @param  int     $decimals
+         * @return mixed
          */
-        public function memory_usage( ) {
-            return memory_get_usage();
+        public function memory_usage( $point1 = '', $point2 = '', $decimals = 4 ) {
+            if ( $point1 === '' ) {
+                return '{memory_usage}' ;
+            }
+            if ( !array_key_exists( $point1, self::$marker ) ) {
+                return '' ;
+            }
+            if ( !array_key_exists( $point2, self::$marker ) ) {
+                self::$marker[$point2]['e'] = microtime( ) ;
+                self::$marker[$point2]['m'] = memory_get_usage( ) ;
+            }
+            $sm = self::$marker[$point1]['m'] ;
+            $em = self::$marker[$point2]['m'] ;
+
+            return number_format( $em - $sm , $decimals ) ;
         }
 
     }
