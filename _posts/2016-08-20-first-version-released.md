@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "First version released"
-date: 2016-08-20
+date: 2016-08-21
 excerpt: "The first version of JSONDB is released! Features and known bugs, learn more about this version here..."
 ---
 
@@ -18,6 +18,7 @@ excerpt: "The first version of JSONDB is released! Features and known bugs, lear
     * update()
     * truncate()
     * count()
+
 
 ### Known bugs
 * Servers are not registered when they are created
