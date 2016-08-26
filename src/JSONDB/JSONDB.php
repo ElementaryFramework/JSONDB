@@ -298,14 +298,18 @@
                 chmod($path, 0777);
 
                 $htaccess = fopen($path . '/.htaccess', 'a+');
-                foreach(array('AuthType Basic', 'AuthName "JSONDB Server Access"', 'AuthUserFile "' . realpath(dirname(dirname(__DIR__)) . '/config/.htpasswd') . '"', 'Require user ' . $username) as $line) {
+                foreach(array('<IfModule mod_rewrite.c>',
+                              'RewriteEngine On',
+                              'RewriteRule ^index\.php$ - [L]',
+                              'RewriteRule . - [f]',
+                              '</IfModule>') as $line) {
                     fwrite($htaccess, $line . "\n");
                 }
                 fclose($htaccess);
 
-                $htpasswd = fopen(realpath(dirname(dirname(__DIR__)) . '/config/.htpasswd'), 'a+');
-                fwrite($htpasswd, $username . ':' . crypt($password) . "\n");
-                fclose($htpasswd);
+                $indexphp = fopen($path . '/index.php', 'a+');
+                fwrite($indexphp, 'Direct Access Denied.');
+                fclose($indexphp);
 
                 $this->config->addUser($name, $username, $password);
 
