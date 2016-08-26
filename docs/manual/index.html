@@ -46,15 +46,10 @@ menu: manual
                                     </header>
                                     <div class="content">
                                         <p>When JSONDB is instantiated, you can connect to a server. If you haven't created a server, you can create it using the method <code class="lang-php">JSONDB::createServer()</code></p>
-                                        <pre class="lang-php line-numbers"><code>if (!file_exists('path/to/server')) {
-    $jsondb-&gt;createServer('path/to/server', 'username', 'password');
-}</code></pre>
-                                        <p>It's useful to check if the destination folder doesn't exist before create a server to avoid errors.</p>
+                                        <pre class="lang-php line-numbers"><code>$jsondb-&gt;createServer('server_name', 'username', 'password', $connect);</code></pre>
+                                        <p>The parameter <code class="lang-php">$connect</code> is an <b>optional</b> boolean used to set if JSONDB have to be connected to the server after the creation.</p>
 										<p><b><u>Example:</u></b></p>
-                                        <pre class="lang-php line-numbers"><code>$server_path = 'private/servers/test_server';
-if (!file_exists($server_path)) {
-    $jsondb-&gt;createServer($server_path, 'root', '');
-}</code></pre>
+                                        <pre class="lang-php line-numbers"><code>$jsondb-&gt;createServer('test_server', 'root', '');</code></pre>
                                     </div>
                                 </section>
                                 <section id="connect-server">
@@ -63,14 +58,14 @@ if (!file_exists($server_path)) {
                                     </header>
                                     <div class="content">
                                         <p>Once instantiated, you have to connect to a server before send queries.</p>
-                                        <pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect('path/to/server', 'username', 'password', 'database_name');</code></pre>
+                                        <pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect('server_name', 'username', 'password', 'database_name');</code></pre>
                                         <ul class="default">
-                                            <li>The <code class="lang-php">'path/to/server'</code> is the path to the folder which represents a server (a folder which contains databases)</li>
-                                            <li>The <code class="lang-php">'username'</code> and the $password are the information used to connect to the database. These information are the same used when creating the server</li>
+                                            <li>The <code class="lang-php">'server_name'</code> is the name to the server. The server have to be created before with <code class="lang-php">JSONDB::createServer()</code></li>
+                                            <li>The <code class="lang-php">'username'</code> and the <code class="lang-php">'password'</code> are the information used to connect to the database. These information are the same used when creating the server</li>
                                             <li>The <code class="lang-php">'database_name'</code> is the name of the database to use with current connection. This parameter is optional and can be set manually later.</li>
                                         </ul>
 										<p><b><u>Example:</u></b></p>
-										<pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect($server_path, 'root', '');</code></pre>
+										<pre class="lang-php line-numbers"><code>$db = $jsondb-&gt;connect('test_server', 'root', '');</code></pre>
                                     </div>
                                 </section>
                                 <section id="create-database">
@@ -255,13 +250,9 @@ $db-&gt;query("users.truncate()");</code></pre>
 										<pre class="lang-php line-numbers"><code>try {
     $jsondb = new \JSONDB\JSONDB();
 
-	$server_path = 'private/servers/test_server';
-	if (!file_exists($server_path)) {
-		$jsondb-&gt;createServer($server_path, 'root', '');
-    }
+    $jsondb-&gt;createServer('test_server', 'root', '', TRUE);
 
-    $db = $jsondb-&gt;connect($server_path, 'root', '')
-				 -&gt;createDatabase('test_database')
+    $db = $jsondb-&gt;createDatabase('test_database')
 				 -&gt;setDatabase('test_database'); // Yes, is chainable ! ;-)
 
     $db-&gt;createTable('users',

@@ -232,6 +232,22 @@ section#main aside.summary ul li:last-child {
     margin-bottom: 0;
 }
 
+section#main section.blog.post header {
+    padding-bottom: 1em;
+}
+
+section#main section.blog.post header h2 {
+    margin-bottom: 0;
+}
+
+section#main section.blog.post header span.meta {
+    font-size: 0.75em;
+}
+
+section#main section.blog.post article.box div.content {
+    padding: 1em 1em 1em 3em;
+}
+
 footer#footer {
     background-color: rgba(95, 130, 185, 1);
     color: #fff;
@@ -351,7 +367,7 @@ b, strong {
 }
 .box b,
 .box strong {
-	color: #333 !important;	
+	color: #333 !important;
 }
 
 i, em {
@@ -360,7 +376,7 @@ i, em {
 }
 .box i,
 .box em {
-	color: #333 !important;	
+	color: #333 !important;
 }
 
 p {

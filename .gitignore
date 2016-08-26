@@ -48,4 +48,6 @@ _book
 
 ## Jekyll
 _site/
-static/
+
+## Composer
+vendor/
