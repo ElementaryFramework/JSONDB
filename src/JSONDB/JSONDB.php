@@ -273,16 +273,17 @@
 
         /**
          * Creates a new server.
-         * @param string $path The server's path
+         * @param string $name The server's path
          * @param string $username The server's username
          * @param string $password The server's user password
          * @param bool $connect If JSONDB connects directly to the server after creation
          * @return JSONDB
          * @throws Exception
          */
-        public function createServer($path, $username, $password, $connect = FALSE)
+        public function createServer($name, $username, $password, $connect = FALSE)
         {
             $this->benchmark->mark('jsondb_(createServer)_start');
+            $path = dirname(dirname(__DIR__)) . '/servers/' . $name;
             if (isset($path, $username, $password)) {
                 if (file_exists($path) || is_dir($path)) {
                     $this->benchmark->mark('jsondb_(createServer)_end');
@@ -297,19 +298,19 @@
                 chmod($path, 0777);
 
                 $htaccess = fopen($path . '/.htaccess', 'a+');
-                foreach(array('AuthType Basic', 'AuthName "JSONDB Server Access"', 'AuthUserFile "' . realpath(dirname(__DIR__) . '/config/.htpasswd') . '"', 'Require user ' . $username) as $line) {
+                foreach(array('AuthType Basic', 'AuthName "JSONDB Server Access"', 'AuthUserFile "' . realpath(dirname(dirname(__DIR__)) . '/config/.htpasswd') . '"', 'Require user ' . $username) as $line) {
                     fwrite($htaccess, $line . "\n");
                 }
                 fclose($htaccess);
 
-                $htpasswd = fopen(realpath(dirname(__DIR__) . '/config/.htpasswd'), 'a+');
+                $htpasswd = fopen(realpath(dirname(dirname(__DIR__)) . '/config/.htpasswd'), 'a+');
                 fwrite($htpasswd, $username . ':' . crypt($password) . "\n");
                 fclose($htpasswd);
 
-                $this->config->addUser(realpath($path), $username, $password);
+                $this->config->addUser($name, $username, $password);
 
                 if ($connect) {
-                    $this->connect($path, $username, $password);
+                    $this->connect($name, $username, $password);
                 }
             }
             $this->benchmark->mark('jsondb_(createServer)_end');
@@ -370,11 +371,10 @@
         {
             $this->benchmark->mark('jsondb_(connect)_start');
             $config = $this->config->getConfig('users');
-            $server = realpath($server);
 
             if (!array_key_exists($server, $config)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
-                throw new Exception("JSONDB Error: There is no registered server with the path \"{$server}\".");
+                throw new Exception("JSONDB Error: There is no registered server with the name \"{$server}\".");
             }
 
             if ($config[$server]['username'] !== Util::crypt($username) || $config[$server]['password'] !== Util::crypt($password)) {
@@ -382,7 +382,7 @@
                 throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
 
-            $this->server = $server;
+            $this->server = realpath(dirname(dirname(__DIR__)) . '/servers/' . $server);
             $this->database = $database;
             $this->username = $username;
             $this->password = $password;
