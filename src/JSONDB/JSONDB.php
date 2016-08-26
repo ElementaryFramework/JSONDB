@@ -974,7 +974,7 @@
                 $rows = $this->parsedQuery['extensions']['in'];
                 foreach ((array)$rows as $row) {
                     if (!in_array($row, $data['prototype'], FALSE)) {
-                        throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
+                        throw new Exception("JSONDB Error: Can't replace data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
                     }
                 }
             }
@@ -982,7 +982,7 @@
             $values_nb = count($this->parsedQuery['parameters']);
             $rows_nb = count($rows);
             if ($values_nb !== $rows_nb) {
-                throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
+                throw new Exception("JSONDB Error: Can't replace data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
             }
             $current_data = $data['data'];
             $insert = array();
@@ -1008,34 +1008,45 @@
                 }
             }
 
-            $insert = array_replace_recursive($current_data, $insert);
+            $i = 0;
+            foreach ($current_data as &$array_data) {
+                $array_data = array_key_exists($i, $insert) ? array_replace($array_data, $insert[$i]) : $array_data;
+                $i++;
+            }
+            unset($array_data);
+            $insert = $current_data;
 
             $pk_error = FALSE;
             $non_pk = array_flip(array_diff($data['prototype'], $data['properties']['primary_keys']));
-            foreach ((array)$insert as $index => $array_data) {
+            $i = 0;
+            foreach ($insert as $array_data) {
                 $array_data = array_diff_key($array_data, $non_pk);
-                foreach (array_slice($insert, $index + 1) as $item) {
-                    $item = array_diff_key($item, $non_pk);
-                    $pk_error = $pk_error || ($item === $array_data);
+                foreach (array_slice($insert, $i + 1) as $value) {
+                    $value = array_diff_key($value, $non_pk);
+                    $pk_error = $pk_error || ($value === $array_data);
                     if ($pk_error) {
-                        $values = implode(', ', $item);
+                    exit;
+                        $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
                         throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
                     }
                 }
+                $i++;
             }
 
             $uk_error = FALSE;
+            $i = 0;
             foreach ((array)$data['properties']['unique_keys'] as $uk) {
-                foreach ($insert as $index => $array_data) {
+                foreach ($insert as $array_data) {
                     $array_data = array_intersect_key($array_data, array($uk => $uk));
-                    foreach (array_slice($insert, $index + 1) as $item) {
-                        $item = array_intersect_key($item, array($uk => $uk));
-                        $uk_error = $uk_error || (!empty($item[$uk]) && ($item === $array_data));
+                    foreach (array_slice($insert, $i + 1) as $value) {
+                        $value = array_intersect_key($value, array($uk => $uk));
+                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array_data));
                         if ($uk_error) {
-                            throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
+                            throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
                     }
+                    $i++;
                 }
             }
 
@@ -1046,8 +1057,8 @@
             }
             unset($line);
 
-            usort($insert, function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($insert, function ($after, $now) use ($insert) {
+                return $insert[$now]['#rowid'] < $insert[$after]['#rowid'];
             });
 
             $data['data'] = $insert;
@@ -1076,31 +1087,25 @@
                 $to_delete = $out;
             }
 
-            $insert = array();
             foreach ($to_delete as $array) {
                 if (in_array($array, $current_data, TRUE)) {
-                    $current_data[array_search($array, $current_data, TRUE)] = NULL;
-                }
-            }
-            foreach ($current_data as $array) {
-                if (NULL !== $array) {
-                    $insert[] = $array;
+                    unset($current_data[array_search($array, $current_data, TRUE)]);
                 }
             }
 
-            foreach ($insert as $key => &$line) {
+            foreach ($current_data as $key => &$line) {
                 uksort($line, function ($after, $now) use ($data) {
                     return array_search($now, $data['prototype'], TRUE) < array_search($after, $data['prototype'], TRUE);
                 });
             }
             unset($line);
 
-            usort($insert, function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($current_data, function ($after, $now) use ($current_data) {
+                return $current_data[$now]['#rowid'] < $current_data[$after]['#rowid'];
             });
 
-            $data['data'] = $insert;
-            $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($to_delete) - 1;
+            $data['data'] = $current_data;
+            (count($to_delete) > 0) ? $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($to_delete) - 1 : NULL;
 
             $this->cache->update($this->_getTablePath(), $data);
 
@@ -1180,8 +1185,8 @@
             }
             unset($line);
 
-            usort($data['data'], function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($data['data'], function ($after, $now) use ($data) {
+                return $data['data'][$now]['#rowid'] < $data['data'][$after]['#rowid'];
             });
 
             $this->cache->update($this->_getTablePath(), $data);
