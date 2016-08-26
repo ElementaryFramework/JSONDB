@@ -77,12 +77,12 @@ menu: "home"
                     <div class="content">
                         <pre class="lang-php line-numbers"><code>&lt;?php
     $jsondb = \JSONDB\JSONDB();
-    $database = $jsondb-&gt;connect('path/to/server', 'username', 'password', 'db_name');
+    $database = $jsondb-&gt;connect('server_name', 'username', 'password', 'db_name');
     $results = $database-&gt;query("table_name.select(*).where(foo = 'hello', bar = 'world')");
     while ($result = $results-&gt;fetch()) {
         echo $result['foo'] . ' ' . $result['bar'];
     }
-    $jsondb->disconnect();
+    $database->disconnect();
 ?&gt;</code></pre>
                     </div>
                 </article>
