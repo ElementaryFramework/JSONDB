@@ -302,9 +302,6 @@
                 }
                 fclose($htaccess);
 
-                $htpasswd = fopen(realpath(dirname(__DIR__) . '/config/.htpasswd'), 'a+');
-                fwrite($htpasswd, $username . ':' . crypt($password, NULL) . "\n");
-                fclose($htpasswd);
 
                 $this->config->addUser(realpath($path), $username, $password);
 
@@ -382,7 +379,6 @@
                 throw new Exception("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
 
-            $this->server = $server;
             $this->database = $database;
             $this->username = $username;
             $this->password = $password;
@@ -1009,7 +1005,7 @@
             }
 
             $i = 0;
-            foreach ($current_data as &$array_data) {
+            foreach ((array)$current_data as &$array_data) {
                 $array_data = array_key_exists($i, $insert) ? array_replace($array_data, $insert[$i]) : $array_data;
                 $i++;
             }
@@ -1019,13 +1015,12 @@
             $pk_error = FALSE;
             $non_pk = array_flip(array_diff($data['prototype'], $data['properties']['primary_keys']));
             $i = 0;
-            foreach ($insert as $array_data) {
-                $array_data = array_diff_key($array_data, $non_pk);
+            foreach ((array)$insert as $array) {
+                $array = array_diff_key($array, $non_pk);
                 foreach (array_slice($insert, $i + 1) as $value) {
                     $value = array_diff_key($value, $non_pk);
-                    $pk_error = $pk_error || ($value === $array_data);
+                    $pk_error = $pk_error || ($value === $array);
                     if ($pk_error) {
-                    exit;
                         $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
                         throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
@@ -1037,11 +1032,11 @@
             $uk_error = FALSE;
             $i = 0;
             foreach ((array)$data['properties']['unique_keys'] as $uk) {
-                foreach ($insert as $array_data) {
-                    $array_data = array_intersect_key($array_data, array($uk => $uk));
+                foreach ((array)$insert as $array) {
+                    $array = array_intersect_key($array, array($uk => $uk));
                     foreach (array_slice($insert, $i + 1) as $value) {
                         $value = array_intersect_key($value, array($uk => $uk));
-                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array_data));
+                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array));
                         if ($uk_error) {
                             throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
