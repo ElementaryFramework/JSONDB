@@ -59,6 +59,6 @@
          */
         public static function crypt($string)
         {
-            return crypt(sha1($string), self::$cryptSalt);
+            return sha1($string . self::$cryptSalt);
         }
     }

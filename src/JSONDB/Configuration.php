@@ -65,7 +65,7 @@
         public function getConfig($filename)
         {
             if ($this->_exists($filename)) {
-                return json_decode(file_get_contents(realpath( dirname(__DIR__) . "/config/{$filename}.json")), TRUE);
+                return json_decode(file_get_contents(realpath(dirname(dirname(__DIR__)) . "/config/{$filename}.json")), TRUE);
             } else {
                 $this->_writeConfig($filename, array());
                 return array();
@@ -80,7 +80,7 @@
          */
         private function _writeConfig($filename, array $config)
         {
-            return (bool)file_put_contents(realpath( dirname(__DIR__) . "/config/{$filename}.json"), json_encode($config));
+            return (bool)file_put_contents(realpath(dirname(dirname(__DIR__)) . "/config/{$filename}.json"), json_encode($config));
         }
 
         /**
@@ -90,6 +90,6 @@
          */
         private function _exists($filename)
         {
-            return file_exists(realpath( dirname(__DIR__) . "/config/{$filename}.json"));
+            return file_exists(realpath(dirname(dirname(__DIR__)) . "/config/{$filename}.json"));
         }
     }
