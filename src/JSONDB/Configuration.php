@@ -3,7 +3,7 @@
     /**
      * JSONDB - JSON Database Manager
      *
-     * Manage local databases with JSON files and JSON Query Language (JQL)
+     * Manage JSON files as databases with JSON Query Language (JQL)
      *
      * This content is released under the MIT License (MIT)
      *

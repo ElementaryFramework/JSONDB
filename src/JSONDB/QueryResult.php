@@ -3,7 +3,7 @@
     /**
      * JSONDB - JSON Database Manager
      *
-     * Manage local databases with JSON files and JSON Query Language (JQL)
+     * Manage JSON files as databases with JSON Query Language (JQL)
      *
      * This content is released under the MIT License (MIT)
      *
@@ -41,7 +41,7 @@
      *
      * @package		JSONDB
      * @subpackage  Utilities
-     * @category    Query
+     * @category    Results
      * @author		Nana Axel
      */
     class QueryResult implements \Iterator, \SeekableIterator, \Countable, \Serializable, \ArrayAccess
