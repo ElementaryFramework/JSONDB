@@ -493,7 +493,7 @@
             $this->queryIsExecuted = FALSE;
             $this->queryIsPrepared = FALSE;
 
-            return $this->execute();
+            return $this->_execute();
         }
 
         /**
@@ -524,7 +524,7 @@
          * @return mixed
          * @throws Exception
          */
-        private function execute()
+        private function _execute()
         {
             if (!$this->queryIsExecuted()) {
                 if (NULL === $this->database || NULL === $this->parsedQuery) {
