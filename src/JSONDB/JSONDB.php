@@ -297,20 +297,6 @@
 
                 chmod($path, 0777);
 
-                $htaccess = fopen($path . '/.htaccess', 'a+');
-                foreach(array('<IfModule mod_rewrite.c>',
-                              'RewriteEngine On',
-                              'RewriteRule ^index\.php$ - [L]',
-                              'RewriteRule . - [f]',
-                              '</IfModule>') as $line) {
-                    fwrite($htaccess, $line . "\n");
-                }
-                fclose($htaccess);
-
-                $indexphp = fopen($path . '/index.php', 'a+');
-                fwrite($indexphp, 'Direct Access Denied.');
-                fclose($indexphp);
-
                 $this->config->addUser($name, $username, $password);
 
                 if ($connect) {
@@ -425,6 +411,10 @@
         public function createTable($name, array $prototype)
         {
             $this->benchmark->mark('jsondb_(createTable)_start');
+            if (NULL === $this->database) {
+                $this->benchmark->mark('jsondb_(createTable)_end');
+                throw new Exception('JSONDB Error: Trying to create a table without using a database.');
+            }
             $table_path = $this->_getTablePath($name);
             if (file_exists($table_path)) {
                 $this->benchmark->mark('jsondb_(createTable)_end');
