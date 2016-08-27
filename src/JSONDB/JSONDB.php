@@ -375,7 +375,6 @@
         {
             $this->benchmark->mark('jsondb_(connect)_start');
             $config = $this->config->getConfig('users');
-            $server = realpath($server);
 
             if (!array_key_exists($server, $config)) {
                 $this->benchmark->mark('jsondb_(connect)_end');
@@ -1135,7 +1134,7 @@
             }
 
             if (!array_key_exists('with', $this->parsedQuery['extensions'])) {
-                throw new Exception("JSONDB Error: Can't execute the \"update()\" query without values.");
+                throw new Exception("JSONDB Error: Can't execute the \"update()\" query without values. The \"with()\" extension is required.");
             }
 
             $fields_nb = count($this->parsedQuery['parameters']);
@@ -1192,6 +1191,26 @@
             uksort($data['data'], function ($after, $now) use ($data) {
                 return $data['data'][$now]['#rowid'] < $data['data'][$after]['#rowid'];
             });
+
+            $auto_increment = NULL;
+            foreach ((array)$data['properties'] as $column => $prop) {
+                if (is_array($prop) && array_key_exists('auto_increment', $prop) && $prop['auto_increment'] === TRUE) {
+                    $auto_increment = $column;
+                    break;
+                }
+            }
+
+            if (NULL !== $auto_increment) {
+                $last_insert_id = 0;
+                foreach ((array)$data['data'] as $d) {
+                    if ($last_insert_id === 0) {
+                        $last_insert_id = $d[$auto_increment];
+                    } else {
+                        $last_insert_id = max($last_insert_id, $d[$auto_increment]);
+                    }
+                }
+                $data['properties']['last_insert_id'] = $last_insert_id;
+            }
 
             $this->cache->update($this->_getTablePath(), $data);
 
