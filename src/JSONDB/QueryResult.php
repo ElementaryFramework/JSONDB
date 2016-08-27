@@ -3,7 +3,7 @@
     /**
      * JSONDB - JSON Database Manager
      *
-     * Manage local databases with JSON files and JSON Query Language (JQL)
+     * Manage JSON files as databases with JSON Query Language (JQL)
      *
      * This content is released under the MIT License (MIT)
      *
@@ -41,7 +41,7 @@
      *
      * @package		JSONDB
      * @subpackage  Utilities
-     * @category    Query
+     * @category    Results
      * @author		Nana Axel
      */
     class QueryResult implements \Iterator, \SeekableIterator, \Countable, \Serializable, \ArrayAccess
@@ -96,20 +96,37 @@
          */
         public function valid()
         {
-            if ($this->key === '#queryString') {
+            if ($this->key === '#queryString' || $this->key === '#elapsedtime' || $this->key === '#memoryusage') {
                 return FALSE;
             } else {
                 return array_key_exists($this->key, $this->results);
             }
         }
 
+        public function queryString()
+        {
+            return $this->database->queryString();
+        }
+
         /**
          * Returns the current result
-         * @return array
+         * @return array|QueryResultObject
+         * @throws Exception
          */
         public function current()
         {
-            return $this->results[$this->key];
+            $return = $this->results[$this->key];
+
+            switch ($this->fetchMode) {
+                case JSONDB::FETCH_ARRAY:
+                    return (array)$return;
+
+                case JSONDB::FETCH_OBJECT:
+                    return new QueryResultObject($return);
+
+                default:
+                    throw new Exception('JSONDB Query Result Error: Fetch mode not supported.');
+            }
         }
 
         /**
@@ -236,7 +253,7 @@
         {
             if ($this->offsetExists($offset)) {
                 unset($this->results[$offset]);
-                $this->_setResults(array_values(array_slice($this->results, 2)));
+                $this->_setResults(array_values(array_slice($this->results, 3)));
                 $this->_parseResults();
             }
         }
@@ -257,14 +274,7 @@
                 if ($this->valid()) {
                     $return = $this->current();
                     ++$this->key;
-
-                    switch ($this->fetchMode) {
-                        case JSONDB::FETCH_ARRAY:
-                            return (array)$return;
-
-                        case JSONDB::FETCH_OBJECT:
-                            return new QueryResultObject($return);
-                    }
+                    return $return;
                 }
                 return NULL;
             } else {
@@ -275,10 +285,12 @@
         /**
          * Changes the fetch mode
          * @param int $mode
+         * @return QueryResult
          */
         public function setFetchMode($mode = JSONDB::FETCH_ARRAY)
         {
             $this->fetchMode = $mode;
+            return $this;
         }
 
         /**
@@ -287,8 +299,9 @@
         private function _parseResults()
         {
             $this->results = array_merge(
-                array('#queryString' => $this->database->queryString(),
-                      '#elapsedtime' => $this->database->benchmark()->elapsed_time('jsondb_(query)_start', 'jsondb_(query)_end'))
+                array('#queryString' => $this->queryString(),
+                      '#elapsedtime' => $this->database->benchmark()->elapsed_time('jsondb_(query)_start', 'jsondb_(query)_end'),
+                      '#memoryusage' => $this->database->benchmark()->memory_usage('jsondb_(query)_start', 'jsondb_(query)_end'))
                 , $this->results);
         }
     }
@@ -334,6 +347,9 @@
         public function __get($name)
         {
             if (array_key_exists($name, $this->result)) {
+                if (is_array($this->result[$name])) {
+                    return new QueryResultObject($this->result[$name]);
+                }
                 return $this->result[$name];
             } else {
                 throw new Exception("JSONDB Query Result Error: Can't access the key \"{$name}\" in result, maybe the key doesn't exist.");

@@ -3,7 +3,7 @@
     /**
      * JSONDB - JSON Database Manager
      *
-     * Manage local databases with JSON files and JSON Query Language (JQL)
+     * Manage JSON files as databases with JSON Query Language (JQL)
      *
      * This content is released under the MIT License (MIT)
      *
@@ -422,12 +422,13 @@
             }
 
             $fields = array();
-            $properties = array('last_insert_id' => 0, 'last_valid_row_id' => 0, 'primary_keys' => array(), 'unique_keys' => array());
+            $properties = array('last_insert_id' => 0, 'last_valid_row_id' => 0, 'last_link_id' => 0, 'primary_keys' => array(), 'unique_keys' => array());
             $ai_exist = FALSE;
             foreach ($prototype as $field => $prop) {
                 $has_ai = array_key_exists('auto_increment', $prop);
                 $has_pk = array_key_exists('primary_key', $prop);
                 $has_uk = array_key_exists('unique_key', $prop);
+                $has_tp = array_key_exists('type', $prop);
                 if ($ai_exist && $has_ai) {
                     $this->benchmark->mark('jsondb_(createTable)_end');
                     throw new Exception("JSONDB Error: Can't use the \"auto_increment\" property on more than one fields.");
@@ -444,6 +445,25 @@
                 if ($has_uk) {
                     $prototype[$field]['not_null'] = TRUE;
                     $properties['unique_keys'][] = $field;
+                }
+                if ($has_tp) {
+                    if (preg_match('#link\((.+)\)#', $prop['type'], $link)) {
+                        $link_info = explode('.', $link[1]);
+                        $link_table_path = $this->_getTablePath($link_info[0]);
+                        if (!file_exists($link_table_path)) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the table \"{$link_info[0]}\" doesn't exist in the database \"{$this->database}\".");
+                        }
+
+                        $link_table_data = $this->getTableData($link_table_path);
+                        if (!in_array($link_info[1], $link_table_data['prototype'], TRUE)) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the column \"{$link_info[1]}\" doesn't exist in the table \"{$link_info[0]}\".");
+                        }
+                        if ((array_key_exists('primary_keys', $link_table_data['properties']) && !in_array($link_info[1], $link_table_data['properties']['primary_keys'], TRUE)) || (array_key_exists('unique_keys', $link_table_data['properties']) && !in_array($link_info[1], $link_table_data['properties']['unique_keys'], TRUE))) {
+                            throw new Exception("JSONDB Error: Can't create the table \"{$name}\". An error occur when linking the column \"{$field}\" with the column \"{$link[1]}\", the column \"{$link_info[1]}\" is not a PRIMARY KEY or an UNIQUE KEY of the table \"{$link_info[0]}\".");
+                        }
+                    }
+                } else {
+                    $prototype[$field]['type'] = 'string';
                 }
                 $fields[] = $field;
             }
@@ -543,13 +563,13 @@
         }
 
         /**
-         * Returns a data with his row id
+         * Returns a table's data
          * @param string|null $path The path to the table
          * @return array
          */
         public function getTableData($path = NULL)
         {
-            return json_decode(file_get_contents($path), TRUE);
+            return json_decode(file_get_contents(NULL !== $path ? $path : $this->_getTablePath()), TRUE);
         }
 
         /**
@@ -635,43 +655,56 @@
         {
             if (NULL !== $value || (array_key_exists('not_null', $properties) && TRUE === $properties['not_null'])) {
                 if (array_key_exists('type', $properties)) {
-                    switch ($properties['type']) {
-                        case 'int':
-                        case 'integer':
-                        case 'number':
-                            $value = (int)$value;
-                            break;
-
-                        case 'decimal':
-                        case 'float':
-                            $value = (float)$value;
-                            if (array_key_exists('max_length', $properties)) {
-                                $value = number_format($value, $properties['max_length']);
+                    if (preg_match('#link\((.+)\)#', $properties['type'], $link)) {
+                        $link_info = explode('.', $link[1]);
+                        $link_table_path = $this->_getTablePath($link_info[0]);
+                        $link_table_data = $this->getTableData($link_table_path);
+                        $value = $this->_parseValue($value, $link_table_data['properties'][$link_info[1]]);
+                        foreach ((array)$link_table_data['data'] as $linkID => $data) {
+                            if ($data[$link_info[1]] === $value) {
+                                return $linkID;
                             }
-                            break;
+                        }
+                        throw new Exception("JSONDB Error: There is no value \"{$value}\" in any rows of the table \"{$link_info[0]}\" at the column \"{$link_info[1]}\".");
+                    } else {
+                        switch ($properties['type']) {
+                            case 'int':
+                            case 'integer':
+                            case 'number':
+                                $value = (int)$value;
+                                break;
 
-                        case 'string':
-                            $value = (string)$value;
-                            if (array_key_exists('max_length', $properties) && strlen($value) > 0) {
-                                $value = substr($value, 0, $properties['max_length']);
-                            }
-                            break;
+                            case 'decimal':
+                            case 'float':
+                                $value = (float)$value;
+                                if (array_key_exists('max_length', $properties)) {
+                                    $value = number_format($value, $properties['max_length']);
+                                }
+                                break;
 
-                        case 'char':
-                            $value = (string)$value[0];
-                            break;
+                            case 'string':
+                                $value = (string)$value;
+                                if (array_key_exists('max_length', $properties) && strlen($value) > 0) {
+                                    $value = substr($value, 0, $properties['max_length']);
+                                }
+                                break;
 
-                        case 'bool':
-                        case 'boolean':
-                            $value = (bool)$value;
-                            break;
+                            case 'char':
+                                $value = (string)$value[0];
+                                break;
 
-                        case 'array':
-                            $value = (array)$value;
-                            break;
+                            case 'bool':
+                            case 'boolean':
+                                $value = (bool)$value;
+                                break;
 
-                        default:
-                            throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
+                            case 'array':
+                                $value = (array)$value;
+                                break;
+
+                            default:
+                                throw new Exception("JSONDB Error: Trying to parse a value with an unsupported type \"{$properties['type']}\"");
+                        }
                     }
                 }
             } elseif (array_key_exists('default', $properties)) {
@@ -689,6 +722,8 @@
         protected function _select($data)
         {
             $result = $data['data'];
+            $field_links = array();
+            $column_links = array();
 
             foreach ((array)$this->parsedQuery['extensions'] as $name => $parameters) {
                 switch ($name) {
@@ -716,6 +751,50 @@
                     case 'limit':
                         $result = array_slice($result, $parameters[0], $parameters[1]);
                         break;
+
+                    case 'on':
+                        if (count($parameters) > 0) {
+                            foreach ((array)$parameters as $field) {
+                                $field_links[] = $field;
+                            }
+                        }
+                        break;
+
+                    case 'link':
+                        if (count($parameters) > 0) {
+                            foreach ((array)$parameters as $field) {
+                                $column_links[] = $field;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            if (count($field_links) === count($column_links)) {
+                $links = array_combine($field_links, $column_links);
+            } else {
+                throw new Exception('JSONDB Error: Invalid numbers of links. Given "' . count($field_links) .'" columns to link but receive "' . count($column_links) . '" links');
+            }
+
+            if (count($links) > 0) {
+                foreach ((array)$result as $index => $result_p) {
+                    foreach ($links as $field => $columns) {
+                        if (preg_match('#link\((.+)\)#', $data['properties'][$field]['type'], $link)) {
+                            $link_info = explode('.', $link[1]);
+                            $link_table_path = $this->_getTablePath($link_info[0]);
+                            $link_table_data = $this->getTableData($link_table_path);
+                            foreach ((array)$link_table_data['data'] as $linkID => $value) {
+                                if ($linkID === $result_p[$field]) {
+                                    if (in_array('*', $columns, TRUE)) {
+                                        $columns = array_diff($link_table_data['prototype'], array('#rowid'));
+                                    }
+                                    $result[$index][$field] = array_intersect_key($value, array_flip($columns));
+                                }
+                            }
+                        } else {
+                            throw new Exception("JSONDB Error: Can't link tables with the column \"{$field}\". The column is not of type link.");
+                        }
+                    }
                 }
             }
 
@@ -723,7 +802,7 @@
             if (in_array('last_insert_id', $this->parsedQuery['parameters'], TRUE)) {
                 $temp['last_insert_id'] = $data['properties']['last_insert_id'];
             } elseif (!in_array('*', $this->parsedQuery['parameters'], TRUE)) {
-                foreach ((array)$result as $line) {
+                foreach ((array)$result as $linkID => $line) {
                     $temp[] = array_intersect_key($line, array_flip($this->parsedQuery['parameters']));
                 }
                 if (array_key_exists('as', $this->parsedQuery['extensions'])) {
@@ -743,13 +822,12 @@
                     unset($t);
                 }
             } else {
-                foreach ((array)$result as $line) {
+                foreach ((array)$result as $linkID => $line) {
                     $temp[] = array_diff_key($line, array('#rowid' => '#rowid'));
                 }
             }
-            $result = $temp;
 
-            $this->queryResults = $result;
+            $this->queryResults = $temp;
 
             return new QueryResult($this->queryResults, $this);
         }
@@ -779,9 +857,10 @@
             }
             $current_data = $data['data'];
             $ai_id = (int)$data['properties']['last_insert_id'];
-            $insert = array(array('#rowid' => (int)$data['properties']['last_valid_row_id'] + 1));
+            $lk_id = (int)$data['properties']['last_link_id'] + 1;
+            $insert = array('#'.$lk_id => array('#rowid' => (int)$data['properties']['last_valid_row_id'] + 1));
             foreach ((array)$this->parsedQuery['parameters'] as $key => $value) {
-                $insert[0][$rows[$key]] = $this->_parseValue($value, $data['properties'][$rows[$key]]);
+                $insert['#'.$lk_id][$rows[$key]] = $this->_parseValue($value, $data['properties'][$rows[$key]]);
             }
 
             if (array_key_exists('and', $this->parsedQuery['extensions'])) {
@@ -794,7 +873,7 @@
                     foreach ((array)$values as $key => $value) {
                         $to_add[$rows[$key]] = $this->_parseValue($value, $data['properties'][$rows[$key]]);
                     }
-                    $insert[] = $to_add;
+                    $insert['#'.++$lk_id] = $to_add;
                 }
             }
 
@@ -824,9 +903,10 @@
 
             $pk_error = FALSE;
             $non_pk = array_flip(array_diff($data['prototype'], $data['properties']['primary_keys']));
-            foreach ($insert as $index => $array_data) {
+            $i = 0;
+            foreach ($insert as $array_data) {
                 $array_data = array_diff_key($array_data, $non_pk);
-                foreach (array_slice($insert, $index + 1) as $value) {
+                foreach (array_slice($insert, $i + 1) as $value) {
                     $value = array_diff_key($value, $non_pk);
                     $pk_error = $pk_error || ($value === $array_data);
                     if ($pk_error) {
@@ -835,36 +915,40 @@
                         throw new Exception("JSONDB Error: Can't insert value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
                     }
                 }
+                $i++;
             }
 
             $uk_error = FALSE;
+            $i = 0;
             foreach ((array)$data['properties']['unique_keys'] as $uk) {
-                foreach ($insert as $index => $array_data) {
+                foreach ($insert as $array_data) {
                     $array_data = array_intersect_key($array_data, array($uk => $uk));
-                    foreach (array_slice($insert, $index + 1) as $value) {
+                    foreach (array_slice($insert, $i + 1) as $value) {
                         $value = array_intersect_key($value, array($uk => $uk));
                         $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array_data));
                         if ($uk_error) {
                             throw new Exception("JSONDB Error: Can't insert value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
                     }
+                    $i++;
                 }
             }
 
-            foreach ($insert as $key => &$line) {
+            foreach ($insert as &$line) {
                 uksort($line, function ($after, $now) use ($data) {
                     return array_search($now, $data['prototype'], TRUE) < array_search($after, $data['prototype'], TRUE);
                 });
             }
             unset($line);
 
-            usort($insert, function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($insert, function ($after, $now) use ($insert) {
+                return $insert[$now]['#rowid'] < $insert[$after]['#rowid'];
             });
 
             $data['data'] = $insert;
             $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($insert, FALSE);
             $data['properties']['last_insert_id'] = $ai_id;
+            $data['properties']['last_link_id'] = $lk_id;
 
             $this->cache->update($this->_getTablePath(), $data);
 
@@ -884,7 +968,7 @@
                 $rows = $this->parsedQuery['extensions']['in'];
                 foreach ((array)$rows as $row) {
                     if (!in_array($row, $data['prototype'], FALSE)) {
-                        throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
+                        throw new Exception("JSONDB Error: Can't replace data in the table \"{$this->table}\". The column \"{$row}\" doesn't exist.");
                     }
                 }
             }
@@ -892,7 +976,7 @@
             $values_nb = count($this->parsedQuery['parameters']);
             $rows_nb = count($rows);
             if ($values_nb !== $rows_nb) {
-                throw new Exception("JSONDB Error: Can't insert data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
+                throw new Exception("JSONDB Error: Can't replace data in the table \"{$this->table}\". Invalid number of parameters (given \"{$values_nb}\" values to insert in \"{$rows_nb}\" columns).");
             }
             $current_data = $data['data'];
             $insert = array();
@@ -918,34 +1002,44 @@
                 }
             }
 
-            $insert = array_replace_recursive($current_data, $insert);
+            $i = 0;
+            foreach ((array)$current_data as &$array_data) {
+                $array_data = array_key_exists($i, $insert) ? array_replace($array_data, $insert[$i]) : $array_data;
+                $i++;
+            }
+            unset($array_data);
+            $insert = $current_data;
 
             $pk_error = FALSE;
             $non_pk = array_flip(array_diff($data['prototype'], $data['properties']['primary_keys']));
-            foreach ((array)$insert as $index => $array_data) {
-                $array_data = array_diff_key($array_data, $non_pk);
-                foreach (array_slice($insert, $index + 1) as $item) {
-                    $item = array_diff_key($item, $non_pk);
-                    $pk_error = $pk_error || ($item === $array_data);
+            $i = 0;
+            foreach ((array)$insert as $array) {
+                $array = array_diff_key($array, $non_pk);
+                foreach (array_slice($insert, $i + 1) as $value) {
+                    $value = array_diff_key($value, $non_pk);
+                    $pk_error = $pk_error || ($value === $array);
                     if ($pk_error) {
-                        $values = implode(', ', $item);
+                        $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
                         throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$values}\" for primary keys \"{$keys}\".");
                     }
                 }
+                $i++;
             }
 
             $uk_error = FALSE;
+            $i = 0;
             foreach ((array)$data['properties']['unique_keys'] as $uk) {
-                foreach ($insert as $index => $array_data) {
-                    $array_data = array_intersect_key($array_data, array($uk => $uk));
-                    foreach (array_slice($insert, $index + 1) as $item) {
-                        $item = array_intersect_key($item, array($uk => $uk));
-                        $uk_error = $uk_error || (!empty($item[$uk]) && ($item === $array_data));
+                foreach ((array)$insert as $array) {
+                    $array = array_intersect_key($array, array($uk => $uk));
+                    foreach (array_slice($insert, $i + 1) as $value) {
+                        $value = array_intersect_key($value, array($uk => $uk));
+                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array));
                         if ($uk_error) {
-                            throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$item[$uk]}\" for unique key \"{$uk}\".");
+                            throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
                     }
+                    $i++;
                 }
             }
 
@@ -956,8 +1050,8 @@
             }
             unset($line);
 
-            usort($insert, function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($insert, function ($after, $now) use ($insert) {
+                return $insert[$now]['#rowid'] < $insert[$after]['#rowid'];
             });
 
             $data['data'] = $insert;
@@ -986,31 +1080,25 @@
                 $to_delete = $out;
             }
 
-            $insert = array();
             foreach ($to_delete as $array) {
                 if (in_array($array, $current_data, TRUE)) {
-                    $current_data[array_search($array, $current_data, TRUE)] = NULL;
-                }
-            }
-            foreach ($current_data as $array) {
-                if (NULL !== $array) {
-                    $insert[] = $array;
+                    unset($current_data[array_search($array, $current_data, TRUE)]);
                 }
             }
 
-            foreach ($insert as $key => &$line) {
+            foreach ($current_data as $key => &$line) {
                 uksort($line, function ($after, $now) use ($data) {
                     return array_search($now, $data['prototype'], TRUE) < array_search($after, $data['prototype'], TRUE);
                 });
             }
             unset($line);
 
-            usort($insert, function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($current_data, function ($after, $now) use ($current_data) {
+                return $current_data[$now]['#rowid'] < $current_data[$after]['#rowid'];
             });
 
-            $data['data'] = $insert;
-            $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($to_delete) - 1;
+            $data['data'] = $current_data;
+            (count($to_delete) > 0) ? $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($to_delete) - 1 : NULL;
 
             $this->cache->update($this->_getTablePath(), $data);
 
@@ -1036,7 +1124,7 @@
             }
 
             if (!array_key_exists('with', $this->parsedQuery['extensions'])) {
-                throw new Exception("JSONDB Error: Can't execute the \"update()\" query without values.");
+                throw new Exception("JSONDB Error: Can't execute the \"update()\" query without values. The \"with()\" extension is required.");
             }
 
             $fields_nb = count($this->parsedQuery['parameters']);
@@ -1090,9 +1178,29 @@
             }
             unset($line);
 
-            usort($data['data'], function ($after, $now) {
-                return $now['#rowid'] < $after['#rowid'];
+            uksort($data['data'], function ($after, $now) use ($data) {
+                return $data['data'][$now]['#rowid'] < $data['data'][$after]['#rowid'];
             });
+
+            $auto_increment = NULL;
+            foreach ((array)$data['properties'] as $column => $prop) {
+                if (is_array($prop) && array_key_exists('auto_increment', $prop) && $prop['auto_increment'] === TRUE) {
+                    $auto_increment = $column;
+                    break;
+                }
+            }
+
+            if (NULL !== $auto_increment) {
+                $last_insert_id = 0;
+                foreach ((array)$data['data'] as $d) {
+                    if ($last_insert_id === 0) {
+                        $last_insert_id = $d[$auto_increment];
+                    } else {
+                        $last_insert_id = max($last_insert_id, $d[$auto_increment]);
+                    }
+                }
+                $data['properties']['last_insert_id'] = $last_insert_id;
+            }
 
             $this->cache->update($this->_getTablePath(), $data);
 
