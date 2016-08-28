@@ -65,6 +65,12 @@
         private $fetchMode;
 
         /**
+         * Class name used for FETCH_CLASS method
+         * @var string
+         */
+        private $className;
+
+        /**
          * JSONDB instance
          * @var JSONDB
          */
@@ -110,7 +116,7 @@
 
         /**
          * Returns the current result
-         * @return array|QueryResultObject
+         * @return array|QueryResultObject|object
          * @throws Exception
          */
         public function current()
@@ -123,6 +129,20 @@
 
                 case JSONDB::FETCH_OBJECT:
                     return new QueryResultObject($return);
+
+                case JSONDB::FETCH_CLASS:
+                    if (!class_exists($this->className)) {
+                        throw new Exception("JSONDB Query Result Error: Can't fetch for data. Trying to use JSONDB::FETCH_CLASS mode with class \"{$this->className}\" but the class doesn't exist or not found.");
+                    }
+                    $mapper = new $this->className();
+                    $availableVars = get_class_vars($this->className);
+                    foreach ((array)$return as $item => $value) {
+                        if (!array_key_exists($item, $availableVars)) {
+                            throw new Exception("JSONDB Query Result Error: Can't fetch for data. Using JSONDB::FETCH_CLASS mode with class \"{$this->className}\" but the property \"{$item}\" doesn't exist or not public.");
+                        }
+                        $mapper->$item = $value;
+                    }
+                    return $mapper;
 
                 default:
                     throw new Exception('JSONDB Query Result Error: Fetch mode not supported.');
@@ -260,14 +280,15 @@
 
         /**
          * Fetch for results
-         * @param int $mode The fetch mode
+         * @param int    $mode      The fetch mode
+         * @param string $className The class name (for JSONDB::FETCH_CLASS)
          * @return array|QueryResultObject|bool
          * @throws Exception
          */
-        public function fetch($mode = NULL)
+        public function fetch($mode = NULL, $className = NULL)
         {
             if (NULL !== $mode) {
-                $this->setFetchMode($mode);
+                $this->setFetchMode($mode, $className);
             }
 
             if ($this->database->queryIsExecuted()) {
@@ -284,12 +305,14 @@
 
         /**
          * Changes the fetch mode
-         * @param int $mode
+         * @param int    $mode
+         * @param string $className
          * @return QueryResult
          */
-        public function setFetchMode($mode = JSONDB::FETCH_ARRAY)
+        public function setFetchMode($mode = JSONDB::FETCH_ARRAY, $className = NULL)
         {
             $this->fetchMode = $mode;
+            $this->className = $className;
             return $this;
         }
 

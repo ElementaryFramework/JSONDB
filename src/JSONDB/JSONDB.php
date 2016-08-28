@@ -85,6 +85,12 @@
         const FETCH_OBJECT = 5;
 
         /**
+         * Define if we fetch results with class mapping
+         * @const int
+         */
+        const FETCH_CLASS = 6;
+
+        /**
          * The current JSONDB instance
          * @var JSONDB
          */
