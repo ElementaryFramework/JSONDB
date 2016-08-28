@@ -24,5 +24,13 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         self::$database->connect('NotExistingServerTest', '__phpunit', '');
     }
-    
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForInvalidUser()
+    {
+        self::$database->connect('__phpunit_test_server', '__phpunit', '');
+    }
+
 }
