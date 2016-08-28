@@ -2,6 +2,9 @@
 Manage local databases with JSON files and JSONDB Query Language (JQL)
 
 [![Build Status](https://travis-ci.org/na2axl/jsondb-php.svg?branch=master)](https://travis-ci.org/na2axl/jsondb-php)
+[![Packagist Version](https://img.shields.io/badge/packagist-v1.1.3-brightgreen.svg)](https://packagist.org/packages/na2axl/jsondb)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/na2axl/jsondb-php/blob/master/LICENSE)
+
 
 ## What's that ?
 JSONDB is a database manager using JSON files and a custom query
