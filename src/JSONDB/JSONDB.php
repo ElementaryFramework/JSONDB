@@ -436,6 +436,8 @@
                     $ai_exist = TRUE;
                     $prototype[$field]['unique_key'] = TRUE;
                     $prototype[$field]['not_null'] = TRUE;
+                    $prototype[$field]['type'] = 'int';
+                    $has_tp = TRUE;
                     $properties['unique_keys'][] = $field;
                 }
                 if ($has_pk) {
@@ -447,7 +449,7 @@
                     $properties['unique_keys'][] = $field;
                 }
                 if ($has_tp) {
-                    if (preg_match('#link\((.+)\)#', $prop['type'], $link)) {
+                    if (array_key_exists('type', $prop) && preg_match('#link\((.+)\)#', $prop['type'], $link)) {
                         $link_info = explode('.', $link[1]);
                         $link_table_path = $this->_getTablePath($link_info[0]);
                         if (!file_exists($link_table_path)) {
@@ -908,7 +910,7 @@
                 $array_data = array_diff_key($array_data, $non_pk);
                 foreach (array_slice($insert, $i + 1) as $value) {
                     $value = array_diff_key($value, $non_pk);
-                    $pk_error = $pk_error || ($value === $array_data);
+                    $pk_error = $pk_error || (($value === $array_data) && (count($array_data) > 0));
                     if ($pk_error) {
                         $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
@@ -925,7 +927,7 @@
                     $array_data = array_intersect_key($array_data, array($uk => $uk));
                     foreach (array_slice($insert, $i + 1) as $value) {
                         $value = array_intersect_key($value, array($uk => $uk));
-                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array_data));
+                        $uk_error = $uk_error || (!empty($value[$uk]) && ($value === $array_data));
                         if ($uk_error) {
                             throw new Exception("JSONDB Error: Can't insert value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
@@ -1003,11 +1005,10 @@
             }
 
             $i = 0;
-            foreach ((array)$current_data as &$array_data) {
-                $array_data = array_key_exists($i, $insert) ? array_replace($array_data, $insert[$i]) : $array_data;
+            foreach ((array)$current_data as $field => $array_data) {
+                $current_data[$field] = array_key_exists($i, $insert) ? array_replace_recursive($array_data, $insert[$i]) : $array_data;
                 $i++;
             }
-            unset($array_data);
             $insert = $current_data;
 
             $pk_error = FALSE;
@@ -1017,7 +1018,7 @@
                 $array = array_diff_key($array, $non_pk);
                 foreach (array_slice($insert, $i + 1) as $value) {
                     $value = array_diff_key($value, $non_pk);
-                    $pk_error = $pk_error || ($value === $array);
+                    $pk_error = $pk_error || (($value === $array) && (count($array) > 0));
                     if ($pk_error) {
                         $values = implode(', ', $value);
                         $keys = implode(', ', $data['properties']['primary_keys']);
@@ -1034,7 +1035,7 @@
                     $array = array_intersect_key($array, array($uk => $uk));
                     foreach (array_slice($insert, $i + 1) as $value) {
                         $value = array_intersect_key($value, array($uk => $uk));
-                        $uk_error = $uk_error || (!empty($item[$uk]) && ($value === $array));
+                        $uk_error = $uk_error || (!empty($value[$uk]) && ($value === $array));
                         if ($uk_error) {
                             throw new Exception("JSONDB Error: Can't replace value. Duplicate values \"{$value[$uk]}\" for unique key \"{$uk}\".");
                         }
@@ -1139,7 +1140,7 @@
             $non_pk = array_flip(array_diff($data['prototype'], $data['properties']['primary_keys']));
             foreach ((array)$data['data'] as $array_data) {
                 $array_data = array_diff_key($array_data, $non_pk);
-                $pk_error = $pk_error || (array_diff_key($values, $non_pk) === $array_data);
+                $pk_error = $pk_error || ((array_diff_key($values, $non_pk) === $array_data) && (count($array_data) > 0));
                 if ($pk_error) {
                     $v = implode(', ', $array_data);
                     $k = implode(', ', $data['properties']['primary_keys']);
