@@ -4,7 +4,6 @@ use JSONDB\JSONDB;
 
 class JSONDBTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \JSONDB\JSONDB
      */
@@ -181,4 +180,54 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
         self::$database->query('__phpunit_test_table_pk.replace(2)');
     }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForFetchClassMode() {
+        $r = new \JSONDB\QueryResult(array(array('testVar1' => 'foo', 'testVar2' => 'bar')), self::$database);
+        $r->setFetchMode(\JSONDB\JSONDB::FETCH_CLASS, 'FakeClass');
+        $r->fetch();
+    }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForFetchClassMode2() {
+        $r = new \JSONDB\QueryResult(array(array('testVar1' => 'foo', 'testVar3' => 'bar')), self::$database);
+        $r->setFetchMode(\JSONDB\JSONDB::FETCH_CLASS, 'TestClass');
+        $r->fetch();
+    }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForFetchClassMode3() {
+        $r = new \JSONDB\QueryResult(array(array('testVar1' => 'foo', 'testVar4' => 'bar')), self::$database);
+        $r->setFetchMode(\JSONDB\JSONDB::FETCH_CLASS, 'TestClass');
+        $r->fetch();
+    }
+
+    public function testFetchClassMode() {
+        $r = new \JSONDB\QueryResult(array(array('testVar1' => 'foo', 'testVar2' => 'bar')), self::$database);
+        $r->setFetchMode(\JSONDB\JSONDB::FETCH_CLASS, 'TestClass');
+        $value = $r->current();
+        $this->assertInstanceOf('TestClass', $value);
+    }
+
+    public function testFetchClassMode2() {
+        $r = new \JSONDB\QueryResult(array(array('testVar1' => 'foo', 'testVar2' => 'bar')), self::$database);
+        $r->setFetchMode(\JSONDB\JSONDB::FETCH_CLASS, 'TestClass');
+        $value = $r->current();
+        $expected = new TestClass();
+        $expected->testVar1 = 'foo';
+        $expected->testVar2 = 'bar';
+        $this->assertEquals($expected, $value);
+    }
+}
+
+class TestClass {
+    public $testVar1;
+    public $testVar2;
+    private $testVar3;
 }
