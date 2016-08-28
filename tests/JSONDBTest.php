@@ -16,7 +16,8 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
         self::$database = new JSONDB();
         self::$database->createServer('__phpunit_test_server', '__phpunit', '', TRUE);
         self::$database->createDatabase('__phpunit_test_database')->setDatabase('__phpunit_test_database');
-        self::$database->createTable('__phpunit_test_table', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
+        self::$database->createTable('__phpunit_test_table_npk', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
+        self::$database->createTable('__phpunit_test_table_pk', array('id' => array('auto_increment' => TRUE)));
         self::$database->disconnect();
     }
 
@@ -77,7 +78,7 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     public function testExceptionIsRaisedForBadDatabaseConnection2()
     {
         self::$database->disconnect();
-        self::$database->createTable('__phpunit_test_table', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
+        self::$database->createTable('__phpunit_test_table_npk', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
     }
 
     /**
@@ -87,14 +88,14 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         self::$database->disconnect();
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
-        self::$database->createTable('__phpunit_test_table', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
+        self::$database->createTable('__phpunit_test_table_npk', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
     }
 
     public function testForInsertQuery()
     {
         self::$database->disconnect();
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
-        $bool = self::$database->query('__phpunit_test_table.insert(\'hello\', 0)');
+        $bool = self::$database->query('__phpunit_test_table_npk.insert(\'hello\', 0)');
         $this->assertTrue($bool);
     }
 
@@ -102,7 +103,7 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         self::$database->disconnect();
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
-        $bool = self::$database->query('__phpunit_test_table.update(php, unit).with(\'world\', 1)');
+        $bool = self::$database->query('__phpunit_test_table_npk.update(php, unit).with(\'world\', 1)');
         $this->assertTrue($bool);
     }
 
@@ -110,7 +111,7 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         self::$database->disconnect();
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
-        $bool = self::$database->query('__phpunit_test_table.replace(php, unit).with(\'nice\', 2)');
+        $bool = self::$database->query('__phpunit_test_table_npk.replace(\'nice\', 2)');
         $this->assertTrue($bool);
     }
 
@@ -118,7 +119,66 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         self::$database->disconnect();
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
-        $r = self::$database->query('__phpunit_test_table.select(php, unit)');
+        $r = self::$database->query('__phpunit_test_table_npk.select(php, unit)');
         $this->assertInstanceOf('\JSONDB\\QueryResult', $r);
+    }
+
+    public function testForSelectQueryFetchObject()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $r = self::$database->query('__phpunit_test_table_npk.select(php, unit)')->fetch(JSONDB::FETCH_OBJECT);
+        $this->assertInstanceOf('\JSONDB\\QueryResultObject', $r);
+    }
+
+    public function testForDeleteQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table_npk.delete()');
+        $this->assertTrue($bool);
+    }
+
+    public function testForTruncateQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table_npk.truncate()');
+        $this->assertTrue($bool);
+    }
+
+    public function testForMultipleInsertion()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table_pk.insert(null).and(null).and(null)');
+        $this->assertTrue($bool);
+    }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForDuplicatePKUKOnInsert() {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        self::$database->query('__phpunit_test_table_pk.insert(1)');
+    }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForDuplicatePKUKOnUpdate() {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        self::$database->query('__phpunit_test_table_pk.update(id).with(1)');
+    }
+
+    /**
+     * @expectedException \JSONDB\Exception
+     */
+    public function testExceptionIsRaisedForDuplicatePKUKOnReplace() {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        self::$database->query('__phpunit_test_table_pk.replace(2)');
     }
 }
