@@ -89,4 +89,36 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
         self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
         self::$database->createTable('__phpunit_test_table', array('php' => array('type' => 'string'), 'unit' => array('type' => 'int')));
     }
+
+    public function testForInsertQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table.insert(\'hello\', 0)');
+        $this->assertTrue($bool);
+    }
+
+    public function testForUpdateQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table.update(php, unit).with(\'world\', 1)');
+        $this->assertTrue($bool);
+    }
+
+    public function testForReplaceQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $bool = self::$database->query('__phpunit_test_table.replace(php, unit).with(\'nice\', 2)');
+        $this->assertTrue($bool);
+    }
+
+    public function testForSelectQuery()
+    {
+        self::$database->disconnect();
+        self::$database->connect('__phpunit_test_server', '__phpunit', '', '__phpunit_test_database');
+        $r = self::$database->query('__phpunit_test_table.select(php, unit)');
+        $this->assertInstanceOf('\JSONDB\\QueryResult', $r);
+    }
 }
