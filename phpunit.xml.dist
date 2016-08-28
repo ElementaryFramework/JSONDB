@@ -11,13 +11,8 @@
 >
     <testsuites>
         <testsuite name="JSONDB Test suite">
-            <directory>./tests/</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-        </whitelist>
-    </filter>
 </phpunit>

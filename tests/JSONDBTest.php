@@ -14,14 +14,15 @@ class JSONDBTest extends PHPUnit_Framework_TestCase
     {
         // create db
         self::$database = new JSONDB();
+        self::$database->createServer('__phpunit_test_server', '__phpunit', '');
     }
 
     /**
      * @expectedException \JSONDB\Exception
      */
-    public function testExceptionIsRaisedForNewServer()
+    public function testExceptionIsRaisedForNonExistingServer()
     {
-        self::$database->createServer('__phpunit_test_server', '__phpunit', '');
+        self::$database->connect('NotExistingServerTest', '__phpunit', '');
     }
     
 }
