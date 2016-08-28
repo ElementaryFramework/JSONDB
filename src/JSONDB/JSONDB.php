@@ -76,13 +76,13 @@
          * Define if we fetch results as arrays
          * @const int
          */
-        const FETCH_ARRAY = 0;
+        const FETCH_ARRAY = 4;
 
         /**
          * Define if we fetch results as objects
          * @const int
          */
-        const FETCH_OBJECT = 1;
+        const FETCH_OBJECT = 5;
 
         /**
          * The current JSONDB instance
