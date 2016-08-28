@@ -261,7 +261,7 @@
         /**
          * Fetch for results
          * @param int $mode The fetch mode
-         * @return array|QueryResultObject|null
+         * @return array|QueryResultObject|bool
          * @throws Exception
          */
         public function fetch($mode = NULL)
@@ -276,7 +276,7 @@
                     ++$this->key;
                     return $return;
                 }
-                return NULL;
+                return FALSE;
             } else {
                 throw new Exception("JSONDB Query Result Error: Can't fetch for results without execute the query.");
             }
