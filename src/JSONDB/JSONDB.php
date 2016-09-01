@@ -73,6 +73,13 @@
         const PARAM_NULL = 3;
 
         /**
+         * Parse value to array for
+         * prepared queries.
+         * @const integer
+         */
+        const PARAM_ARRAY = 7;
+
+        /**
          * Define if we fetch results as arrays
          * @const int
          */

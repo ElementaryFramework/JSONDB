@@ -451,6 +451,8 @@
                 return TRUE;
             } elseif (strpos($value, ':JSONDB::TO_NULL:') !== FALSE || strtolower($value) === 'null') {
                 return NULL;
+            } elseif (strpos($value, ':JSONDB::TO_ARRAY:') !== FALSE) {
+                return (array)unserialize($this->_parseValue(str_replace(':JSONDB::TO_ARRAY:', '', $value)));
             } elseif ($trim_value[0] === "'" && $trim_value[strlen($trim_value) - 1] === "'") {
                 return (string)str_replace(array('{{quot}}', '{{comm}}', '{{dot}}', '{{pto}}', '{{ptc}}', '{{semi}}'), array('\'', ',', '.', '(', ')', ';'), (string)trim($value, self::TRIM_CHAR));
             } else {

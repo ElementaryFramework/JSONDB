@@ -106,6 +106,10 @@
                         case JSONDB::PARAM_NULL:
                             $value = (string)$value . ':JSONDB::TO_NULL:';
                             break;
+
+                        case JSONDB::PARAM_ARRAY:
+                            $value = JSONDB::quote((string)serialize($value)) . ':JSONDB::TO_ARRAY:';
+                            break;
                     }
                     $this->queryString = str_replace($key, $value, $this->queryString);
                 } else {
