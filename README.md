@@ -167,12 +167,12 @@ Select all from table `users` where `pseudo` = `$id` and `password` = `$pass` or
 ```php
 $id = \JSONDB\JSONDB::quote($form_id);
 $pass = \JSONDB\JSONDB::quote($form_password);
-$db->query("users.select(*).where(pseudo={$id},password={$pass}).where(mail={$id},password={$pass});
+$db->query("users.select(*).where(pseudo={$id},password={$pass}).where(mail={$id},password={$pass})");
 ```
 
 Select `pseudo` and `mail` from table `users` where `activated` = `true`, order the results by `pseudo` with `desc`endant method, limit the results to the `10` users after the `5`th.
 ```php
-$db->query("users.select(pseudo,mail).where(activated=true).order(pseudo,desc).limit(5,10);
+$db->query("users.select(pseudo,mail).where(activated=true).order(pseudo,desc).limit(5,10)");
 ```
 
 ##### insert()
@@ -181,21 +181,21 @@ Insert a new user in table `users`
 $pseudo = \JSONDB\JSONDB::quote($form_pseudo);
 $pass = \JSONDB\JSONDB::quote($form_password);
 $mail = \JSONDB\JSONDB::quote($form_mail);
-$db->query("users.insert({$pseudo},{$pass},{$mail}).in(pseudo,password,mail);
+$db->query("users.insert({$pseudo},{$pass},{$mail}).in(pseudo,password,mail)");
 ```
 Multiple insertion...
 ```php
-$db->query("users.insert({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail);
+$db->query("users.insert({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail)");
 ```
 
 ##### replace()
 Replace information of the first user
 ```php
-$db->query("users.replace({$pseudo},{$pass},{$mail}).in(pseudo,password,mail);
+$db->query("users.replace({$pseudo},{$pass},{$mail}).in(pseudo,password,mail)");
 ```
 Multiple replacement...
 ```php
-$db->query("users.replace({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail);
+$db->query("users.replace({$pseudo1},{$pass1},{$mail1}).and({$pseudo2},{$pass2},{$mail2}).and({$pseudo3},{$pass3},{$mail3}).in(pseudo,password,mail)");
 ```
 
 ##### delete()
@@ -248,8 +248,8 @@ try {
     }
 
     $db = $jsondb->connect('./test', 'root', '')
-        ->createDatabase('test_database')
-        ->setDatabase('test_database'); // Yes, is chainable ! ;-)
+                 ->createDatabase('test_database')
+                 ->setDatabase('test_database'); // Yes, is chainable ! ;-)
 
     $db->createTable('users', array('id' => array('type' => 'int', 'auto_increment' => TRUE),
                      'name' => array('type' => 'string', 'max_length' => 30, 'not_null' => TRUE),
