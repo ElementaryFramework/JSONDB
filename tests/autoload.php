@@ -8,5 +8,6 @@
     require dirname(__DIR__) . '/src/JSONDB/QueryParser.php';
     require dirname(__DIR__) . '/src/JSONDB/QueryResult.php';
     require dirname(__DIR__) . '/src/JSONDB/Util.php';
+    require dirname(__DIR__) . '/src/JSONDB/Database.php';
     require dirname(__DIR__) . '/src/JSONDB/JSONDB.php';
 
