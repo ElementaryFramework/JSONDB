@@ -68,9 +68,9 @@
         /**
          * PreparedQueryStatement __constructor.
          * @param string $query
-         * @param JSONDB $database
+         * @param Database $database
          */
-        public function __construct($query, &$database)
+        public function __construct($query, Database &$database)
         {
             $this->queryString = $query;
             $this->database = &$database;

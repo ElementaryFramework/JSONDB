@@ -60,21 +60,21 @@
         /**
          * Cache __constructor.
          *
-         * @param JSONDB $db JSONDB instance to use with Cache
+         * @param Database $db Database instance to use with Cache
          * @return Cache
          */
-        public function __construct(JSONDB $db)
+        public function __construct(Database $db)
         {
             $this->setDatabase($db);
         }
 
         /**
-         * Changes the JSONDB instance used
+         * Changes the Database instance used
          *
-         * @param JSONDB $database JSONDB class' instance
+         * @param Database $database Database class' instance
          * @return Cache
          */
-        public function setDatabase($database)
+        public function setDatabase(Database $database)
         {
             $this->database = $database;
             $this->reset();

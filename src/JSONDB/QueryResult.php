@@ -78,14 +78,15 @@
 
         /**
          * QueryResult __constructor
-         * @param array  $result
-         * @param JSONDB $database The JSONDB instance to use with results.
+         * @param array    $result
+         * @param Database $database The JSONDB instance to use with results.
          */
-        public function __construct(array $result, JSONDB $database)
+        public function __construct(array $result, Database &$database)
         {
-            $this->database = $database;
+            $this->database = &$database;
             $this->_setResults($result);
             $this->_parseResults();
+            $this->setFetchMode(JSONDB::FETCH_ARRAY);
         }
 
         /**
