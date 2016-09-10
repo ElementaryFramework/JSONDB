@@ -831,7 +831,7 @@
             $last_ai = 0;
             foreach ($data['properties'] as $field => $property) {
                 if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
-                    for ($insert as $lid => $array_data) {
+                    foreach ($insert as $lid => $array_data) {
                         $last_ai = max($insert[$lid][$field], $last_ai);
                     }
                     break;
@@ -949,7 +949,7 @@
             $last_ai = 0;
             foreach ($data['properties'] as $field => $property) {
                 if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
-                    for ($insert as $lid => $array_data) {
+                    foreach ($insert as $lid => $array_data) {
                         $last_ai = max($insert[$lid][$field], $last_ai);
                     }
                     break;
@@ -1088,7 +1088,7 @@
             $last_ai = 0;
             foreach ($data['properties'] as $field => $property) {
                 if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
-                    for ($data['data'] as $lid => $array_data) {
+                    foreach ($data['data'] as $lid => $array_data) {
                         $last_ai = max($data['data'][$lid][$field], $last_ai);
                     }
                     break;
