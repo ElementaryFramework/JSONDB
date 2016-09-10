@@ -110,6 +110,9 @@
             }
         }
 
+        /**
+         * Returns the query string
+         */
         public function queryString()
         {
             return $this->database->queryString();
@@ -356,6 +359,7 @@
         }
 
         /**
+         * Sets the results to use
          * @param mixed $result
          */
         private function _setResult($result)
@@ -364,6 +368,8 @@
         }
 
         /**
+         * Gets a row value if the given row name exist
+         * in the table.
          * @param string $name
          * @return mixed
          * @throws Exception

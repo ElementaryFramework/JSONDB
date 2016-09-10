@@ -402,6 +402,12 @@
             return $parsedClause;
         }
 
+        /**
+         * Parses an on() extension
+         * @param string $clause
+         * @return array
+         * @throws Exception
+         */
         private function _parseOnExtension($clause)
         {
             $parsedClause = array_map(function($field) {
@@ -418,6 +424,12 @@
             return $parsedClause[0];
         }
 
+        /**
+         * Parses an link() extension
+         * @param string $clause
+         * @return array
+         * @throws Exception
+         */
         private function _parseLinkExtension($clause)
         {
             $parsedClause = array_map(function($field) {
