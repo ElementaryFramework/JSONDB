@@ -30,3 +30,6 @@ composer.phar
 
 /vendor/
 /_site/
+
+### PHPUnit
+phpunit.phar
