@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "JSONDB: Manage JSON files as databases with JSONDB Query Language (JQL)"
+title: "JSONDB - PHP Edition | Manage JSON files as databases with JSONDB Query Language (JQL)"
 menu: "home"
 ---
 <section id="main">
@@ -11,7 +11,7 @@ menu: "home"
                     Manage JSON files as databases with JSONDB Query Language (JQL)
                 </header>
                 <div class="grid quarter">
-                    <div class="g3">
+                    <div class="g4">
                         <article class="box">
                             <header>
                                 <h3 class="fa fa-dashboard">Performance</h3>
@@ -24,39 +24,26 @@ menu: "home"
                             </footer>
                         </article>
                     </div>
-                    <div class="g3">
-                        <article class="box">
-                            <header>
-                                <h3 class="fa fa-lock">Security</h3>
-                            </header>
-                            <div class="content">
-                                Connections to servers are secured with defined usernames and passwords.
-                            </div>
-                            <footer>
-                                <a href="" class="more">More...</a>
-                            </footer>
-                        </article>
-                    </div>
-                    <div class="g3">
+                    <div class="g4">
                         <article class="box">
                             <header>
                                 <h3 class="fa fa-database">JQL</h3>
                             </header>
                             <div class="content">
-                                Manage your database with JQL, a custom query language for JSONDB.
+                                Manage your database with JQL, a custom query language designed for JSONDB.
                             </div>
                             <footer>
                                 <a href="" class="more">More...</a>
                             </footer>
                         </article>
                     </div>
-                    <div class="g3">
+                    <div class="g4">
                         <article class="box">
                             <header>
                                 <h3 class="fa fa-code">PDO-like syntax</h3>
                             </header>
                             <div class="content">
-                                Don't want to learn another syntax? Don't worry, use JSONDB like PDO!
+                                Don't want to learn another boring syntax? Don't worry, use JSONDB like PDO!
                             </div>
                             <footer>
                                 <a href="" class="more">More...</a>
@@ -76,7 +63,7 @@ menu: "home"
                 <article class="box full">
                     <div class="content">
                         <pre class="lang-php line-numbers"><code>&lt;?php
-    $jsondb = \JSONDB\JSONDB();
+    $jsondb = new \JSONDB\JSONDB();
     $database = $jsondb-&gt;connect('server_name', 'username', 'password', 'db_name');
     $results = $database-&gt;query("table_name.select(*).where(foo = 'hello', bar = 'world')");
     while ($result = $results-&gt;fetch()) {
@@ -109,32 +96,32 @@ menu: "home"
                 </div>
                 <div class="grid quarter">
                     <div class="g12">
-						<article class="box full">
-							<header>
-								<h3>Learn how to use</h3>
-							</header>
-							<div class="content">
-                                Interested? Learn how to use JSONDB with the manual!
-							</div>
-							<footer>
-								<a href="{{ site.github.url }}/docs/manual" class="open fa fa-external-link"></a>
-							</footer>
-						</article>
+                        <article class="box full">
+                            <header>
+                                <h3>Get started</h3>
+                            </header>
+                            <div class="content">
+                                Learn how to get started with JSONDB and JQL here!
+                            </div>
+                            <footer>
+                                <a href="{{ site.github.url }}/docs/manual" class="open fa fa-external-link"></a>
+                            </footer>
+                        </article>
                     </div>
                 </div>
                 <div class="grid quarter">
                     <div class="g12">
-						<article class="box full">
-							<header>
-								<h3>Go further with the API</h3>
-							</header>
-							<div class="content">
-								Classes, methods, properties, all information about JSONDB here!
-							</div>
-							<footer>
-								<a href="{{ site.github.url }}/docs/api" class="open fa fa-external-link"></a>
-							</footer>
-						</article>
+                        <article class="box full">
+                            <header>
+                                <h3>Go further with the API</h3>
+                            </header>
+                            <div class="content">
+                                Classes, methods, properties, all information about JSONDB here!
+                            </div>
+                            <footer>
+                                <a href="{{ site.github.url }}/docs/api" class="open fa fa-external-link"></a>
+                            </footer>
+                        </article>
                     </div>
                 </div>
             </section>

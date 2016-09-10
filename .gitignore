@@ -51,3 +51,6 @@ _site/
 
 ## Composer
 vendor/
+
+##phpunit
+phpunit.phar

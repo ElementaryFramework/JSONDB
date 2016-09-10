@@ -29,7 +29,7 @@
                     return this.top = $("article.manual-content").offset().top - $("header#header").height();
                 },
                 bottom: function(){
-                    return this.bottom = $("footer#footer").outerHeight(!0) + parseFloat($("section#main").css('padding-bottom'));
+                    return this.bottom = $('html').height() - parseInt($('#scrollspy-limit').offset().top);
                 }
             }
         }).affix('checkPosition');
