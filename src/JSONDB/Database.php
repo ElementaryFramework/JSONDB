@@ -828,9 +828,19 @@
                 return $insert[$now]['#rowid'] < $insert[$after]['#rowid'];
             });
 
+            $last_ai = 0;
+            foreach ($data['properties'] as $field => $property) {
+                if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
+                    for ($insert as $lid => $array_data) {
+                        $last_ai = max($insert[$lid][$field], $last_ai);
+                    }
+                    break;
+                }
+            }
+
             $data['data'] = $insert;
             $data['properties']['last_valid_row_id'] = $this->_getLastValidRowID($insert, FALSE);
-            $data['properties']['last_insert_id'] = $ai_id;
+            $data['properties']['last_insert_id'] = $last_ai;
             $data['properties']['last_link_id'] = $lk_id;
 
             $this->cache->update($this->_getTablePath(), $data);
@@ -936,7 +946,18 @@
                 return $insert[$now]['#rowid'] < $insert[$after]['#rowid'];
             });
 
+            $last_ai = 0;
+            foreach ($data['properties'] as $field => $property) {
+                if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
+                    for ($insert as $lid => $array_data) {
+                        $last_ai = max($insert[$lid][$field], $last_ai);
+                    }
+                    break;
+                }
+            }
+
             $data['data'] = $insert;
+            $data['properties']['last_insert_id'] = $last_ai;
 
             $this->cache->update($this->_getTablePath(), $data);
 
@@ -1064,25 +1085,17 @@
                 return $data['data'][$now]['#rowid'] < $data['data'][$after]['#rowid'];
             });
 
-            $auto_increment = NULL;
-            foreach ((array)$data['properties'] as $column => $prop) {
-                if (is_array($prop) && array_key_exists('auto_increment', $prop) && $prop['auto_increment'] === TRUE) {
-                    $auto_increment = $column;
+            $last_ai = 0;
+            foreach ($data['properties'] as $field => $property) {
+                if (is_array($property) && array_key_exists('auto_increment', $property) && TRUE === $property['auto_increment']) {
+                    for ($data['data'] as $lid => $array_data) {
+                        $last_ai = max($data['data'][$lid][$field], $last_ai);
+                    }
                     break;
                 }
             }
 
-            if (NULL !== $auto_increment) {
-                $last_insert_id = 0;
-                foreach ((array)$data['data'] as $d) {
-                    if ($last_insert_id === 0) {
-                        $last_insert_id = $d[$auto_increment];
-                    } else {
-                        $last_insert_id = max($last_insert_id, $d[$auto_increment]);
-                    }
-                }
-                $data['properties']['last_insert_id'] = $last_insert_id;
-            }
+            $data['properties']['last_insert_id'] = $last_ai;
 
             $this->cache->update($this->_getTablePath(), $data);
 
@@ -1108,7 +1121,7 @@
         /**
          * The count() query
          * @param array $data
-         * @return array
+         * @return QueryResult
          * @throws Exception
          */
         protected function _count($data)
@@ -1163,9 +1176,11 @@
                 } else {
                     $result['count(' . implode(',', $this->parsedQuery['parameters']) . ')'] = $count;
                 }
+
+                $result = array($result);
             }
 
-            return $result;
+            return new QueryResult($result, $this);
         }
 
         /**
