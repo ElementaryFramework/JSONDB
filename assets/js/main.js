@@ -25,11 +25,23 @@
         $.grid.affix({
             element: '.scrollspy',
             offset: {
-                top: function(){
+                top: function () {
                     return this.top = $("article.manual-content").offset().top - $("header#header").height();
                 },
+                bottom: function () {
+                    return this.bottom = $('html').outerHeight(!0) - $('#scrollspy-limit').offset().top - $("header#header").height();
+                }
+            }
+        }).affix('checkPosition');
+
+        $.grid.affix({
+            element: '.class-list',
+            offset: {
+                top: function(){
+                    return this.top = 0;
+                },
                 bottom: function(){
-                    return this.bottom = $('html').height() - parseInt($('#scrollspy-limit').offset().top);
+                    return this.bottom = $('footer#footer').outerHeight(!0);
                 }
             }
         }).affix('checkPosition');

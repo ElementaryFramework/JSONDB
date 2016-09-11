@@ -2,7 +2,7 @@ body, select, input[type="text"], input[type="password"], input[type="email"], t
     font-size: 13pt;
     font-family: Segoe UI, Droid Sans, DejaVu Sans, Arial, sans-serif;
     background-color: #333;
-    color: #F5F5F5;
+    color: #555;
     line-height: 1;
 }
 
@@ -47,7 +47,7 @@ header#header section.nav div.logo h1 sub {
     margin-left: 0.5em;
 }
 
-header#header section.nav nav{
+header#header section.nav nav {
     text-align: right;
     float: right;
 }
@@ -74,6 +74,134 @@ header#header section.nav nav ul li a {
 
 section#main {
     padding: 2.5em 4em;
+    margin: 0;
+}
+
+section#main.no-padding {
+    padding: 0;
+}
+
+section#main aside.class-list {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
+    padding-right: 4em;
+}
+
+section#main aside.class-list ul {
+    margin: 0;
+    padding: 0;
+}
+
+section#main aside.class-list ul li {
+    margin: .5em 0;
+}
+
+section#main aside.class-list ul li a {
+    color: #f5f5f5;
+}
+
+section#main aside.class-list ul li:last-child {
+    margin-bottom: 0;
+}
+
+section#main section.class-desc {
+    background-color: #fff;
+    padding: 2.5em 2em 2.5em 4em;
+}
+
+section#main section.class-desc header.intro {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 4em;
+    padding: 0;
+    border: 0 none;
+}
+
+section#main section.class-desc header.intro h2 {
+    margin-bottom: 10px;
+}
+
+section#main section.class-desc header.intro p {
+    font-weight: normal;
+}
+
+section#main section.class-desc small {
+    font-size: 0.5em;
+    margin: 0 5px 0 0;
+}
+
+section#main section.class-desc header h4 {
+    font-weight: normal;
+}
+
+section#main section.class-desc section {
+    margin-bottom: 2em;
+}
+
+section#main section.class-desc section table {
+    width: 100%;
+}
+
+section#main section.class-desc section table td {
+    margin: .25em 0;
+    padding: .5em .25em;
+}
+
+section#main section.class-desc section table thead td {
+    background-color: #eee;
+    border-bottom: 2px solid #555;
+    text-align: center;
+}
+
+section#main section.class-desc section table thead td a {
+    color: #333;
+    padding: 0;
+    margin: 0;
+    border: 0 none;
+}
+
+section#main section.class-desc section table tbody td {
+    font-size: 0.8em;
+}
+
+section#main section.class-desc section table tbody td a {
+    font-weight: normal;
+}
+
+section#main section.class-desc .public::before {
+    color: #060;
+    font-family: FontAwesome;
+    content: '\f00c';
+    margin-right: 5px;
+}
+
+section#main section.class-desc .private::before {
+    color: #c00;
+    font-family: FontAwesome;
+    content: '\f023';
+    margin-right: 5px;
+}
+
+section#main section.class-desc .protected::before {
+    color: #f90;
+    font-family: FontAwesome;
+    content: '\f132';
+    margin-right: 5px;
+}
+
+section#main section.class-desc article.property,
+section#main section.class-desc article.method,
+section#main section.class-desc article.constant {
+    margin-left: 1em;
+}
+
+section#main section.class-desc article.property header,
+section#main section.class-desc article.method header,
+section#main section.class-desc article.constant header {
+    margin-left: 0;
 }
 
 section#main section.welcome > header {
@@ -107,7 +235,7 @@ section#main article.box.full {
 section#main article.box header {
     font-weight: bold;
     border-bottom: 1px dotted;
-    margin: 1em;
+    margin: 1em 0 1em 1em;
     padding-top: 1em;
 }
 
@@ -186,12 +314,19 @@ section#main aside.summary {
 
 section#main aside.summary.affix,
 section#main aside.summary.affix-bottom {
-    position: fixed;
-    right: 4em;
+    padding-right: 4em;
+    padding-top: 2.5em;
+    padding-bottom: 2.5em;
 }
 
-section#main aside.summary.affix {
-    top: 5em;
+section#main aside.affix,
+section#main aside.affix-bottom {
+    position: fixed;
+    right: 0;
+}
+
+section#main aside.affix {
+    top: 4em;
 }
 
 section#main aside.summary ul li {
@@ -396,9 +531,23 @@ ul > li ul {
     margin-top: 1em;
 }
 
+pre.signature {
+    padding: 0.5em 1em;
+    background-color: #f5f5f5;
+    border: 1px solid #333;
+    border-radius: 2px;
+    font-size: 0.8em;
+    margin-bottom: 1em;
+}
+
+pre.signature span.argument {
+    color: #c00;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 480px) {
     body, select, input[type="text"], input[type="password"], input[type="email"], textarea {
-        font-size: 12pt;
+        font-size: 11pt;
     }
 
     header#header section.nav div.logo {
@@ -442,6 +591,24 @@ ul > li ul {
 }
 
 @media screen and (min-width: 481px) and (max-width: 768px) {
+    body, select, input[type="text"], input[type="password"], input[type="email"], textarea {
+        font-size: 12pt;
+    }
+
+    section#main {
+        padding: 1.25em 2em;
+    }
+
+    section#main aside.class-list {
+        display: none;
+    }
+
+    section#main section.class-desc {
+        background-color: #fff;
+        border-left: 2px solid #555;
+        padding: 1.25em 2em;
+    }
+
     footer#footer ul#copyright {
         text-align: center;
     }
@@ -461,4 +628,29 @@ ul > li ul {
     footer#footer ul#copyright li:last-child {
         border-bottom: none;
     }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    body, select, input[type="text"], input[type="password"], input[type="email"], textarea {
+        font-size: 12pt;
+    }
+
+    section#main {
+        padding: 1.25em 2em;
+    }
+
+    section#main section.class-desc {
+        padding: 1.25em 1em 1.25em 2em;
+    }
+
+    section#main aside.class-list {
+        padding-top: 1.25em;
+        padding-bottom: 1.25em;
+        padding-right: 2em;
+    }
+
+    section#main aside.class-list ul li a {
+        font-size: 0.75em !important;
+    }
+
 }

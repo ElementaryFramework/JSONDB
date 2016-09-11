@@ -1,0 +1,434 @@
+---
+layout: api_class
+title: "Class Database | JSONDB API Documentation | JSONDB PHP Edition"
+menu: "api"
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>Cache</h2>
+        <p><em>Class Cache</em></p>
+    </header>
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="#method___construct" class="public">__construct()</a></td></tr>
+                            <tr><td><a href="#method_setDatabase" class="public">setDatabase()</a></td></tr>
+                            <tr><td><a href="#method_setTable" class="public">setTable()</a></td></tr>
+                            <tr><td><a href="#method_queryString" class="public">queryString()</a></td></tr>
+                            <tr><td><a href="#method_getServer" class="public">getServer()</a></td></tr>
+                            <tr><td><a href="#method_getDatabase" class="public">getDatabase()</a></td></tr>
+                            <tr><td><a href="#method_getTable" class="public">getTable()</a></td></tr>
+                            <tr><td><a href="#method_benchamrk" class="public">benchmark()</a></td></tr>
+                            <tr><td><a href="#method_createDatabase" class="public">createDatabase()</a></td></tr>
+                            <tr><td><a href="#method_disconnect" class="public">disconnect()</a></td></tr>
+                            <tr><td><a href="#method_createTable" class="public">createTable()</a></td></tr>
+                            <tr><td><a href="#method_query" class="public">query()</a></td></tr>
+                            <tr><td><a href="#method_prepare" class="public">prepare()</a></td></tr>
+                            <tr><td><a href="#method_getTableData" class="public">getTableData()</a></td></tr>
+                            <tr><td><a href="#method_queryIsPrepared" class="public">queryIsPrepared()</a></td></tr>
+                            <tr><td><a href="#method_queryIsExecuted" class="public">queryIsExecuted()</a></td></tr>
+                            <tr><td><a href="#method__getDatabasePath" class="protected">_getDatabasePath()</a></td></tr>
+                            <tr><td><a href="#method__getTablePath" class="protected">_getTablePath()</a></td></tr>
+                            <tr><td><a href="#method__getTableContent" class="protected">_getTableContent()</a></td></tr>
+                            <tr><td><a href="#method__parseValue" class="protected">_parseValue()</a></td></tr>
+                            <tr><td><a href="#method__select" class="protected">_select()</a></td></tr>
+                            <tr><td><a href="#method__insert" class="protected">_insert()</a></td></tr>
+                            <tr><td><a href="#method__replace" class="protected">_replace()</a></td></tr>
+                            <tr><td><a href="#method__delete" class="protected">_delete()</a></td></tr>
+                            <tr><td><a href="#method__update" class="protected">_update()</a></td></tr>
+                            <tr><td><a href="#method__truncate" class="protected">_truncate()</a></td></tr>
+                            <tr><td><a href="#method__count" class="protected">_count()</a></td></tr>
+                            <tr><td><a href="#method__filter" class="protected">_filter()</a></td></tr>
+                            <tr><td><a href="#method__execute" class="private">_execute()</a></td></tr>
+                            <tr><td><a href="#method__getLastRowID" class="private">_getLastRowID()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="#property_server" class="private">$server</a></td></tr>
+                            <tr><td><a href="#property_database" class="private">$database</a></td></tr>
+                            <tr><td><a href="#property_table" class="private">$table</a></td></tr>
+                            <tr><td><a href="#property_username" class="private">$username</a></td></tr>
+                            <tr><td><a href="#property_password" class="private">$password</a></td></tr>
+                            <tr><td><a href="#property_queryIsPrepared" class="private">$queryIsPrepared</a></td></tr>
+                            <tr><td><a href="#property_queryIsExecuted" class="private">$queryIsExecuted</a></td></tr>
+                            <tr><td><a href="#property_queryString" class="private">$queryString</a></td></tr>
+                            <tr><td><a href="#property_parsedQuery" class="private">$parsedQuery</a></td></tr>
+                            <tr><td><a href="#property_queryResults" class="private">$queryResults</a></td></tr>
+                            <tr><td><a href="#property_cache" class="private">$cache</a></td></tr>
+                            <tr><td><a href="#property_queryParser" class="private">$queryParser</a></td></tr>
+                            <tr><td><a href="#property_config" class="private">$config</a></td></tr>
+                            <tr><td><a href="#property_benchmark" class="private">$benchmark</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>No constants</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_server" class="property">
+                    <header>
+                        <h4 class="private">$server</h4>
+                    </header>
+                    <pre class="signature">$server : string</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The path to databases directories</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>string</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_database" class="property">
+                    <header>
+                        <h4 class="private">$database</h4>
+                    </header>
+                    <pre class="signature">$database : string</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The name of the currently used database</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>string</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_username" class="property">
+                    <header>
+                        <h4 class="private">$username</h4>
+                    </header>
+                    <pre class="signature">$username : string</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The currently logged in username</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>string</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_password" class="property">
+                    <header>
+                        <h4 class="private">$password</h4>
+                    </header>
+                    <pre class="signature">$password : string</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The currently logged in user password</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>string</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryIsPrepared" class="property">
+                    <header>
+                        <h4 class="private">$queryIsPrepared</h4>
+                    </header>
+                    <pre class="signature">$queryIsPrepared : boolean</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The query is prepared?</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>boolean</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryIsExecuted" class="property">
+                    <header>
+                        <h4 class="private">$queryIsExecuted</h4>
+                    </header>
+                    <pre class="signature">$queryIsExecuted : boolean</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The query is executed?</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>boolean</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_parsedQuery" class="property">
+                    <header>
+                        <h4 class="private">$parsedQuery</h4>
+                    </header>
+                    <pre class="signature">$parsedQuery : array</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>The parsed query</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>array</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryResults" class="property">
+                    <header>
+                        <h4 class="private">$queryResults</h4>
+                    </header>
+                    <pre class="signature">$queryResults : array</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>Stores results of the select() query</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><i>array</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_cache" class="property">
+                    <header>
+                        <h4 class="private">$cache</h4>
+                    </header>
+                    <pre class="signature">$cache : \JSONDB\Cache</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>Cache manager</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html"><i>\JSONDB\Cache</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryParser" class="property">
+                    <header>
+                        <h4 class="private">$queryParser</h4>
+                    </header>
+                    <pre class="signature">$queryParser : \JSONDB\QueryParser</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>Query parser</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/QueryParser.html"><i>\JSONDB\QueryParser</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_config" class="property">
+                    <header>
+                        <h4 class="private">$config</h4>
+                    </header>
+                    <pre class="signature">$config : \JSONDB\Configuration</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>Configuration manager</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/Configuration.html"><i>\JSONDB\Configuration</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_benchmark" class="property">
+                    <header>
+                        <h4 class="private">$benchmark</h4>
+                    </header>
+                    <pre class="signature">$benchmark : \JSONDB\Benchmark</pre>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><b>Description</b></td>
+                                <td><i>Benchmark</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>Type</b></td>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/Benchmark.html"><i>\JSONDB\Benchmark</i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method___construct" class="method">
+                    <header>
+                        <h4 class="public">__constuct()</h4>
+                    </header>
+                    <pre class="signature">__construct(\JSONDB\Database  <span class="argument">$db</span>) : \JSONDB\Cache</pre>
+                    <p><em>Cache __constructor.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
+                                    <td><code>$db</code></td>
+                                    <td><i>Database instance to use with Cache</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
+                    </section>
+                </article>
+                <article id="method_setDatabase" class="method">
+                    <header>
+                        <h4 class="public">setDatabase()</h4>
+                    </header>
+                    <pre class="signature">setDatabase(\JSONDB\Database  <span class="argument">$database</span>) : \JSONDB\Cache</pre>
+                    <p><em>Changes the Database instance used.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
+                                    <td><code>$database</code></td>
+                                    <td><i>Database class instance</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
+                    </section>
+                </article>
+                <article id="method_get" class="method">
+                    <header>
+                        <h4 class="public">get()</h4>
+                    </header>
+                    <pre class="signature">get(array|string  <span class="argument">$path</span>) : array|mixed</pre>
+                    <p><em>Calculates the memory usage of a benchmark point.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>array|string</b></td>
+                                    <td><code>$path</code></td>
+                                    <td><i>The path (or an array of paths) to the table (or tables)</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array|mixed</p>
+                    </section>
+                </article>
+                <article id="method_update" class="method">
+                    <header>
+                        <h4 class="public">update()</h4>
+                    </header>
+                    <pre class="signature">update(string  <span class="argument">$path</span>, array|null  <span class="argument">$data = NULL</span>) : array</pre>
+                    <p><em>Updates the cached data for a table.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$path</code></td>
+                                    <td><i>The path to the table</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>array|null</b></td>
+                                    <td><code>$data</code></td>
+                                    <td><i>The data to cache for the given table</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method_reset" class="method">
+                    <header>
+                        <h4 class="public">reset()</h4>
+                    </header>
+                    <pre class="signature">reset() : \JSONDB\Cache</pre>
+                    <p><em>Resets the cache.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>

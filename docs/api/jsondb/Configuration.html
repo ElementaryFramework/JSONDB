@@ -1,0 +1,166 @@
+---
+layout: api_class
+title: "Class Configuration | JSONDB API Documentation | JSONDB PHP Edition"
+menu: "api"
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>Configuration</h2>
+        <p><em>Class Configuration</em></p>
+    </header>
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="#method_addUser" class="public">addUser()</a></td></tr>
+                            <tr><td><a href="#method_getConfig" class="public">getConfig()</a></td></tr>
+                            <tr><td><a href="#method__writeConfig" class="private">_writeConfig()</a></td></tr>
+                            <tr><td><a href="#method__exists" class="private">_exists()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>No properties</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>No constants</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method_addUser" class="method">
+                    <header>
+                        <h4 class="public">addUser()</h4>
+                    </header>
+                    <pre class="signature">addUser(string  <span class="argument">$server</span>, string  <span class="argument">$username</span>, string  <span class="argument">$password</span>)</pre>
+                    <p><em>Adds a user in the inner configuration file.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$server</code></td>
+                                    <td><i>The name of the server</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$username</code></td>
+                                    <td><i>The username</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$password</code></td>
+                                    <td><i>The user's password</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method_getConfig" class="method">
+                    <header>
+                        <h4 class="public">getConfig()</h4>
+                    </header>
+                    <pre class="signature">getConfig(string  <span class="argument">$filename</span>) : array</pre>
+                    <p><em>Gets a JSONDB configuration file contents.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$filename</code></td>
+                                    <td><i>The configuration file's name</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__writeConfig" class="method">
+                    <header>
+                        <h4 class="private">_writeConfig()</h4>
+                    </header>
+                    <pre class="signature">_writeConfig(string  <span class="argument">$filename</span>, array  <span class="argument">$config</span>) : boolean</pre>
+                    <p><em>Writes a config file.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$filename</code></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$config</code></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__exists" class="method">
+                    <header>
+                        <h4 class="private">_exists()</h4>
+                    </header>
+                    <pre class="signature">_exists(string  <span class="argument">$filename</span>) : boolean</pre>
+                    <p><em>Checks if a configuration file exist.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$filename</code></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>
