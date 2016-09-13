@@ -25,7 +25,7 @@ menu: "api"
                             <tr><td><a href="#method_getServer" class="public">getServer()</a></td></tr>
                             <tr><td><a href="#method_getDatabase" class="public">getDatabase()</a></td></tr>
                             <tr><td><a href="#method_getTable" class="public">getTable()</a></td></tr>
-                            <tr><td><a href="#method_benchamrk" class="public">benchmark()</a></td></tr>
+                            <tr><td><a href="#method_benchmark" class="public">benchmark()</a></td></tr>
                             <tr><td><a href="#method_createDatabase" class="public">createDatabase()</a></td></tr>
                             <tr><td><a href="#method_disconnect" class="public">disconnect()</a></td></tr>
                             <tr><td><a href="#method_createTable" class="public">createTable()</a></td></tr>
@@ -47,7 +47,7 @@ menu: "api"
                             <tr><td><a href="#method__count" class="protected">_count()</a></td></tr>
                             <tr><td><a href="#method__filter" class="protected">_filter()</a></td></tr>
                             <tr><td><a href="#method__execute" class="private">_execute()</a></td></tr>
-                            <tr><td><a href="#method__getLastRowID" class="private">_getLastRowID()</a></td></tr>
+                            <tr><td><a href="#method__getLastValidRowID" class="private">_getLastValidRowID()</a></td></tr>
                         </tbody>
                     </table>
                 </section>
@@ -132,6 +132,24 @@ menu: "api"
                         </tbody>
                     </table>
                 </article>
+                <article id="property_table" class="property">
+                    <header>
+                        <h4 class="private">$table</h4>
+                    </header>
+                    <pre class="signature">$table : string</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The name of the currently used table</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>string</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
                 <article id="property_username" class="property">
                     <header>
                         <h4 class="private">$username</h4>
@@ -201,6 +219,24 @@ menu: "api"
                                 <td><b>Type</b></td>
                                 <td><i>boolean</i></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryString" class="property">
+                    <header>
+                        <h4 class="private">$queryString</h4>
+                    </header>
+                    <pre class="signature">$queryString : string</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>string</i></td>
+                        </tr>
                         </tbody>
                     </table>
                 </article>
@@ -324,90 +360,288 @@ menu: "api"
                     <header>
                         <h4 class="public">__constuct()</h4>
                     </header>
-                    <pre class="signature">__construct(\JSONDB\Database  <span class="argument">$db</span>) : \JSONDB\Cache</pre>
-                    <p><em>Cache __constructor.</em></p>
-                    <section>
-                        <h5>Parameters</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
-                                    <td><code>$db</code></td>
-                                    <td><i>Database instance to use with Cache</i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section>
-                        <h5>Returns</h5>
-                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
-                    </section>
-                </article>
-                <article id="method_setDatabase" class="method">
-                    <header>
-                        <h4 class="public">setDatabase()</h4>
-                    </header>
-                    <pre class="signature">setDatabase(\JSONDB\Database  <span class="argument">$database</span>) : \JSONDB\Cache</pre>
-                    <p><em>Changes the Database instance used.</em></p>
-                    <section>
-                        <h5>Parameters</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
-                                    <td><code>$database</code></td>
-                                    <td><i>Database class instance</i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section>
-                        <h5>Returns</h5>
-                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
-                    </section>
-                </article>
-                <article id="method_get" class="method">
-                    <header>
-                        <h4 class="public">get()</h4>
-                    </header>
-                    <pre class="signature">get(array|string  <span class="argument">$path</span>) : array|mixed</pre>
-                    <p><em>Calculates the memory usage of a benchmark point.</em></p>
-                    <section>
-                        <h5>Parameters</h5>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td><b>array|string</b></td>
-                                    <td><code>$path</code></td>
-                                    <td><i>The path (or an array of paths) to the table (or tables)</i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </section>
-                    <section>
-                        <h5>Returns</h5>
-                        <p>array|mixed</p>
-                    </section>
-                </article>
-                <article id="method_update" class="method">
-                    <header>
-                        <h4 class="public">update()</h4>
-                    </header>
-                    <pre class="signature">update(string  <span class="argument">$path</span>, array|null  <span class="argument">$data = NULL</span>) : array</pre>
-                    <p><em>Updates the cached data for a table.</em></p>
+                    <pre class="signature">__construct(string <span class="argument">$server</span>, string  <span class="argument">$username</span>, string  <span class="argument">$password</span>, string  <span class="argument">$database = NULL</span> ) : \JSONDB\Database</pre>
+                    <p><em>Database __constructor.</em></p>
                     <section>
                         <h5>Parameters</h5>
                         <table>
                             <tbody>
                                 <tr>
                                     <td><b>string</b></td>
-                                    <td><code>$path</code></td>
-                                    <td><i>The path to the table</i></td>
+                                    <td><code>$server</code></td>
+                                    <td><i>The name of the server to connect to</i></td>
                                 </tr>
                                 <tr>
-                                    <td><b>array|null</b></td>
-                                    <td><code>$data</code></td>
-                                    <td><i>The data to cache for the given table</i></td>
+                                    <td><b>string</b></td>
+                                    <td><code>$username</code></td>
+                                    <td><i>The username used to connect to the server</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$password</code></td>
+                                    <td><i>The password used for the given username</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$database</code></td>
+                                    <td><i>The name of the database to use with the current connection</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_setDatabase" class="method">
+                    <header>
+                        <h4 class="public">setDatabase()</h4>
+                    </header>
+                    <pre class="signature">setDatabase(string  <span class="argument">$database</span>) : \JSONDB\Database</pre>
+                    <p><em>Changes the currently used database.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$database</code></td>
+                                    <td><i>The name of the database</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_setTable" class="method">
+                    <header>
+                        <h4 class="public">setTable()</h4>
+                    </header>
+                    <pre class="signature">get(string  <span class="argument">$table</span>) : \JSONDB\Database</pre>
+                    <p><em>Change the currently used table.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$table</code></td>
+                                    <td><i>The name of the table</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_queryString" class="method">
+                    <header>
+                        <h4 class="public">queryString()</h4>
+                    </header>
+                    <pre class="signature">queryString() : string</pre>
+                    <p><em>Returns the last query.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_getServer" class="method">
+                    <header>
+                        <h4 class="public">getServer()</h4>
+                    </header>
+                    <pre class="signature">getServer() : string</pre>
+                    <p><em>Returns the name of the currently used server.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_getDatabase" class="method">
+                    <header>
+                        <h4 class="public">getDatabase()</h4>
+                    </header>
+                    <pre class="signature">getDatabase() : string</pre>
+                    <p><em>Returns the name of the currently used database.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_getTable" class="method">
+                    <header>
+                        <h4 class="public">getTable()</h4>
+                    </header>
+                    <pre class="signature">getTable() : string</pre>
+                    <p><em>Returns the name of the currently used table.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_benchmark" class="method">
+                    <header>
+                        <h4 class="public">benchmark()</h4>
+                    </header>
+                    <pre class="signature">benchmark() : \JSONDB\Benchmark</pre>
+                    <p><em>Returns the current benchmark instance.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Benchmark.html">\JSONDB\Benchmark</a></p>
+                    </section>
+                </article>
+                <article id="method_createDatabase" class="method">
+                    <header>
+                        <h4 class="public">createDatabase()</h4>
+                    </header>
+                    <pre class="signature">createDatabase(string  <span class="argument">$name</span>) : \JSONDB\Database</pre>
+                    <p><em>Creates a new database in the current server.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$name</code></td>
+                                    <td><i>The name of the new database</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_disconnect" class="method">
+                    <header>
+                        <h4 class="public">disconnect()</h4>
+                    </header>
+                    <pre class="signature">disconnect()</pre>
+                    <p><em>Disconnects from the database.</em></p>
+                </article>
+                <article id="method_createTable" class="method">
+                    <header>
+                        <h4 class="public">createTable()</h4>
+                    </header>
+                    <pre class="signature">createTable(string  <span class="argument">$name</span>, array  <span class="argument">$prototype</span>) : \JSONDB\Database</pre>
+                    <p><em>Creates a new table in the current database.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$name</code></td>
+                                    <td><i>The name of the new table</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$prototype</code></td>
+                                    <td><i>The prototype of the table. An array of field names => fields properties pairs.
+                                        <a href="{{ site.github.url }}/docs/manual/#create-table">Learn more here</a></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_query" class="method">
+                    <header>
+                        <h4 class="public">query()</h4>
+                    </header>
+                    <pre class="signature">query(string  <span class="argument">$query</span>) : mixed</pre>
+                    <p><em>Sends a JQL query to the current database.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$query</code></td>
+                                    <td><i>The JQL query</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>mixed</p>
+                    </section>
+                </article>
+                <article id="method_prepare" class="method">
+                    <header>
+                        <h4 class="public">prepare()</h4>
+                    </header>
+                    <pre class="signature">prepare(string  <span class="argument">$query</span>) : \JSONDB\PreparedQueryStatement</pre>
+                    <p><em>Sends a prepared JQL query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$query</code></td>
+                                    <td><i>The prepared JQL query</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/PreparedQueryStatement.html">\JSONDB\PreparedQueryStatement</a></p>
+                    </section>
+                </article>
+                <article id="method_getTableData" class="method">
+                    <header>
+                        <h4 class="public">getTableData()</h4>
+                    </header>
+                    <pre class="signature">getTableData(string  <span class="argument">$path = NULL</span>) : array</pre>
+                    <p><em>Returns table's data.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string|null</b></td>
+                                    <td><code>$path</code></td>
+                                    <td><i>The path of the table</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -417,15 +651,392 @@ menu: "api"
                         <p>array</p>
                     </section>
                 </article>
-                <article id="method_reset" class="method">
+                <article id="method_queryIsPrepared" class="method">
                     <header>
-                        <h4 class="public">reset()</h4>
+                        <h4 class="public">queryIsPrepared()</h4>
                     </header>
-                    <pre class="signature">reset() : \JSONDB\Cache</pre>
-                    <p><em>Resets the cache.</em></p>
+                    <pre class="signature">queryIsPrepared() : boolean</pre>
+                    <p><em>Checks if the current query is a prepared query.</em></p>
                     <section>
                         <h5>Returns</h5>
-                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Cache.html">\JSONDB\Cache</a></p>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method_queryIsExecuted" class="method">
+                    <header>
+                        <h4 class="public">queryIsExecuted()</h4>
+                    </header>
+                    <pre class="signature">queryIsExecuted() : boolean</pre>
+                    <p><em>Checks if the current query is already executed.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__getDatabasePath" class="method">
+                    <header>
+                        <h4 class="protected">_getDatabasePath()</h4>
+                    </header>
+                    <pre class="signature">_getDatabasePath(string  <span class="argument">$database = NULL</span>) : string</pre>
+                    <p><em>Gets the path to a database.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$database</code></td>
+                                    <td><i>The name of the database</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method__getTablePath" class="method">
+                    <header>
+                        <h4 class="protected">_getTablePath()</h4>
+                    </header>
+                    <pre class="signature">_getTablePath(string|null  <span class="argument">$table = NULL</span>) : array</pre>
+                    <p><em>Returns the path to a table.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string</b></td>
+                                    <td><code>$table</code></td>
+                                    <td><i>The name of the table</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method__getTableContent" class="method">
+                    <header>
+                        <h4 class="protected">_getTableContent()</h4>
+                    </header>
+                    <pre class="signature">_getTableContent(string|null  <span class="argument">$table = NULL</span>) : array</pre>
+                    <p><em>Returns a table's content.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>string|null</b></td>
+                                    <td><code>$table</code></td>
+                                    <td><i>The name of the table</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseValue" class="method">
+                    <header>
+                        <h4 class="protected">_parseValue()</h4>
+                    </header>
+                    <pre class="signature">_parseValue(mixed  <span class="argument">$value</span>, array  <span class="argument">$properties</span>) : string|float|integer|array|boolean|null</pre>
+                    <p><em>Parses a JQL query value.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>mixed</b></td>
+                                    <td><code>$value</code></td>
+                                    <td><i>The value to parse</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$properties</code></td>
+                                    <td><i>The properties to use when parsing value</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">string|float|integer|array|boolean|null</a></p>
+                    </section>
+                </article>
+                <article id="method__select" class="method">
+                    <header>
+                        <h4 class="protected">_select()</h4>
+                    </header>
+                    <pre class="signature">_select(array <span class="argument">$data</span>) : \JSONDB\QueryResult</pre>
+                    <p><em>The JQL select() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$data</code></td>
+                                    <td><i>The table's data to use</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryResult.html">\JSONDB\QueryResult</a></p>
+                    </section>
+                </article>
+                <article id="method__insert" class="method">
+                    <header>
+                        <h4 class="protected">_insert()</h4>
+                    </header>
+                    <pre class="signature">_insert(array <span class="argument">$data</span>) : boolean</pre>
+                    <p><em>The JQL insert() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__replace" class="method">
+                    <header>
+                        <h4 class="protected">_replace()</h4>
+                    </header>
+                    <pre class="signature">_replace(array <span class="argument">$data</span>) : boolean</pre>
+                    <p><em>The JQL replace() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__delete" class="method">
+                    <header>
+                        <h4 class="protected">_delete()</h4>
+                    </header>
+                    <pre class="signature">_delete(array <span class="argument">$data</span>) : boolean</pre>
+                    <p><em>The JQL delete() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__update" class="method">
+                    <header>
+                        <h4 class="protected">_update()</h4>
+                    </header>
+                    <pre class="signature">_update(array <span class="argument">$data</span>) : boolean</pre>
+                    <p><em>The JQL update() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__truncate" class="method">
+                    <header>
+                        <h4 class="protected">_truncate()</h4>
+                    </header>
+                    <pre class="signature">_truncate(array <span class="argument">$data</span>) : boolean</pre>
+                    <p><em>The JQL truncate() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method__count" class="method">
+                    <header>
+                        <h4 class="protected">_count()</h4>
+                    </header>
+                    <pre class="signature">_count(array <span class="argument">$data</span>) : \JSONDB\QueryResult</pre>
+                    <p><em>The JQL count() query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$data</code></td>
+                                <td><i>The table's data to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryResult.html">\JSONDB\QueryResult</a></p>
+                    </section>
+                </article>
+                <article id="method__filter" class="method">
+                    <header>
+                        <h4 class="protected">_filter()</h4>
+                    </header>
+                    <pre class="signature">_filter(array <span class="argument">$data</span>, array  <span class="argument">$filters</span>) : array</pre>
+                    <p><em>Iterates over each values of <code>$data</code> and test them using conditions if <code>$filters</code>.</em><br/>If a value in <code>$data</code> don't pass
+                    any conditions in <code>$filters</code> it will be removed.</p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$data</code></td>
+                                    <td><i>The table's data to iterate over</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$filters</code></td>
+                                    <td><i>Conditions used to remove data which don't pass them</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__execute" class="method">
+                    <header>
+                        <h4 class="private">_execute()</h4>
+                    </header>
+                    <pre class="signature">_execute() : mixed</pre>
+                    <p><em>Executes a query and returns the result</em>.</p>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>mixed</p>
+                    </section>
+                </article>
+                <article id="method__getLastValidRowID" class="method">
+                    <header>
+                        <h4 class="private">_getLastValidRowID()</h4>
+                    </header>
+                    <pre class="signature">_getLastValidRowID(array  <span class="argument">$data</span>, boolean  <span class="argument">$min = TRUE</span>) : integer</pre>
+                    <p><em>Returns the last valid row ID of a table</em>.</p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td><b>array</b></td>
+                                    <td><code>$data</code></td>
+                                    <td><i>The table's data to use</i></td>
+                                </tr>
+                                <tr>
+                                    <td><b>boolean</b></td>
+                                    <td><code>$min</code></td>
+                                    <td><i>Used to check if we have to return the minimal or the maximal valid row ID</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>integer</p>
                     </section>
                 </article>
             </div>

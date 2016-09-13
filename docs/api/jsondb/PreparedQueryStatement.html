@@ -1,0 +1,211 @@
+---
+layout: api_class
+title: "Class PreparedQueryStatement | JSONDB API Documentation | JSONDB PHP Edition"
+menu: "api"
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>PreparedQueryStatement</h2>
+        <p><em>Class PreparedQueryStatement</em></p>
+    </header>
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#method___construct" class="public">__construct()</a></td></tr>
+                        <tr><td><a href="#method_bindValue" class="public">bindValue()</a></td></tr>
+                        <tr><td><a href="#method_execute" class="public">execute()</a></td></tr>
+                        <tr><td><a href="#method__prepareQuery" class="private">_prepareQuery()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#property_database" class="private">$database</a></td></tr>
+                        <tr><td><a href="#property_queryString" class="private">$queryString</a></td></tr>
+                        <tr><td><a href="#property_preparedQueryKeys" class="private">$preparedQueryKeys</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>No constants</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_database" class="property">
+                    <header>
+                        <h4 class="private">$database</h4>
+                    </header>
+                    <pre class="signature">$database : \JSONDB\Database</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The Database class instance to use with the prepared query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><i>\JSONDB\Database</i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_queryString" class="property">
+                    <header>
+                        <h4 class="private">$queryString</h4>
+                    </header>
+                    <pre class="signature">$queryString : string</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The prepared query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>string</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_preparedQueryKeys" class="property">
+                    <header>
+                        <h4 class="private">$preparedQueryKeys</h4>
+                    </header>
+                    <pre class="signature">$preparedQueryKeys : array</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The array of key presents in the prepared query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method___construct" class="method">
+                    <header>
+                        <h4 class="public">__constuct()</h4>
+                    </header>
+                    <pre class="signature">__construct(string  <span class="argument">$query</span>, \JSONDB\Database  <span class="argument">$database</span>)</pre>
+                    <p><em>PreparedQueryStatement __constructor.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$query</code></td>
+                                <td><i>The prepared query</i></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
+                                <td><code>$database</code></td>
+                                <td><i>The Database class instance to use with the prepared query</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method_bindValue" class="method">
+                    <header>
+                        <h4 class="public">bindValue()</h4>
+                    </header>
+                    <pre class="signature">bindValue(string  <span class="argument">$key</span>, string|integer|boolean|array|null  <span class="argument">$value</span>, integer  <span class="argument">$parse_method = \JSONDB\JSONDB::PARAM_STRING</span>)</pre>
+                    <p><em>Binds a value in the prepared query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$key</code></td>
+                                <td><i>The name of the key</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string|integer|boolean|array|null</b></td>
+                                <td><code>$value</code></td>
+                                <td><i>The value which replaces the given key</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$parse_method</code></td>
+                                <td><i>The method used to parse the value</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                </article>
+                <article id="method_execute" class="method">
+                    <header>
+                        <h4 class="public">execute()</h4>
+                    </header>
+                    <pre class="signature">execute() : \JSONDB\QueryResult|boolean</pre>
+                    <p><em>Executes the prepared query.</em></p>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryResult.html">\JSONDB\QueryResult</a>|boolean</p>
+                    </section>
+                </article>
+                <article id="method__prepareQuery" class="method">
+                    <header>
+                        <h4 class="private">_prepareQuery()</h4>
+                    </header>
+                    <pre class="signature">_prepareQuery() : \JSONDB\PreparedQueryStatement</pre>
+                    <p><em>Prepares a query.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/PreparedQueryStatement.html">\JSONDB\PreparedQueryStatement</a></p>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</div>

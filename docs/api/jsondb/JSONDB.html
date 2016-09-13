@@ -1,0 +1,296 @@
+---
+layout: api_class
+title: "Class JSONDB | JSONDB API Documentation | JSONDB PHP Edition"
+menu: "api"
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>JSONDB</h2>
+        <p><em>Class JSONDB</em></p>
+    </header>
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#method___construct" class="public">__construct()</a></td></tr>
+                        <tr><td><a href="#method_getInstance" class="public">getInstance()</a></td></tr>
+                        <tr><td><a href="#method_createServer" class="public">createServer()</a></td></tr>
+                        <tr><td><a href="#method_connect" class="public">connect()</a></td></tr>
+                        <tr><td><a href="#method_quote" class="public">quote()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="#property_instance" class="private">$instance</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                            <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="#constant_param_string" class="">PARAM_STRING</a></td></tr>
+                            <tr><td><a href="#constant_param_int" class="">PARAM_INT</a></td></tr>
+                            <tr><td><a href="#constant_param_bool" class="">PARAM_BOOL</a></td></tr>
+                            <tr><td><a href="#constant_param_null" class="">PARAM_NULL</a></td></tr>
+                            <tr><td><a href="#constant_param_array" class="">PARAM_ARRAY</a></td></tr>
+                            <tr><td><a href="#constant_fetch_array" class="">FETCH_ARRAY</a></td></tr>
+                            <tr><td><a href="#constant_fetch_object" class="">FETCH_OBJECT</a></td></tr>
+                            <tr><td><a href="#constant_fetch_class" class="">FETCH_CLASS</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="constants">
+        <h3>Constants</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="constant_param_string" class="constant">
+                    <header>
+                        <h4 class="">PARAM_STRING</h4>
+                    </header>
+                    <pre class="signature">PARAM_STRING</pre>
+                    <p><em>Parses a value to string for prepared queries.</em></p>
+                </article>
+                <article id="constant_param_int" class="constant">
+                    <header>
+                        <h4 class="">PARAM_INT</h4>
+                    </header>
+                    <pre class="signature">PARAM_INT</pre>
+                    <p><em>Parses a value to integer for prepared queries.</em></p>
+                </article>
+                <article id="constant_param_bool" class="constant">
+                    <header>
+                        <h4 class="">PARAM_BOOL</h4>
+                    </header>
+                    <pre class="signature">PARAM_BOOL</pre>
+                    <p><em>Parses a value to boolean for prepared queries.</em></p>
+                </article>
+                <article id="constant_param_null" class="constant">
+                    <header>
+                        <h4 class="">PARAM_NULL</h4>
+                    </header>
+                    <pre class="signature">PARAM_NULL</pre>
+                    <p><em>Parses a value to null for prepared queries.</em></p>
+                </article>
+                <article id="constant_param_array" class="constant">
+                    <header>
+                        <h4 class="">PARAM_ARRAY</h4>
+                    </header>
+                    <pre class="signature">PARAM_ARRAY</pre>
+                    <p><em>Parses a value to array for prepared queries.</em></p>
+                </article>
+                <article id="constant_fetch_array" class="constant">
+                    <header>
+                        <h4 class="">FETCH_ARRAY</h4>
+                    </header>
+                    <pre class="signature">FETCH_ARRAY</pre>
+                    <p><em>Defines if we fetch results as array.</em></p>
+                </article>
+                <article id="constant_fetch_object" class="constant">
+                    <header>
+                        <h4 class="">FETCH_OBJECT</h4>
+                    </header>
+                    <pre class="signature">FETCH_OBJECT</pre>
+                    <p><em>Defines if we fetch results as object.</em></p>
+                </article>
+                <article id="constant_fetch_class" class="constant">
+                    <header>
+                        <h4 class="">FETCH_CLASS</h4>
+                    </header>
+                    <pre class="signature">FETCH_CLASS</pre>
+                    <p><em>Defines if we fetch results by mapping a defined class.</em></p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_instance" class="property">
+                    <header>
+                        <h4 class="private">$instance</h4>
+                    </header>
+                    <pre class="signature">$instance : \JSONDB\JSONDB</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>Current JSONDB class instance</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><a href="{{ site.github.url }}/docs/api/jsondb/JSONDB.html"><i>\JSONDB\JSONDB</i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method___construct" class="method">
+                    <header>
+                        <h4 class="public">__constuct()</h4>
+                    </header>
+                    <pre class="signature">__construct() : \JSONDB\JSONDB</pre>
+                    <p><em>JSONDB __constructor.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/JSONDB.html">\JSONDB\JSONDB</a></p>
+                    </section>
+                </article>
+                <article id="method_getInstance" class="method">
+                    <header>
+                        <h4 class="public">getInstance()</h4>
+                    </header>
+                    <pre class="signature">getInstance() : \JSONDB\JSONDB</pre>
+                    <p><em>Returns the current JSONDB instance.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/JSONDB.html">\JSONDB\JSONDB</a></p>
+                    </section>
+                    <code class="static">static</code>
+                </article>
+                <article id="method_createServer" class="method">
+                    <header>
+                        <h4 class="public">createServer()</h4>
+                    </header>
+                    <pre class="signature">createServer(string  <span class="argument">$name</span>, string  <span class="argument">$username</span>, string  <span class="argument">$password</span>, boolean  <span class="argument">$connect = FALSE</span>) : \JSONDB\JSONDB|\JSONDB\Database</pre>
+                    <p><em>Creates a new server.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$name</code></td>
+                                <td><i>The server's name</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$username</code></td>
+                                <td><i>The server's username</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$password</code></td>
+                                <td><i>The server's password</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>boolean</b></td>
+                                <td><code>$connect</code></td>
+                                <td><i>Defines if JSONDB have to connect directly to the server after the creation</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/JSONDB.html">\JSONDB\JSONDB</a>|<a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_connect" class="method">
+                    <header>
+                        <h4 class="public">connect()</h4>
+                    </header>
+                    <pre class="signature">connect(string  <span class="argument">$name</span>, string  <span class="argument">$username</span>, string  <span class="argument">$password</span>, string  <span class="argument">$database = NULL</span>) : \JSONDB\Database</pre>
+                    <p><em>Connects to a database.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$name</code></td>
+                                <td><i>The server's name</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$username</code></td>
+                                <td><i>The username used to connect</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$password</code></td>
+                                <td><i>The password used to connect</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$database</code></td>
+                                <td><i>The name of the database</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Database.html">\JSONDB\Database</a></p>
+                    </section>
+                </article>
+                <article id="method_quote" class="method">
+                    <header>
+                        <h4 class="public">quote()</h4>
+                    </header>
+                    <pre class="signature">quote(string  <span class="argument">$value</span>) : string</pre>
+                    <p><em>Escapes reserved characters and quotes a value.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$value</code></td>
+                                <td><i>The value to quote</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                    <section>
+                        <h5>Link</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryParser.html#method_quote">\JSONDB\QueryParser::quote()</a></p>
+                    </section>
+                    <code class="static">static</code>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>

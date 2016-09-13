@@ -12,8 +12,9 @@
         });
 
         $.grid.menuToggle({
+            wrapper: 'section#main',
             menu: 'nav.menu',
-            breakPoint: 768,
+            breakPoint: 1024,
             animation: 'slide-left'
         });
 
@@ -22,7 +23,7 @@
             speed: 2000
         });
 
-        $.grid.affix({
+        var AffixScrollSpy = $.grid.affix({
             element: '.scrollspy',
             offset: {
                 top: function () {
@@ -32,22 +33,31 @@
                     return this.bottom = $('html').outerHeight(!0) - $('#scrollspy-limit').offset().top - $("header#header").height();
                 }
             }
-        }).affix('checkPosition');
+        });
 
-        $.grid.affix({
+        var AffixClassList = $.grid.affix({
             element: '.class-list',
             offset: {
                 top: function(){
-                    return this.top = 0;
+                    return this.top = 1;
                 },
                 bottom: function(){
                     return this.bottom = $('footer#footer').outerHeight(!0);
                 }
             }
-        }).affix('checkPosition');
+        });
 
-        $window.on('scroll.docs.nav', function() {
-            var scrollHeight = $window[0].scrollHeight;
+        $window.on('resize', function() {
+            AffixClassList
+                .affix('setBottom', $('footer#footer').outerHeight(!0))
+                .affix('checkPosition');
+            AffixScrollSpy
+                .affix('setTop', $("article.manual-content").offset().top - $("header#header").height())
+                .affix('setBottom', $('html').outerHeight(!0) - $('#scrollspy-limit').offset().top - $("header#header").height())
+                .affix('checkPosition');
+        });
+
+        $window.on('scroll', function() {
             var scrollTop    = $window.scrollTop();
 
             $(".scrollspy a").each(function() {
