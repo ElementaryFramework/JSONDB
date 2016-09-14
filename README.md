@@ -2,7 +2,7 @@
 Manage local databases with JSON files and JSONDB Query Language (JQL)
 
 [![Build Status](https://travis-ci.org/na2axl/jsondb-php.svg?branch=master)](https://travis-ci.org/na2axl/jsondb-php)
-[![Packagist Version](https://img.shields.io/badge/packagist-v1.1.4-brightgreen.svg)](https://packagist.org/packages/na2axl/jsondb)
+[![Packagist Version](https://img.shields.io/badge/packagist-v1.2.0-brightgreen.svg)](https://packagist.org/packages/na2axl/jsondb)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/na2axl/jsondb-php/blob/master/LICENSE)
 
 
