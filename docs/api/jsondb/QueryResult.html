@@ -1,0 +1,566 @@
+---
+layout: api_class
+title: "Class QueryResult | JSONDB API Documentation | JSONDB PHP Edition"
+menu: api
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>QueryResult</h2>
+        <p><em>Class QueryResult</em></p>
+    </header>
+
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#method___construct" class="public">__construct()</a></td></tr>
+                        <tr><td><a href="#method_valid" class="public">valid()</a></td></tr>
+                        <tr><td><a href="#method_queryString" class="public">queryString()</a></td></tr>
+                        <tr><td><a href="#method_current" class="public">current()</a></td></tr>
+                        <tr><td><a href="#method_next" class="public">next()</a></td></tr>
+                        <tr><td><a href="#method_key" class="public">key()</a></td></tr>
+                        <tr><td><a href="#method_rewind" class="public">rewind()</a></td></tr>
+                        <tr><td><a href="#method_seek" class="public">seek()</a></td></tr>
+                        <tr><td><a href="#method_count" class="public">count()</a></td></tr>
+                        <tr><td><a href="#method_serialize" class="public">serialize()</a></td></tr>
+                        <tr><td><a href="#method_unserialize" class="public">unserialize()</a></td></tr>
+                        <tr><td><a href="#method_offsetExists" class="public">offsetExists()</a></td></tr>
+                        <tr><td><a href="#method_offsetGet" class="public">offsetGet()</a></td></tr>
+                        <tr><td><a href="#method_offsetSet" class="public">offsetSet()</a></td></tr>
+                        <tr><td><a href="#method_offsetUnset" class="public">offsetUnset()</a></td></tr>
+                        <tr><td><a href="#method_fetch" class="public">fetch()</a></td></tr>
+                        <tr><td><a href="#method_setFetchMode" class="public">setFetchMode()</a></td></tr>
+                        <tr><td><a href="#method__setResults" class="private">_setResults()</a></td></tr>
+                        <tr><td><a href="#method__parseResults" class="private-">memory_usage()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#property_key" class="private">$key</a></td></tr>
+                        <tr><td><a href="#property_results" class="private">$results</a></td></tr>
+                        <tr><td><a href="#property_fetchmode" class="private">$fetchMode</a></td></tr>
+                        <tr><td><a href="#property_classname" class="private">$className</a></td></tr>
+                        <tr><td><a href="#property_database" class="private">$database</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>No constants</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+        <div class="grid quarter">
+            <div class="g12">
+                <article>
+                    <h4>Implements</h4>
+                    <p>\Iterator, \SeekableIterator,  \Countable, \Serializable, \ArrayAccess</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_key" class="property">
+                    <header>
+                        <h4 class="private">$key</h4>
+                    </header>
+                    <pre class="signature">$key : integer</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The current key (internal array cursor position)</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>integer</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_results" class="property">
+                    <header>
+                        <h4 class="private">$results</h4>
+                    </header>
+                    <pre class="signature">$results : array</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The array of results</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_fetchmode" class="property">
+                    <header>
+                        <h4 class="private">$fetchMode</h4>
+                    </header>
+                    <pre class="signature">$fetchMode : integer</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The fetch mode</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>integer</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_classname" class="property">
+                    <header>
+                        <h4 class="private">$className</h4>
+                    </header>
+                    <pre class="signature">$className : string</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The class name used for the FETCH_CLASS mode</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>string</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_database" class="property">
+                    <header>
+                        <h4 class="private">$database</h4>
+                    </header>
+                    <pre class="signature">$database : \JSONDB\Database</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>Class Database instance to use with results</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><i>\JSONDB\Database</i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method___construct" class="method">
+                    <header>
+                        <h4 class="public">__construct()</h4>
+                    </header>
+                    <pre class="signature">__construct(array  <span class="argument">$result</span>, \JSONDB\Database  <span class="argument">$database</span>)</pre>
+                    <p><em>QueryResult __constructor.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$result</code></td>
+                                <td><i>The query results to use</i></td>
+                            </tr>
+                            <tr>
+                                <td><a href="{{ site.github.url }}/docs/api/jsondb/Database.html"><b>\JSONDB\Database</b></a></td>
+                                <td><code>$database</code></td>
+                                <td><i>The class Database instance to use</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method_valid" class="method">
+                    <header>
+                        <h4 class="public">valid()</h4>
+                    </header>
+                    <pre class="signature">valid() : boolean</pre>
+                    <p><em>Checks if the current key can be accessed.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Iterator</p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method_queryString" class="method">
+                    <header>
+                        <h4 class="public">queryString()</h4>
+                    </header>
+                    <pre class="signature">queryString() : string</pre>
+                    <p><em>Returns the current query.</em></p>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_current" class="method">
+                    <header>
+                        <h4 class="public">current()</h4>
+                    </header>
+                    <pre class="signature">current() : array|object|\JSONDB\QueryResultObject</pre>
+                    <p><em>Returns the current result.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Iterator</p>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array|object|<a href="{{ site.github.url }}/docs/api/jsondb/QueryResultObject.html">\JSONDB\QueryResultObject</a></p>
+                    </section>
+                </article>
+                <article id="method_next" class="method">
+                    <header>
+                        <h4 class="public">next()</h4>
+                    </header>
+                    <pre class="signature">next()</pre>
+                    <p><em>Seeks the internal array pointer to the next value.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Iterator</p>
+                    </section>
+                </article>
+                <article id="method_key" class="method">
+                    <header>
+                        <h4 class="public">key()</h4>
+                    </header>
+                    <pre class="signature">key() : integer</pre>
+                    <p><em>Returns the value of the current internal array pointer.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Iterator</p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>integer</p>
+                    </section>
+                </article>
+                <article id="method_rewind" class="method">
+                    <header>
+                        <h4 class="public">rewind()</h4>
+                    </header>
+                    <pre class="signature">rewind()</pre>
+                    <p><em>Seeks the internal array pointer to 0.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Iterator</p>
+                    </section>
+                </article>
+                <article id="method_seek" class="method">
+                    <header>
+                        <h4 class="public">seek()</h4>
+                    </header>
+                    <pre class="signature">seek(integer  <span class="argument">$position</span>)</pre>
+                    <p><em>Seeks the internal array pointer to the given position.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\SeekableIterator</p>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                </article>
+                <article id="method_count" class="method">
+                    <header>
+                        <h4 class="public">count()</h4>
+                    </header>
+                    <pre class="signature">count() : integer</pre>
+                    <p><em>Counts results.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Countable</p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>integer</p>
+                    </section>
+                </article>
+                <article id="method_serialize" class="method">
+                    <header>
+                        <h4 class="public">serialize()</h4>
+                    </header>
+                    <pre class="signature">serialize() : string</pre>
+                    <p><em>Serializes results.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Serializable</p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                </article>
+                <article id="method_unserialize" class="method">
+                    <header>
+                        <h4 class="public">unserialize()</h4>
+                    </header>
+                    <pre class="signature">unserialize(string  <span class="argument">$serialized</span>) : \JSONDB\QueryResult</pre>
+                    <p><em>Unserializes a serialized value.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\Serializable</p>
+                    </section>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$serialized</code></td>
+                                <td><i>The serialized value</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryResult.html">\JSONDB\QueryResult</a></p>
+                    </section>
+                </article>
+                <article id="method_offsetExists" class="method">
+                    <header>
+                        <h4 class="public">offsetExists()</h4>
+                    </header>
+                    <pre class="signature">offsetExists(integer  <span class="argument">$offset</span>) : boolean</pre>
+                    <p><em>Checks if a result exist at the given offset.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\ArrayAccess</p>
+                    </section>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$offset</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>boolean</p>
+                    </section>
+                </article>
+                <article id="method_offsetGet" class="method">
+                    <header>
+                        <h4 class="public">offsetGet()</h4>
+                    </header>
+                    <pre class="signature">offsetGet(integer  <span class="argument">$offset</span>) : array</pre>
+                    <p><em>Returns the result at the given offset.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\ArrayAccess</p>
+                    </section>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$offset</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method_offsetSet" class="method">
+                    <header>
+                        <h4 class="public">offsetSet()</h4>
+                    </header>
+                    <pre class="signature">offsetSet(integer  <span class="argument">$offset</span>, array  <span class="argument">$value</span>)</pre>
+                    <p><em>Changes the result value at the given offset.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\ArrayAccess</p>
+                    </section>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$offset</code></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$value</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                </article>
+                <article id="method_offsetUnset" class="method">
+                    <header>
+                        <h4 class="public">offsetUnset()</h4>
+                    </header>
+                    <pre class="signature">offsetUnset(integer  <span class="argument">$offset</span>)</pre>
+                    <p><em>Unsets a result at the given offset.</em></p>
+                    <section>
+                        <h5>Overwrites</h5>
+                        <p>\ArrayAccess</p>
+                    </section>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$offset</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method_fetch" class="method">
+                    <header>
+                        <h4 class="public">fetch()</h4>
+                    </header>
+                    <pre class="signature">fetch(integer  <span class="argument">$mode = NULL</span>, string  <span class="argument">$className = NULL</span>) : array|boolean|\JSONDB\QueryResultObject</pre>
+                    <p><em>Fetch for results.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$mode</code></td>
+                                <td><i>The fetch mode</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$className</code></td>
+                                <td>The class name (required when <code>$mode</code> is <code>\JSONDB\JSONDB::FETCH_CLASS</code>)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array|boolean|<a href="{{ site.github.url }}/docs/api/jsondb/QueryResultObject.html">\JSONDB\QueryResultObject</a></p>
+                    </section>
+                </article>
+                <article id="method_setFetchMode" class="method">
+                    <header>
+                        <h4 class="public">setFetchMode()</h4>
+                    </header>
+                    <pre class="signature">setFetchMode(integer  <span class="argument">$mode = NULL</span>, string  <span class="argument">$className = NULL</span>) : array|boolean|\JSONDB\QueryResultObject</pre>
+                    <p><em>Changes the fetch mode.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>integer</b></td>
+                                <td><code>$mode</code></td>
+                                <td><i>The fetch mode</i></td>
+                            </tr>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$className</code></td>
+                                <td>The class name (required when <code>$mode</code> is <code>\JSONDB\JSONDB::FETCH_CLASS</code>)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/QueryResult.html">\JSONDB\QueryResult</a></p>
+                    </section>
+                </article>
+                <article id="method__setResults" class="method">
+                    <header>
+                        <h4 class="public">_setResults()</h4>
+                    </header>
+                    <pre class="signature">_setResults(array  <span class="argument">$results</span>)</pre>
+                    <p><em>Changes the value of <code>$results</code>.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$results</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method__parseResults" class="method">
+                    <header>
+                        <h4 class="public">_parseResults()</h4>
+                    </header>
+                    <pre class="signature">_parseResults()</pre>
+                    <p><em>Adds information in <code>$results</code>.</em></p>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>

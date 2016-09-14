@@ -1,0 +1,22 @@
+---
+layout: post
+menu: blog
+title: "v1.1.2 released"
+date: 2016-08-29
+id: "v1.1.2-released"
+excerpt: "The version 1.1.2 of JSONDB is released! Features and known issues, learn more about this version here..."
+---
+<h3>Features</h3>
+<ul class="default">
+    <li>Tables can now be linked on creation and when executing the select() query</li>
+    <li>All servers are now created in a default folder managed by JSONDB</li>
+    <li>A .htaccess file is used to block any direct access to a server via a browser</li>
+    <li>Table's file structure have changed, optimized for table's links</li>
+</ul>
+<h3>Known issues</h3>
+<ol class="default">
+    <li>Some bugs occur on query execution when there are no primary key in the table</li>
+    <li>insert() and replace() queries don't check for existing unique key</li>
+    <li>replace() query doesn't work well</li>
+</ol>
+<p><a href="https://github.com/na2axl/jsondb-php/issues/new">Open an issue</a></p>

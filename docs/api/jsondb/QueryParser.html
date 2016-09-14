@@ -1,0 +1,542 @@
+---
+layout: api_class
+title: "Class QueryParser | JSONDB API Documentation | JSONDB PHP Edition"
+menu: "api"
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>QueryParser</h2>
+        <p><em>Class QueryParser</em></p>
+    </header>
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#method_quote" class="public">quote()</a></td></tr>
+                        <tr><td><a href="#method_parse" class="public">parse()</a></td></tr>
+                        <tr><td><a href="#method__parseValue" class="protected">_parseValue()</a></td></tr>
+                        <tr><td><a href="#method__parseOrderExtension" class="private">_parseOrderExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseWhereExtension" class="private">_parseWhereExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseWhereExtensionCondition" class="private">_parseWhereExtensionCondition()</a></td></tr>
+                        <tr><td><a href="#method__parseAndExtension" class="private">_parseAndExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseLimitExtension" class="private">_parseLimitExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseInExtension" class="private">_parseInExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseWithExtension" class="private">_parseWithExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseAsExtension" class="private">_parseAsExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseGroupExtension" class="private">_parseGroupExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseOnExtension" class="private">_parseOnExtension()</a></td></tr>
+                        <tr><td><a href="#method__parseLinkExtension" class="private">_parseLinkExtension()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#property_notParsedQuery" class="private">$notParsedQuery</a></td></tr>
+                        <tr><td><a href="#property_parsedQuery" class="private">$parsedQuery</a></td></tr>
+                        <tr><td><a href="#property_supportedQueries" class="private">$supportedQueries</a></td></tr>
+                        <tr><td><a href="#property_operators" class="private">$operators</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#constant_trim_char">TRIM_CHAR</a></td></tr>
+                        <tr><td><a href="#constant_escape_char">ESCAPE_CHAR</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="constants">
+        <h3>Constants</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="constant_trim_char" class="constant">
+                    <header>
+                        <h4>TRIM_CHAR</h4>
+                    </header>
+                    <pre class="signature">TRIM_CHAR</pre>
+                    <p><em>Reserved query's characters</em></p>
+                </article>
+                <article id="constant_escape_char" class="constant">
+                    <header>
+                        <h4>ESCAPE_CHAR</h4>
+                    </header>
+                    <pre class="signature">ESCAPE_CHAR</pre>
+                    <p><em>Reserved query's characters</em></p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_notParsedQuery" class="property">
+                    <header>
+                        <h4 class="private">$notParsedQuery</h4>
+                    </header>
+                    <pre class="signature">$notParsedQuery : string</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The not parsed query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>string</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_parsedQuery" class="property">
+                    <header>
+                        <h4 class="private">$parsedQuery</h4>
+                    </header>
+                    <pre class="signature">$parsedQuery : array</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The parsed query</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_supportedQueries" class="property">
+                    <header>
+                        <h4 class="private">$supportedQueries</h4>
+                    </header>
+                    <pre class="signature">$supportedQueries : array</pre>
+                    <code class="static">static</code>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The array of supported JQL queries</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <article id="property_operators" class="property">
+                    <header>
+                        <h4 class="private">$operators</h4>
+                    </header>
+                    <pre class="signature">$operators : array</pre>
+                    <code class="static">static</code>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The array of supported JQL operators</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method_quote" class="method">
+                    <header>
+                        <h4 class="public">quote()</h4>
+                    </header>
+                    <pre class="signature">quote(string  <span class="argument">$value</span>) : string</pre>
+                    <p><em>Quotes a value and escape reserved characters.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$value</code></td>
+                                <td><i>The value to quote</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string</p>
+                    </section>
+                    <code class="static">static</code>
+                </article>
+                <article id="method_parse" class="method">
+                    <header>
+                        <h4 class="public">parse()</h4>
+                    </header>
+                    <pre class="signature">parse(string  <span class="argument">$query</span>) : array</pre>
+                    <p><em>Parses a query.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$query</code></td>
+                                <td><i>The JQL query to parse</i></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseValue" class="method">
+                    <header>
+                        <h4 class="protected">_parseValue()</h4>
+                    </header>
+                    <pre class="signature">_parseValue(mixed  <span class="argument">$value</span>) : string|integer|boolean|array|null</pre>
+                    <p><em>Parses a value.</em></p>
+                    <p>It will convert (cast if necessary) a value to its true type</p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>mixed</b></td>
+                                <td><code>$value</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>string|integer|boolean|array|null</p>
+                    </section>
+                </article>
+                <article id="method__parseOrderExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseOrderExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseOrderExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an order() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseWhereExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseWhereExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseWhereExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses a where() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseWhereExtensionCondition" class="method">
+                    <header>
+                        <h4 class="private">_parseWhereExtensionCondition()</h4>
+                    </header>
+                    <pre class="signature">_parseWhereExtensionCondition(string  <span class="argument">$condition</span>) : array</pre>
+                    <p><em>Parses a where() extension condition.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$condition</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseAndExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseAndExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseAndExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an and() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseLimitExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseLimitExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseLimitExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses a limit() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseInExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseInExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseInExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an in() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseWithExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseWithExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseWithExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an with() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseAsExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseAsExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseAsExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an as() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseGroupExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseGroupExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseGroupExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses a group() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseOnExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseOnExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseOnExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses an on() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+                <article id="method__parseLinkExtension" class="method">
+                    <header>
+                        <h4 class="private">_parseLinkExtension()</h4>
+                    </header>
+                    <pre class="signature">_parseLinkExtension(string  <span class="argument">$clause</span>) : array</pre>
+                    <p><em>Parses a link() extension.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$clause</code></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>array</p>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</div>

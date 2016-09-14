@@ -10,7 +10,7 @@ body {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
-    margin-top: 4em;
+    margin: 0;
 }
 
 body div.grid-phone-menu-toggle-button {
@@ -88,12 +88,11 @@ header#header section.nav nav ul li a {
 }
 
 section#main {
-    padding: 2.5em 4em;
-    margin: 0;
+    padding: 6.5em 4em 2.5em 4em;
 }
 
 section#main.no-padding {
-    padding: 0;
+    padding: 4em 0 0 0;
 }
 
 section#main nav.grid-phone-menu {
@@ -127,6 +126,7 @@ section#main aside.class-list {
     padding-bottom: 2.5em;
     padding-right: 4em;
     text-align: right;
+    background-color: #333;
 }
 
 section#main aside.class-list ul {
@@ -237,6 +237,13 @@ section#main section.class-desc .protected::before {
     margin-right: 5px;
 }
 
+section#main section.class-desc .class::before {
+    color: #06c;
+    font-family: FontAwesome;
+    content: '\f1b2';
+    margin-right: 5px;
+}
+
 section#main section.class-desc article.property,
 section#main section.class-desc article.method,
 section#main section.class-desc article.constant {
@@ -258,6 +265,44 @@ section#main section.class-desc code.static {
     color: #fff;
     padding: 5px;
     font-size: 0.8em;
+}
+
+section#main div.class-hide-list,
+section#main div.class-show-list {
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    text-align: center;
+    cursor: pointer;
+}
+
+section#main div.class-show-list {
+    background-color: #333;
+    bottom: 0;
+    right: 0;
+}
+
+section#main div.class-hide-list {
+    background-color: #fff;
+    display: none;
+    top: 0;
+    left: 0;
+}
+
+section#main div.class-show-list::before,
+section#main div.class-hide-list::before {
+    line-height: 48px;
+    font-family: FontAwesome;
+}
+
+section#main div.class-show-list::before {
+    color: #fff;
+    content: '\f176';
+}
+
+section#main div.class-hide-list::before {
+    color: #333;
+    content: '\f175';
 }
 
 section#main section.welcome > header {
@@ -290,6 +335,10 @@ section#main article.box {
     overflow: hidden;
 }
 
+section#main article.box.disabled {
+    opacity: 0.5;
+}
+
 section#main article.box.full {
 	width: 100%;
 }
@@ -314,19 +363,24 @@ section#main div.content {
     line-height: 1.25em;
 }
 
-section#main section.features article.box {
+section#main section.featured article.box {
     text-align: center;
 }
 
-section#main section.features article.box div.content {
+section#main section.featured article.box header {
+    margin: 1em;
+    border-bottom: 1px solid rgba(95, 130, 185, 1);
+}
+
+section#main section.featured article.box div.content {
     font-size: 1.35em;
 }
 
-section#main section.features article.box:hover footer {
+section#main section.featured article.box:hover footer {
     bottom: 0;
 }
 
-section#main section.features article.box footer {
+section#main section.featured article.box footer {
     position: relative;
     background-color: rgba(95, 130, 185, 1);
     font-weight: bold;
@@ -369,7 +423,7 @@ section#main section.links article.box footer a::before {
 }
 
 section#main section.links article.box footer a,
-section#main section.features article.box footer a {
+section#main section.featured article.box footer a {
 	border-bottom: none;
 	color: #fff;
 }
@@ -441,6 +495,7 @@ section#main section.blog.post header h2 {
     margin-bottom: 0;
 }
 
+section#main section.links header span.meta,
 section#main section.blog.post header span.meta {
     font-size: 0.75em;
 }
@@ -614,6 +669,23 @@ pre.signature span.argument {
     font-weight: bold;
 }
 
+.tooltip-default {
+    border-radius: 0;
+    border: 2px solid #fff;
+    background: #fff;
+}
+
+.tooltip-default .tooltip-content {
+    line-height: 16px;
+    padding: 8px 10px;
+    overflow: hidden;
+    color: rgba(95, 135, 180, 1) !important;
+}
+
+.tooltip-default .tooltip-content * {
+    color: rgba(95, 135, 180, 1) !important;
+}
+
 @media screen and (max-width: 480px) {
     body, select, input[type="text"], input[type="password"], input[type="email"], textarea {
         font-size: 11pt;
@@ -627,14 +699,14 @@ pre.signature span.argument {
     }
 
     section#main {
-        padding: 1.25em 2em;
+        padding: 5.25em 2em;
     }
 
     section#main section.welcome > header {
         font-size: 2em;
     }
 
-    section#main section.features article.box {
+    section#main section.featured article.box {
         font-size: 0.75em;
     }
 
@@ -646,8 +718,16 @@ pre.signature span.argument {
         padding: 1.25em 2em;
     }
 
+    section#main aside.class-list {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: relative !important;
+        top: 0 !important;
+    }
+
     footer#footer {
-        padding: 2em;
+        padding: 4em 2em;
     }
 
     footer#footer ul#copyright {
@@ -684,7 +764,7 @@ pre.signature span.argument {
     }
 
     section#main {
-        padding: 1.25em 2em;
+        padding: 5.25em 2em;
     }
 
     section#main section.welcome > header {
@@ -694,6 +774,14 @@ pre.signature span.argument {
     section#main section.class-desc {
         background-color: #fff;
         padding: 1.25em 2em;
+    }
+
+    section#main aside.class-list {
+        width: 100%;
+        height: 100%;
+        position: relative !important;
+        top: 0 !important;
+        display: none;
     }
 
     section#main aside {
@@ -734,10 +822,10 @@ pre.signature span.argument {
     }
 
     section#main {
-        padding: 1.25em 2em;
+        padding: 5.25em 2em;
     }
 
-    section#main section.features article.box {
+    section#main section.featured article.box {
         font-size: 0.8em;
     }
 

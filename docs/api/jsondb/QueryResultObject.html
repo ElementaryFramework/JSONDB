@@ -1,0 +1,154 @@
+---
+layout: api_class
+title: "Class QueryResultObject | JSONDB API Documentation | JSONDB PHP Edition"
+menu: api
+---
+<div class="content">
+    <header class="intro">
+        <h2><small>\JSONDB\</small>QueryResultObject</h2>
+        <p><em>Class QueryResultObject</em></p>
+    </header>
+
+    <section id="summary">
+        <h3>Summary</h3>
+        <div class="grid quarter">
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#methods">Methods</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#method___construct" class="public">__construct()</a></td></tr>
+                        <tr><td><a href="#method___get" class="public">__get()</a></td></tr>
+                        <tr><td><a href="#method__setResult" class="private">_setResult()</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#properties">Properties</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><a href="#property_result" class="private">$result</a></td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <div class="g4">
+                <section>
+                    <table>
+                        <thead>
+                        <tr><td><a href="#constants">Constants</a></td></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>No constants</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties">
+        <h3>Properties</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="property_result" class="property">
+                    <header>
+                        <h4 class="private">$result</h4>
+                    </header>
+                    <pre class="signature">$result : array</pre>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><b>Description</b></td>
+                            <td><i>The result</i></td>
+                        </tr>
+                        <tr>
+                            <td><b>Type</b></td>
+                            <td><i>array</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h3>Methods</h3>
+        <div class="grid quarter">
+            <div class="g12">
+                <article id="method___construct" class="method">
+                    <header>
+                        <h4 class="public">__construct()</h4>
+                    </header>
+                    <pre class="signature">__construct(array  <span class="argument">$result_array</span>)</pre>
+                    <p><em>QueryResultObject __constructor.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$result_array</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+                <article id="method___get" class="method">
+                    <header>
+                        <h4 class="public">__get()</h4>
+                    </header>
+                    <pre class="signature">__get(string <span class="argument">$name</span>) : mixed</pre>
+                    <p><em>Returns a row value if the given row name exist in the result.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>string</b></td>
+                                <td><code>$name</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>Throws</h5>
+                        <p><a href="{{ site.github.url }}/docs/api/jsondb/Exception.html">\JSONDB\Exception</a></p>
+                    </section>
+                    <section>
+                        <h5>Returns</h5>
+                        <p>mixed</p>
+                    </section>
+                </article>
+                <article id="method__setResult" class="method">
+                    <header>
+                        <h4 class="private">_setResult()</h4>
+                    </header>
+                    <pre class="signature">_setResult(array  <span class="argument">$result</span>)</pre>
+                    <p><em>Sets the result to use.</em></p>
+                    <section>
+                        <h5>Parameters</h5>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><b>array</b></td>
+                                <td><code>$result</code></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>
