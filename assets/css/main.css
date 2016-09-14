@@ -363,6 +363,11 @@ section#main div.content {
     line-height: 1.25em;
 }
 
+section#main div.content ul,
+section#main div.content ol {
+    margin-bottom: 2em;
+}
+
 section#main section.featured article.box {
     text-align: center;
 }
@@ -468,19 +473,6 @@ section#main aside.summary ul li a.current {
     font-style: normal;
     opacity: 1;
 }
-
-/*section#main aside.summary ul li.active::before {*/
-    /*content: ' ';*/
-    /*position: absolute;*/
-    /*left: 0;*/
-    /*top: 0;*/
-    /*height: 8px;*/
-    /*width: 8px;*/
-    /*border-bottom: 8px solid transparent;*/
-    /*border-right: 8px solid transparent;*/
-    /*border-left: 8px solid #fff;*/
-    /*border-top: 8px solid transparent;*/
-/*}*/
 
 section#main aside.summary ul li:last-child {
     padding-bottom: 0;
