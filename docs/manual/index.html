@@ -253,10 +253,10 @@ $db-&gt;query("users.truncate()");</code></pre>
 										<pre class="lang-php line-numbers"><code>try {
     $jsondb = new \JSONDB\JSONDB();
 
-    $jsondb-&gt;createServer('test_server', 'root', '', TRUE);
+    $db = $jsondb-&gt;createServer('test_server', 'root', '', TRUE);
 
-    $db = $jsondb-&gt;createDatabase('test_database')
-                 -&gt;setDatabase('test_database'); // Yes, is chainable ! ;-)
+    $db-&gt;createDatabase('test_database')
+       -&gt;setDatabase('test_database'); // Yes, is chainable ! ;-)
 
     $db-&gt;createTable('users',
                      array('id' => array('type' => 'int', 'auto_increment' => TRUE),
