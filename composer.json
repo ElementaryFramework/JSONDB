@@ -1,24 +1,22 @@
 {
-    "name": "na2axl/jsondb",
+    "name": "elementaryframework/jsondb",
     "description": "Manage JSON files as databases with JSON Query Language (JQL).",
     "keywords": ["database", "file", "json", "nosql", "db"],
-    "homepage": "https://github.com/na2axl/jsondb-php",
+    "homepage": "https://github.com/ElementaryFramework/JSONDB",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Axel Nana",
-            "email": "ax.lnana@outlook.com",
-            "homepage": "https://tutorialcenters.tk",
-            "role": "Developer"
+            "email": "ax.lnana@outlook.com"
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": "^7.1.10"
     },
     "autoload": {
         "psr-4": {
-            "JSONDB\\": "src/JSONDB/"
+            "ElementaryFramework\\JSONDB\\": "src/JSONDB/"
         }
     }
 }
