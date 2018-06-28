@@ -38,6 +38,9 @@
 
 namespace ElementaryFramework\JSONDB\Utilities;
 
+use ElementaryFramework\JSONDB\JSONDB;
+use ElementaryFramework\JSONDB\JSONDBConfig;
+
 /**
  * Class Configuration
  *
@@ -108,7 +111,7 @@ class Configuration
     public static function getConfig(string $filename): array
     {
         if (self::_exists($filename)) {
-            return json_decode(file_get_contents(realpath(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "{$filename}.json")), true);
+            return json_decode(file_get_contents(self::_getPath($filename)), true);
         } else {
             self::_writeConfig($filename, array());
             return array();
@@ -125,7 +128,7 @@ class Configuration
      */
     private static function _writeConfig(string $filename, array $config): bool
     {
-        return (bool)file_put_contents(realpath(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "{$filename}.json"), json_encode($config));
+        return (bool)file_put_contents(self::_getPath($filename), json_encode($config));
     }
 
     /**
@@ -137,6 +140,18 @@ class Configuration
      */
     private static function _exists(string $filename): bool
     {
-        return file_exists(realpath(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "{$filename}.json"));
+        return file_exists(self::_getPath($filename));
+    }
+
+    /**
+     * Gets the path to a config file.
+     *
+     * @param string $filename The config file name.
+     *
+     * @return string
+     */
+    private static function _getPath(string $filename): string
+    {
+        return Util::makePath(JSONDB::getConfigValue(JSONDBConfig::CONFIG_STORAGE_PATH), "config", "{$filename}.json");
     }
 }

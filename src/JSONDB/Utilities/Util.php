@@ -90,4 +90,18 @@ class Util
             throw new IOException("JSONDB Error: Unable to get a lock on the table file.");
         }
     }
+
+    /**
+     * Build a path from parts.
+     *
+     * @param string ...$parts The parts of the path
+     *
+     * @return string
+     */
+    public static function makePath(string ...$parts): string
+    {
+        return implode(DIRECTORY_SEPARATOR, array_map(function ($item) {
+                return trim($item, "\\/");
+            }, $parts)) . DIRECTORY_SEPARATOR;
+    }
 }

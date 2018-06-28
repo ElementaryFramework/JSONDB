@@ -38,11 +38,16 @@
 
 namespace ElementaryFramework\JSONDB;
 
-use ElementaryFramework\JSONDB\Utilities\Configuration;
 use ElementaryFramework\JSONDB\Data\Database;
+use ElementaryFramework\JSONDB\Exceptions\AuthenticationException;
+use ElementaryFramework\JSONDB\Exceptions\DatabaseException;
+use ElementaryFramework\JSONDB\Exceptions\ServerException;
+use ElementaryFramework\JSONDB\Query\QueryParser;
+use ElementaryFramework\JSONDB\Utilities\Configuration;
+use ElementaryFramework\JSONDB\Utilities\Util;
 
 /**
- * Query Result Object
+ * JSON Databases Manager
  *
  * @package  JSONDB
  * @author   Axel Nana <ax.lnana@outlook.com>
@@ -104,24 +109,86 @@ class JSONDB
     const FETCH_CLASS = 6;
 
     /**
+     * The JSONDB configuration to use with all
+     * instances.
+     *
+     * @var JSONDBConfig
+     */
+    private static $_configuration = null;
+
+    /**
+     * Sets the JSONDB configuration associated to all instances.
+     *
+     * @param JSONDBConfig $config The configuration.
+     */
+    public static function setConfig(JSONDBConfig $config)
+    {
+        self::$_configuration = $config;
+    }
+
+    /**
+     * Gets the value of the given configuration's name.
+     *
+     * @param string $value The configuration value name.
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public static function getConfigValue(string $value)
+    {
+        if (self::$_configuration instanceof JSONDBConfig) {
+            return self::$_configuration->{"get{$value}"}();
+        } else {
+            switch ($value) {
+                case "StoragePath":
+                    return dirname(dirname(__DIR__));
+
+                default:
+                    throw new \Exception("Invalid configuration value queried.");
+            }
+        }
+    }
+
+    /**
+     * Escapes reserved characters and quotes a value.
+     *
+     * @param string $value The value to quote.
+     *
+     * @uses QueryParser::quote()
+     *
+     * @return string
+     */
+    public static function quote($value)
+    {
+        return QueryParser::quote($value);
+    }
+
+    /**
      * Creates a new server.
+     *
      * @param string $name The server's path
      * @param string $username The server's username
      * @param string $password The server's user password
      * @param bool $connect If JSONDB connects directly to the server after creation
+     *
      * @return JSONDB|Database
-     * @throws Exception
+     *
+     * @throws ServerException
+     * @throws DatabaseException
+     * @throws AuthenticationException
      */
     public function createServer(string $name, string $username, string $password, bool $connect = false)
     {
-        $path = dirname(dirname(__DIR__)) . '/servers/' . $name;
+        $path = Util::makePath(self::getConfigValue(JSONDBConfig::CONFIG_STORAGE_PATH), "servers", $name);
+
         if (isset($path, $username, $password)) {
             if (file_exists($path) || is_dir($path)) {
-                throw new Exception("JSONDB Error: Can't create server \"{$path}\", the directory already exists.");
+                throw new ServerException("JSONDB Error: Can't create server \"{$path}\", the directory already exists.");
             }
 
             if (!@mkdir($path, 0777, true) && !is_dir($path)) {
-                throw new Exception("JSONDB Error: Can't create the server \"{$path}\". Maybe you don't have write access.");
+                throw new ServerException("JSONDB Error: Can't create the server \"{$path}\". Maybe you don't have write access.");
             }
 
             chmod($path, 0777);
@@ -146,29 +213,27 @@ class JSONDB
      * @param string $username The username used to login
      * @param string $password The password used to login
      * @param string $database The name of the database
-     * @throws Exception
+     *
      * @return Database
+     *
+     * @throws DatabaseException
+     * @throws AuthenticationException
      */
     public function connect(string $server, string $username, string $password, string $database = null): Database
     {
         return new Database($server, $username, $password, $database);
     }
 
+    /**
+     * Checks if a server exists.
+     *
+     * @param string $name The name of the server.
+     *
+     * @return bool
+     */
     public function serverExists(string $name): bool
     {
-        $path = dirname(dirname(__DIR__)) . '/servers/' . $name;
-        return file_exists($path) || is_dir($path);
+        $path = Util::makePath(self::getConfigValue(JSONDBConfig::CONFIG_STORAGE_PATH), "servers", $name);
+        return file_exists($path) && is_dir($path);
     }
-
-    /**
-     * Escapes reserved characters and quotes a value
-     * @param string $value
-     * @link QueryParser::quote
-     * @return string
-     */
-    public static function quote($value)
-    {
-        return QueryParser::quote($value);
-    }
-
 }
