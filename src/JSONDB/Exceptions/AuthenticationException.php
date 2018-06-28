@@ -44,7 +44,7 @@ namespace ElementaryFramework\JSONDB\Exceptions;
  * @package  JSONDB
  * @category Exceptions
  * @author   Axel Nana <ax.lnana@outlook.com>
- * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/Data/Database
+ * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/Exceptions/AuthenticationException
  */
 class AuthenticationException extends \Exception
 {
