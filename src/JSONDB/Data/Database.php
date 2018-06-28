@@ -42,6 +42,7 @@ use ElementaryFramework\JSONDB\Exceptions\AuthenticationException;
 use ElementaryFramework\JSONDB\Exceptions\DatabaseException;
 use ElementaryFramework\JSONDB\JSONDB;
 use ElementaryFramework\JSONDB\JSONDBConfig;
+use ElementaryFramework\JSONDB\Query\PreparedQueryStatement;
 use ElementaryFramework\JSONDB\Query\Query;
 use ElementaryFramework\JSONDB\Utilities\Benchmark;
 use ElementaryFramework\JSONDB\Utilities\Configuration;
@@ -286,7 +287,7 @@ class Database
      */
     public function exists(string $database): bool
     {
-        return $this->isWorkingDatabase() && file_exists(self::getDatabasePath($this->_serverName, $database));
+        return file_exists(self::getDatabasePath($this->_serverName, $database));
     }
 
     /**
@@ -298,7 +299,7 @@ class Database
      */
     public function tableExists(string $name): bool
     {
-        return file_exists(self::getTablePath($this->_serverName, $this->_databaseName, $name));
+        return $this->isWorkingDatabase() && file_exists(self::getTablePath($this->_serverName, $this->_databaseName, $name));
     }
 
     /**
@@ -382,7 +383,7 @@ class Database
             );
             $aiExist = false;
 
-            foreach ($prototype as $field => $prop) {
+            foreach ($prototype as $field => &$prop) {
                 $hasAi = array_key_exists('auto_increment', $prop);
                 $hasPk = array_key_exists('primary_key', $prop);
                 $hasUk = array_key_exists('unique_key', $prop);
@@ -447,7 +448,7 @@ class Database
                             switch ($fType) {
                                 case "bool":
                                 case "boolean":
-                                    if (null !== $prototype[$field]["default"]) {
+                                    if (array_key_exists("default", $prototype[$field]) && null !== $prototype[$field]["default"]) {
                                         $prototype[$field]["default"] = $prototype[$field]["default"] === true;
                                     }
                                     unset($prototype[$field]["max_length"]);
@@ -456,7 +457,7 @@ class Database
                                 case "int":
                                 case "integer":
                                 case "number":
-                                    if (null !== $prototype[$field]["default"]) {
+                                    if (array_key_exists("default", $prototype[$field]) && null !== $prototype[$field]["default"]) {
                                         $prototype[$field]["default"] = intval($prototype[$field]["default"]);
                                     }
                                     unset($prototype[$field]["max_length"]);
@@ -464,19 +465,19 @@ class Database
 
                                 case "float":
                                 case "decimal":
-                                    if (null !== $prototype[$field]["max_length"]) {
+                                    if (array_key_exists("max_length", $prototype[$field]) && null !== $prototype[$field]["max_length"]) {
                                         $prototype[$field]["max_length"] = intval($prototype[$field]["max_length"]);
                                     }
-                                    if (null !== $prototype[$field]["default"]) {
+                                    if (array_key_exists("default", $prototype[$field]) && null !== $prototype[$field]["default"]) {
                                         $prototype[$field]["default"] = floatval(number_format($prototype[$field]["default"], $prototype[$field]["max_length"], '.', ''));
                                     }
                                     break;
 
                                 case "string":
-                                    if (null !== $prototype[$field]["max_length"]) {
+                                    if (array_key_exists("max_length", $prototype[$field]) && null !== $prototype[$field]["max_length"]) {
                                         $prototype[$field]["max_length"] = intval($prototype[$field]["max_length"]);
                                     }
-                                    if (null !== $prototype[$field]["default"]) {
+                                    if (array_key_exists("default", $prototype[$field]) && null !== $prototype[$field]["default"]) {
                                         $prototype[$field]["default"] = substr(strval($prototype[$field]["default"]), 0, $prototype[$field]["max_length"]);
                                     }
                                     break;
@@ -493,6 +494,7 @@ class Database
 
                 array_push($fields, $field);
             }
+            unset($prop);
 
             $tableProperties = array_merge($properties, $prototype);
             array_unshift($fields, '#rowid');
@@ -518,9 +520,12 @@ class Database
 
     /**
      * Sends a JSONDB query.
+     *
      * @param string $query The query.
-     * @throws Exception
+     *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function query(string $query)
     {
@@ -529,7 +534,9 @@ class Database
 
     /**
      * Sends a prepared query.
+     *
      * @param string $query The query
+     *
      * @return PreparedQueryStatement
      */
     public function prepare(string $query)
