@@ -40,10 +40,12 @@ namespace ElementaryFramework\JSONDB\Data;
 
 use ElementaryFramework\JSONDB\Exceptions\AuthenticationException;
 use ElementaryFramework\JSONDB\Exceptions\DatabaseException;
+use ElementaryFramework\JSONDB\JSONDB;
+use ElementaryFramework\JSONDB\JSONDBConfig;
+use ElementaryFramework\JSONDB\Query\Query;
 use ElementaryFramework\JSONDB\Utilities\Benchmark;
 use ElementaryFramework\JSONDB\Utilities\Configuration;
 use ElementaryFramework\JSONDB\Utilities\Util;
-use ElementaryFramework\JSONDB\Query\Query;
 
 /**
  * Class Database
@@ -100,7 +102,7 @@ class Database
                 throw new AuthenticationException("JSONDB Error: There is no registered server with the name \"{$server}\".");
             }
 
-            foreach ($config[$server] as $user) {
+            foreach ($config as $user) {
                 $userFound = $user["username"] === Util::crypt($username) && $user["password"] === Util::crypt($password);
                 if ($userFound) break;
             }
@@ -110,7 +112,7 @@ class Database
                 throw new AuthenticationException("JSONDB Error: User's authentication failed for user \"{$username}\" on server \"{$server}\". Access denied.");
             }
 
-            $this->_serverName = realpath(dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR . 'servers' . DIRECTORY_SEPARATOR . $server);
+            $this->_serverName = Util::makePath(JSONDB::getConfigValue(JSONDBConfig::CONFIG_STORAGE_PATH), "servers", $server);
             $this->_username = $username;
 
             if (null !== $database) {
