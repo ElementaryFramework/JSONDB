@@ -45,7 +45,6 @@ use ElementaryFramework\JSONDB\Exceptions\QueryException;
 use ElementaryFramework\JSONDB\Utilities\Benchmark;
 use ElementaryFramework\JSONDB\Utilities\Cache;
 use ElementaryFramework\JSONDB\Utilities\Util;
-use JSONDB\QueryResult;
 
 /**
  * Query
@@ -104,6 +103,14 @@ class Query
      * @var QueryParser
      */
     private $_parser;
+
+    /**
+     * The table file handle used when
+     * a query is being processed.
+     *
+     * @var resource
+     */
+    private $_tableFileHandle;
 
     /**
      * @return bool
@@ -191,12 +198,12 @@ class Query
                 throw new QueryException("JSONDB Error: Can't execute the query. The table \"{$this->_table}\" doesn't exists in database \"{$this->_database->getDatabase()}\" or file access denied.");
             }
 
-            $handle = fopen($table_path, "r+");
+            $this->_tableFileHandle = fopen($table_path, "r+");
 
             try {
                 Benchmark::mark('jsondb_(query)_start');
                 {
-                    if (flock($handle, LOCK_EX)) {
+                    if (flock($this->_tableFileHandle, LOCK_EX)) {
                         $this->_isQueryExecuted = true;
 
                         $json_array = Cache::get($table_path);
@@ -204,17 +211,20 @@ class Query
 
                         $return = $this->$method($json_array);
 
-                        flock($handle, LOCK_UN);
+                        flock($this->_tableFileHandle, LOCK_UN);
+
+                        fclose($this->_tableFileHandle);
                     } else {
                         Benchmark::mark('jsondb_(query)_end');
-                        throw new QueryException("JSONDB Error: Can't execute the query. Unable to acquire a lock on the table \"{$this->_table}\".");
+                        throw new IOException("JSONDB Error: Can't execute the query. Unable to acquire a lock on the table \"{$this->_table}\".");
                     }
                 }
                 Benchmark::mark('jsondb_(query)_end');
 
                 return $return;
             } catch (QueryException $e) {
-                flock($handle, LOCK_UN);
+                flock($this->_tableFileHandle, LOCK_UN);
+                fclose($this->_tableFileHandle);
                 $this->_isQueryExecuted = false;
                 throw $e;
             }
@@ -633,7 +643,7 @@ class Query
         Cache::update($path = Database::getTablePath($this->_database->getServer(), $this->_database->getDatabase(), $this->_table), $data);
 
         try {
-            return Util::writeTableData($path, $data);
+            return Util::writeTableData($path, $data, $this->_tableFileHandle);
         } catch (IOException $e) {
             throw $e;
         }
@@ -757,7 +767,7 @@ class Query
         Cache::update($path = Database::getTablePath($this->_database->getServer(), $this->_database->getDatabase(), $this->_table), $data);
 
         try {
-            return Util::writeTableData($path, $data);
+            return Util::writeTableData($path, $data, $this->_tableFileHandle);
         } catch (IOException $e) {
             throw $e;
         }
@@ -856,7 +866,7 @@ class Query
         Cache::update($path = Database::getTablePath($this->_database->getServer(), $this->_database->getDatabase(), $this->_table), $data);
 
         try {
-            return Util::writeTableData($path, $data);
+            return Util::writeTableData($path, $data, $this->_tableFileHandle);
         } catch (IOException $e) {
             throw $e;
         }
@@ -876,17 +886,21 @@ class Query
         Cache::update($path = Database::getTablePath($this->_database->getServer(), $this->_database->getDatabase(), $this->_table), $data);
 
         try {
-            return Util::writeTableData($path, $data);
+            return Util::writeTableData($path, $data, $this->_tableFileHandle);
         } catch (IOException $e) {
             throw $e;
         }
     }
 
-        /**
-     * The delete() query
+    /**
+     * The delete() query.
+     *
      * @param array $data
+     *
      * @return bool
-     * @throws Exception
+     *
+     * @throws \Exception
+     * @throws IOException
      */
     protected function _delete($data): bool
     {
@@ -924,7 +938,7 @@ class Query
         Cache::update($path = Database::getTablePath($this->_database->getServer(), $this->_database->getDatabase(), $this->_table), $data);
 
         try {
-            return Util::writeTableData($path, $data);
+            return Util::writeTableData($path, $data, $this->_tableFileHandle);
         } catch (IOException $e) {
             throw $e;
         }

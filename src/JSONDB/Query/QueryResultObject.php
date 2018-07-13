@@ -46,18 +46,20 @@ use ElementaryFramework\JSONDB\Exceptions\QueryException;
  * @package  JSONDB
  * @category Query
  * @author   Axel Nana <ax.lnana@outlook.com>
- * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/query/queryresultobject
+ * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/Query/QueryResultObject
  */
 class QueryResultObject
 {
     /**
      * The specified result
+     *
      * @var array
      */
-    private $result;
+    private $_result;
 
     /**
-     * ObjectQueryResult __constructor.
+     * Query Result Object __constructor.
+     *
      * @param array $result_array
      */
     public function __construct(array $result_array)
@@ -66,28 +68,32 @@ class QueryResultObject
     }
 
     /**
-     * Sets the results to use
+     * Sets the results to use.
+     *
      * @param mixed $result
      */
     private function _setResult($result)
     {
-        $this->result = $result;
+        $this->_result = $result;
     }
 
     /**
      * Gets a row value if the given row name exist
      * in the table.
+     *
      * @param string $name
+     *
      * @return mixed
-     * @throws Exception
+     *
+     * @throws QueryException
      */
     public function __get($name)
     {
-        if (array_key_exists($name, $this->result)) {
-            if (is_array($this->result[$name])) {
-                return new QueryResultObject($this->result[$name]);
+        if (array_key_exists($name, $this->_result)) {
+            if (is_array($this->_result[$name])) {
+                return new QueryResultObject($this->_result[$name]);
             }
-            return $this->result[$name];
+            return $this->_result[$name];
         } else {
             throw new QueryException("JSONDB Query Result Error: Can't access the key \"{$name}\" in result, maybe the key doesn't exist.");
         }

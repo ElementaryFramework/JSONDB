@@ -37,7 +37,6 @@
  */
 
 namespace ElementaryFramework\JSONDB\Utilities;
-use ElementaryFramework\JSONDB\Exceptions\IOException;
 
 /**
  * Class Util
@@ -71,24 +70,23 @@ class Util
     /**
      * @param string $path
      * @param array $data
+     * @param resource $handle
      *
      * @return bool
-     *
-     * @throws IOException
      */
-    public static function writeTableData(string $path, array $data): bool
+    public static function writeTableData($path, array $data, $handle = null): bool
     {
-        $handle = fopen($path, "w");
+        $toClose = $handle === null;
 
-        if (flock($handle, LOCK_EX)) {
-            $result = (bool)fwrite($handle, json_encode($data));
-            flock($handle, LOCK_UN);
+        if ($handle === null)
+            $handle = fopen($path, "w");
+
+        $result = (bool)fwrite($handle, json_encode($data));
+
+        if ($toClose)
             fclose($handle);
 
-            return $result;
-        } else {
-            throw new IOException("JSONDB Error: Unable to get a lock on the table file.");
-        }
+        return $result;
     }
 
     /**
@@ -101,7 +99,7 @@ class Util
     public static function makePath(string ...$parts): string
     {
         return implode(DIRECTORY_SEPARATOR, array_map(function ($item) {
-                return trim($item, "\\/");
-            }, $parts)) . DIRECTORY_SEPARATOR;
+            return trim($item, "\\/");
+        }, $parts));
     }
 }

@@ -201,7 +201,7 @@ class Database
      */
     public static function getTablePath(string $server, string $database, string $table): string
     {
-        return $server . DIRECTORY_SEPARATOR . $database . DIRECTORY_SEPARATOR . "{$table}.jdbt";
+        return Util::makePath($server, $database, "{$table}.jdbt");
     }
 
     /**
@@ -213,7 +213,11 @@ class Database
      */
     public static function getTableData(string $path): array
     {
-        return json_decode(file_get_contents($path), true);
+        ob_start();
+        readfile($path);
+        $data = ob_get_clean();
+
+        return json_decode($data, true);
     }
 
     /**
@@ -226,7 +230,7 @@ class Database
      */
     public static function getDatabasePath(string $server, string $database): string
     {
-        return $server . DIRECTORY_SEPARATOR . $database;
+        return Util::makePath($server, $database);
     }
 
     /**

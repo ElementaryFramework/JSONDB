@@ -38,8 +38,8 @@
 
 namespace ElementaryFramework\JSONDB\Query;
 
-use ElementaryFramework\JSONDB\Utilities\Benchmark;
 use ElementaryFramework\JSONDB\Exceptions\QueryException;
+use ElementaryFramework\JSONDB\Utilities\Benchmark;
 
 
 /**
@@ -143,8 +143,8 @@ class QueryParser
             // Getting the action's parameters
             // TODO: Continue here...
             $this->parsedQuery["parameters"] = preg_replace('/\w+\((.*)\)/', '$1', $queryParts[1]);
-            $this->parsedQuery["parameters"] = preg_replace_callback('/\(([^)]*)\)/', function ($str) {
-                return str_replace(',', ';', $str);
+            $this->parsedQuery["parameters"] = preg_replace_callback('/\([^)]*\)/', function ($str) {
+                return str_replace(',', ';', $str[0]);
             }, $this->parsedQuery["parameters"]);
             $this->parsedQuery['parameters'] = explode(',', $this->parsedQuery["parameters"]);
             $this->parsedQuery['parameters'] = array_map(function($field) {
@@ -163,8 +163,8 @@ class QueryParser
             foreach ($slice as $extension) {
                 $extension = trim($extension);
                 $name = preg_replace('/\(.*\)/', '', $extension);
-                $string = preg_replace_callback('/\(([^)]*)\)/', function ($str) {
-                    return str_replace(',', ';', $str);
+                $string = preg_replace_callback('/\([^)]*\)/', function ($str) {
+                    return str_replace(',', ';', $str[0]);
                 }, trim(preg_replace("/{$name}\\((.*)\\)/", '$1', $extension)));
                 switch (strtolower($name)) {
                     case 'order':
@@ -296,8 +296,8 @@ class QueryParser
                 $filters['field'] = trim($row_val[0], self::TRIM_CHAR);
                 $filters['value'] = $this->_parseValue(
                     count($row_val) > 2 ?
-                    implode($operator, array_slice($row_val, 1)) :
-                    $row_val[1]
+                        implode($operator, array_slice($row_val, 1)) :
+                        $row_val[1]
                 );
                 break;
             }
@@ -466,10 +466,11 @@ class QueryParser
         return $parsedClause;
     }
 
-    protected function _parseFunction(string $unction)
+    protected function _parseFunction(string $function)
     {
         preg_match('/(\w+)\((.*)\)/', $function, $parts);
-        $name = isset($parts[2]) ? array_map(array(&$this, "_parseValue"), explode(';', $parts[2])) : false;
+        $name = isset($parts[1]) ? $parts[1] : null;
+        $params = isset($parts[2]) ? array_map(array(&$this, "_parseValue"), explode(';', $parts[2])) : false;
 
         switch ($name) {
             case 'sha1':
@@ -559,7 +560,7 @@ class QueryParser
     {
         $trim_value = trim($value);
         if (strpos($value, ':JSONDB::TO_BOOL:') !== false) {
-            return bool_val(int_val(str_replace(':JSONDB::TO_BOOL:', '', $value)));
+            return boolval(intval(str_replace(':JSONDB::TO_BOOL:', '', $value)));
         } elseif (strtolower($value) === 'false') {
             return false;
         } elseif (strtolower($value) === 'true') {
@@ -569,11 +570,11 @@ class QueryParser
         } elseif (strpos($value, ':JSONDB::TO_ARRAY:') !== false) {
             return (array)unserialize($this->_parseValue(str_replace(':JSONDB::TO_ARRAY:', '', $value)));
         } elseif ($trim_value[0] === "'" && $trim_value[strlen($trim_value) - 1] === "'") {
-            return str_val(str_replace(array('{{quot}}', '{{comm}}', '{{dot}}', '{{pto}}', '{{ptc}}', '{{semi}}'), array('\'', ',', '.', '(', ')', ';'), trim($value, self::TRIM_CHAR)));
+            return strval(str_replace(array('{{quot}}', '{{comm}}', '{{dot}}', '{{pto}}', '{{ptc}}', '{{semi}}'), array('\'', ',', '.', '(', ')', ';'), trim($value, self::TRIM_CHAR)));
         } elseif (preg_match('/\w+\(.*\)/', $value)) {
             return $this->_parseFunction($value);
         } else {
-            return int_val(trim($value, self::TRIM_CHAR));
+            return intval(trim($value, self::TRIM_CHAR));
         }
     }
 }

@@ -38,8 +38,9 @@
 
 namespace ElementaryFramework\JSONDB\Query;
 
-use ElementaryFramework\JSONDB\Utilities\Benchmark;
 use ElementaryFramework\JSONDB\Exceptions\QueryException;
+use ElementaryFramework\JSONDB\JSONDB;
+use ElementaryFramework\JSONDB\Utilities\Benchmark;
 
 
 /**
@@ -89,7 +90,7 @@ class QueryResult implements \Iterator, \SeekableIterator, \Countable, \Serializ
     public function __construct(Query &$query)
     {
         $this->database =& $query;
-        $this->_setResults($result);
+        $this->_setResults($query->getResults());
         $this->setFetchMode(JSONDB::FETCH_ARRAY);
     }
 
@@ -330,9 +331,11 @@ class QueryResult implements \Iterator, \SeekableIterator, \Countable, \Serializ
     private function _parseResults()
     {
         $this->results = array_merge(
-            array('#queryString' => $this->queryString(),
-                '#elapsedtime' => $this->database->benchmark()->elapsed_time('jsondb_(query)_start', 'jsondb_(query)_end'),
-                '#memoryusage' => $this->database->benchmark()->memory_usage('jsondb_(query)_start', 'jsondb_(query)_end'))
-            , $this->results);
+            array(
+                '#queryString' => $this->queryString(),
+                '#elapsedtime' => Benchmark::elapsed_time('jsondb_(query)_start', 'jsondb_(query)_end'),
+                '#memoryusage' => Benchmark::memory_usage('jsondb_(query)_start', 'jsondb_(query)_end')
+            ),
+            $this->results);
     }
 }
