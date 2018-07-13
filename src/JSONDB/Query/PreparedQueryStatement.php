@@ -38,24 +38,29 @@
 
 namespace ElementaryFramework\JSONDB\Query;
 
+use ElementaryFramework\JSONDB\Exceptions\QueryException;
+use ElementaryFramework\JSONDB\JSONDB;
+
 /**
  * Prepared Query Statement
  *
  * @package  JSONDB
  * @category Query
  * @author   Axel Nana <ax.lnana@outlook.com>
- * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/query/preparedquerystatement
+ * @link     http://php.jsondb.na2axl.tk/docs/api/jsondb/Query/PreparedQueryStatement
  */
 class PreparedQueryStatement
 {
     /**
-     * The Query instance
+     * The Query instance.
+     *
      * @var Query
      */
     private $_query;
 
     /**
      * The query string.
+     *
      * @var string
      */
     private $_queryString;
@@ -63,14 +68,16 @@ class PreparedQueryStatement
     /**
      * An array of keys inserted in the
      * query.
+     *
      * @var array
      */
     private $_preparedQueryKeys = array();
 
     /**
      * PreparedQueryStatement __constructor.
-     * @param string $query
-     * @param Database $query
+     *
+     * @param string $queryString The prepared query string.
+     * @param Query $query The Query instance associated to the query string.
      */
     public function __construct($queryString, Query &$query)
     {
@@ -82,10 +89,12 @@ class PreparedQueryStatement
 
     /**
      * Binds a value in a prepared query.
+     *
      * @param string $key The parameter's key
      * @param string|int|bool $value The parameter's value
      * @param int $parse_method The parse method to use
-     * @throws Exception
+     *
+     * @throws QueryException
      */
     public function bindValue($key, $value, $parse_method = JSONDB::PARAM_STRING)
     {
@@ -94,15 +103,15 @@ class PreparedQueryStatement
                 switch ($parse_method) {
                     default:
                     case JSONDB::PARAM_STRING:
-                        $value = JSONDB::quote(str_val($value));
+                        $value = JSONDB::quote(strval($value));
                         break;
 
                     case JSONDB::PARAM_INT:
-                        $value = int_val($value);
+                        $value = intval($value);
                         break;
 
                     case JSONDB::PARAM_BOOL:
-                        $value = int_val($value);
+                        $value = intval($value);
                         $value = "{$value}:JSONDB::TO_BOOL:";
                         break;
 
@@ -127,8 +136,10 @@ class PreparedQueryStatement
 
     /**
      * Execute the prepared query
-     * @throws Exception
+     *
      * @return mixed
+     *
+     * @throws QueryException
      */
     public function execute()
     {
@@ -141,13 +152,11 @@ class PreparedQueryStatement
 
     /**
      * Prepare a query
-     * @return PreparedQueryStatement
      */
     private function _prepareQuery()
     {
-        $query = $this->queryString;
+        $query = $this->_queryString;
         preg_match_all('/(:[\w]+)/', $query, $keys);
-        $this->preparedQueryKeys = $keys[0];
+        $this->_preparedQueryKeys = $keys[0];
     }
-
 }
