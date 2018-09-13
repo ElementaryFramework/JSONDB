@@ -7,8 +7,8 @@
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
->
+         convertWarningsToExceptions="true">
+
     <testsuites>
         <testsuite name="JSONDB Test suite">
             <directory>tests</directory>
