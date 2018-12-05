@@ -98,8 +98,15 @@ class Util
      */
     public static function makePath(string ...$parts): string
     {
-        return implode(DIRECTORY_SEPARATOR, array_map(function ($item) {
+        $path = "";
+
+        if ($parts[0][0] === '/')
+            $path = '/';
+
+        $path .= implode(DIRECTORY_SEPARATOR, array_map(function ($item) {
             return trim($item, "\\/");
         }, $parts));
+
+        return $path;
     }
 }
